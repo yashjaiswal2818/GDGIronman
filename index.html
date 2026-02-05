@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Man Scroll Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="arc"></div>
+            <div class="dodecahedron"></div>
+        </div>
+        <div class="loading-text">INITIALIZING SYSTEMS...</div>
+        <div class="progress-bar"><div class="progress"></div></div>
+    </div>
+
+    <!-- Fixed Background Canvas -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Overlay Content -->
+    <div class="scroll-content">
+        <!-- Add enough height to allow scrolling through the animation -->
+        <div class="spacer"></div>
+    </div>
+
+    <!-- UI Overlays -->
+    <nav class="hud-nav">
+        <div class="logo-container">
+            <img src="public/animated-logo-stroke.svg" alt="GDG On Campus Pillai University" class="gdg-logo">
+        </div>
+        <div class="hud-elements">
+            <div class="hud-line"></div>
+            <div class="hud-text">MK-50 SYSTEM ACTIVE</div>
+        </div>
+    </nav>
+    
+    <div class="bottom-hud">
+        <div class="status-panel">
+             <div class="status-item">
+                <span class="label">BATTERY</span>
+                <span class="value">400%</span>
+            </div>
+             <div class="status-item">
+                <span class="label">ALTITUDE</span>
+                <span class="value">0FT</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

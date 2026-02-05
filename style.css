@@ -1,0 +1,193 @@
+:root {
+    --primary-color: #ff0000; /* Iron Man Red */
+    --secondary-color: #d4af37; /* Gold */
+    --hud-color: #00ffff; /* Jarvis Blue */
+    --bg-color: #050505;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Canvas Styling */
+#hero-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Scroll Spacer */
+.scroll-content {
+    position: relative;
+    z-index: 2;
+    pointer-events: none; /* Let clicks pass through to canvas if needed */
+}
+
+.spacer {
+    /* Height will be set dynamically via JS based on frame count */
+    height: 500vh; 
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.loader {
+    margin-bottom: 2rem;
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.arc {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: var(--hud-color);
+    border-bottom-color: var(--hud-color);
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--hud-color);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px var(--hud-color);
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: #111;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--hud-color);
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: var(--hud-color);
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--hud-color);
+}
+
+/* HUD System */
+.hud-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.logo-container {
+    width: 200px;
+}
+
+.gdg-logo {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 5px var(--hud-color));
+}
+
+.hud-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.hud-line {
+    width: 100px;
+    height: 2px;
+    background: var(--hud-color);
+    margin-bottom: 5px;
+    box-shadow: 0 0 5px var(--hud-color);
+}
+
+.hud-text {
+    color: var(--hud-color);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.bottom-hud {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 10;
+}
+
+.status-panel {
+    border-left: 2px solid var(--primary-color);
+    padding-left: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.status-item {
+    margin-bottom: 0.5rem;
+}
+
+.status-item .label {
+    display: block;
+    font-size: 0.7rem;
+    color: #888;
+}
+
+.status-item .value {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .hud-nav {
+        padding: 1rem;
+    }
+    .logo-container {
+        width: 120px;
+    }
+}
