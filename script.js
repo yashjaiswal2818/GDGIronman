@@ -35,8 +35,8 @@ const padNumber = (num, width) => {
 
 // Determine which set to load based on viewport
 function checkDevice() {
-    // Check if aspect ratio is portrait or width is small
-    const mobileQuery = window.matchMedia("(max-width: 768px) or (orientation: portrait)");
+    // Check if aspect ratio is portrait
+    const mobileQuery = window.matchMedia("(orientation: portrait)");
     const newIsMobile = mobileQuery.matches;
 
     if (currentConfig === null || isMobile !== newIsMobile) {
@@ -49,8 +49,14 @@ function checkDevice() {
 
 // Resize canvas to fill window
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    // Set actual size in memory (scaled to account for extra pixel density)
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+
+    // Normalize coordinate system to use css pixels
+    // context.scale(dpr, dpr);
+
     requestAnimationFrame(() => updateImage(getScrollProgress()));
 }
 

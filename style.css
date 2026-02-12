@@ -1,7 +1,10 @@
 :root {
-    --primary-color: #ff0000; /* Iron Man Red */
-    --secondary-color: #d4af37; /* Gold */
-    --hud-color: #00ffff; /* Jarvis Blue */
+    --primary-color: #ff0000;
+    /* Iron Man Red */
+    --secondary-color: #d4af37;
+    /* Gold */
+    --hud-color: #00ffff;
+    /* Jarvis Blue */
     --bg-color: #050505;
 }
 
@@ -35,12 +38,13 @@ body {
 .scroll-content {
     position: relative;
     z-index: 2;
-    pointer-events: none; /* Let clicks pass through to canvas if needed */
+    pointer-events: none;
+    /* Let clicks pass through to canvas if needed */
 }
 
 .spacer {
     /* Height will be set dynamically via JS based on frame count */
-    height: 500vh; 
+    height: 500vh;
 }
 
 /* Loading Screen */
@@ -78,8 +82,13 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-text {
@@ -183,11 +192,222 @@ body {
 }
 
 /* Mobile Adjustments */
-@media (max-width: 768px) {
+@media (max-width: 768px),
+(orientation: portrait) {
     .hud-nav {
         padding: 1rem;
     }
+
     .logo-container {
         width: 120px;
     }
+
+    /* Mobile adjustments for new sections */
+    .hud-section {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .section-intro h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Scroll Sections Layout */
+.scroll-sections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* No defined height here, it relies on parent or content.
+       Since parent is scroll-content which has spacer,
+       we need to ensure this overlay covers the whole scrollable area.
+    */
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.hud-section {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 15, 0.85);
+    border: 1px solid var(--hud-color);
+    padding: 2rem;
+    backdrop-filter: blur(5px);
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    clip-path: polygon(20px 0, 100% 0,
+            100% calc(100% - 20px), calc(100% - 20px) 100%,
+            0 100%, 0 20px);
+}
+
+.hud-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--hud-color);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.5rem;
+    text-shadow: 0 0 5px var(--hud-color);
+}
+
+.hud-section p {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    color: #ddd;
+    line-height: 1.4;
+}
+
+/* Specific Positions */
+.section-intro {
+    top: 5%;
+    width: 100%;
+    max-width: 800px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    clip-path: none;
+}
+
+.section-intro .tech-frame {
+    display: inline-block;
+    border: 1px solid var(--primary-color);
+    padding: 2rem;
+    background: rgba(20, 0, 0, 0.6);
+    position: relative;
+    clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
+}
+
+.section-intro h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    color: white;
+    margin: 0;
+    text-shadow: 0 0 15px var(--primary-color);
+}
+
+.section-intro .sub-header {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+.highlight {
+    color: var(--hud-color);
+    font-weight: bold;
+}
+
+.separator {
+    margin: 0 15px;
+    color: #555;
+}
+
+/* Stage Themes */
+.section-stage-1 {
+    top: 25%;
+    border-color: var(--hud-color);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.section-stage-2 {
+    top: 50%;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.section-stage-2 h2 {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.section-stage-3 {
+    top: 75%;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+}
+
+.section-stage-3 h2 {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* Decorative Elements */
+.stage-marker {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: #000;
+    color: inherit;
+    /* Inherits from section color logic below */
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    padding: 0 10px;
+    border: 1px solid currentColor;
+}
+
+.section-stage-1 .stage-marker {
+    color: var(--hud-color);
+    border-color: var(--hud-color);
+}
+
+.section-stage-2 .stage-marker {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.section-stage-3 .stage-marker {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.stats-list {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+.stats-list span {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--hud-color);
+    font-weight: bold;
+}
+
+.tech-bar {
+    width: 100%;
+    height: 4px;
+    background: #333;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.tech-bar .fill {
+    height: 100%;
+    background: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.status-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.grid-item {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    font-family: 'Orbitron', sans-serif;
+    background: rgba(255, 0, 0, 0.05);
 }

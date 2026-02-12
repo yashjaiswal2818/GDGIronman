@@ -1,0 +1,33 @@
+# OS files
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build output
+dist/
+build/
+out/
+
+# Local Environment and Secrets
+.env
+.env.local
+.env.*.local
+stitch_mcp_config.json
+
+# Temporary / Generated Assets (optional, remove if needed)
+_MConverter.eu_b_Cinematic_spiraling_ (1)/
+ezgif-238719fc97ea5002-jpg/
