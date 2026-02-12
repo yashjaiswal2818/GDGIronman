@@ -4,7 +4,7 @@ const loadingScreen = document.getElementById('loading-screen');
 const progressBar = document.querySelector('.progress');
 const loadingText = document.querySelector('.loading-text');
 
-// Configuration
+
 const config = {
     desktop: {
         path: 'assets/images/desktop/',
@@ -27,15 +27,15 @@ const images = [];
 let loadedCount = 0;
 let isMobile = false;
 
-// Helper to pad numbers
+
 const padNumber = (num, width) => {
     num = num + '';
     return num.length >= width ? num : new Array(width - num.length + 1).join('0') + num;
 };
 
-// Determine which set to load based on viewport
+
 function checkDevice() {
-    // Check if aspect ratio is portrait
+
     const mobileQuery = window.matchMedia("(orientation: portrait)");
     const newIsMobile = mobileQuery.matches;
 
@@ -47,27 +47,26 @@ function checkDevice() {
     }
 }
 
-// Resize canvas to fill window
+
 function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
-    // Set actual size in memory (scaled to account for extra pixel density)
+
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 
-    // Normalize coordinate system to use css pixels
-    // context.scale(dpr, dpr);
+
 
     requestAnimationFrame(() => updateImage(getScrollProgress()));
 }
 
-// Get scroll progress 0 to 1
+
 function getScrollProgress() {
     const scrollTop = document.documentElement.scrollTop;
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     return Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 }
 
-// Draw image with "cover" fit
+
 function drawImageProp(ctx, img) {
     if (!img) return;
 
@@ -76,7 +75,7 @@ function drawImageProp(ctx, img) {
     const iW = img.width;
     const iH = img.height;
 
-    // Calculate scale
+
     const scale = Math.max(w / iW, h / iH);
     const x = (w / 2) - (iW / 2) * scale;
     const y = (h / 2) - (iH / 2) * scale;
@@ -85,7 +84,7 @@ function drawImageProp(ctx, img) {
     ctx.drawImage(img, x, y, iW * scale, iH * scale);
 }
 
-// Update the canvas based on progress
+
 function updateImage(progress) {
     if (images.length === 0) return;
 
@@ -100,17 +99,17 @@ function updateImage(progress) {
     }
 }
 
-// Load images
+
 function initImages() {
-    // Reset
+
     images.length = 0;
     loadedCount = 0;
     loadingScreen.style.opacity = '1';
-    loadingScreen.style.pointerEvents = 'auto'; // Block interaction while loading
+    loadingScreen.style.pointerEvents = 'auto';
 
     const { path, count, prefix, suffix, pad } = currentConfig;
 
-    // Create promises for all images
+
     for (let i = 1; i <= count; i++) {
         const img = new Image();
         const number = padNumber(i, pad);
@@ -126,7 +125,7 @@ function initImages() {
                 setTimeout(() => {
                     loadingScreen.style.opacity = '0';
                     loadingScreen.style.pointerEvents = 'none';
-                    // Initial draw
+
                     resizeCanvas();
                 }, 500);
             }
@@ -134,20 +133,19 @@ function initImages() {
 
         img.onerror = (e) => {
             console.error(`Failed to load image: ${img.src}`, e);
-            // Still count it as processed so we don't hang
+
             loadedCount++;
         };
 
         images.push(img);
     }
 
-    // Set scroll height to allow for scrolling
-    // 10px per frame seems reasonable?
+
     const scrollHeight = count * 15;
     document.querySelector('.spacer').style.height = `${scrollHeight}px`;
 }
 
-// Event Listeners
+
 window.addEventListener('resize', () => {
     resizeCanvas();
     checkDevice();
@@ -158,6 +156,6 @@ window.addEventListener('scroll', () => {
     requestAnimationFrame(() => updateImage(progress));
 });
 
-// Initialize
+
 checkDevice();
 resizeCanvas();

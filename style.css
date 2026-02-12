@@ -1,10 +1,10 @@
 :root {
     --primary-color: #ff0000;
-    /* Iron Man Red */
+
     --secondary-color: #d4af37;
-    /* Gold */
+
     --hud-color: #00ffff;
-    /* Jarvis Blue */
+
     --bg-color: #050505;
 }
 
@@ -23,7 +23,7 @@ body {
     width: 100vw;
 }
 
-/* Canvas Styling */
+
 #hero-canvas {
     position: fixed;
     top: 0;
@@ -34,20 +34,18 @@ body {
     z-index: 1;
 }
 
-/* Scroll Spacer */
+
 .scroll-content {
     position: relative;
     z-index: 2;
-    pointer-events: none;
-    /* Let clicks pass through to canvas if needed */
+
 }
 
 .spacer {
-    /* Height will be set dynamically via JS based on frame count */
     height: 500vh;
 }
 
-/* Loading Screen */
+
 #loading-screen {
     position: fixed;
     top: 0;
@@ -116,7 +114,7 @@ body {
     box-shadow: 0 0 10px var(--hud-color);
 }
 
-/* HUD System */
+
 .hud-nav {
     position: fixed;
     top: 0;
@@ -191,7 +189,6 @@ body {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* Mobile Adjustments */
 @media (max-width: 768px),
 (orientation: portrait) {
     .hud-nav {
@@ -202,7 +199,7 @@ body {
         width: 120px;
     }
 
-    /* Mobile adjustments for new sections */
+
     .hud-section {
         width: 95%;
         padding: 1.5rem;
@@ -213,16 +210,13 @@ body {
     }
 }
 
-/* Scroll Sections Layout */
+
 .scroll-sections {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    /* No defined height here, it relies on parent or content.
-       Since parent is scroll-content which has spacer,
-       we need to ensure this overlay covers the whole scrollable area.
-    */
+    width: 100%;
     height: 100%;
     pointer-events: none;
     z-index: 5;
@@ -263,7 +257,7 @@ body {
     line-height: 1.4;
 }
 
-/* Specific Positions */
+
 .section-intro {
     top: 5%;
     width: 100%;
@@ -309,7 +303,7 @@ body {
     color: #555;
 }
 
-/* Stage Themes */
+
 .section-stage-1 {
     top: 25%;
     border-color: var(--hud-color);
@@ -338,14 +332,14 @@ body {
     text-shadow: 0 0 5px var(--primary-color);
 }
 
-/* Decorative Elements */
+
 .stage-marker {
     position: absolute;
     top: -15px;
     left: 20px;
     background: #000;
     color: inherit;
-    /* Inherits from section color logic below */
+    color: inherit;
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     padding: 0 10px;
