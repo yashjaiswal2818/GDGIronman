@@ -34,6 +34,12 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+async def root():
+    """Verify this is the main API (register, submit, problem routes)."""
+    return {"message": "Stark Industries API", "routes": ["/register", "/submit", "/problem/{id}"]}
+
+
 @app.post("/register")
 async def register_team(registration: RegistrationCreate, db: AsyncSession = Depends(get_db)):
     res = await registration_service(registration.Team_Name, team_members=[mem.dict() for mem in registration.team_members], db=db)

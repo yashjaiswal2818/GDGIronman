@@ -166,6 +166,11 @@
     <!-- Header -->
     <header class="h-12 border-b border-stark-border bg-stark-bg-dark/95 backdrop-blur-md flex items-center justify-between px-4 md:px-6 z-40 relative">
         <div class="flex items-center gap-4 md:gap-6">
+            <a href="stageone.html" class="flex items-center gap-2 text-stark-blue/70 hover:text-stark-blue transition-colors group">
+                <span class="material-icons-round text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                <span class="text-[10px] font-mono hidden sm:inline">BACK</span>
+            </a>
+            <div class="h-4 w-px bg-stark-border hidden md:block"></div>
             <div class="flex items-center gap-2 text-stark-blue">
                 <span class="material-icons-round text-lg animate-spin-slow" style="animation-duration: 10s;">memory</span>
                 <h1 class="text-xs md:text-sm font-bold tracking-[0.25em] text-white uppercase">
@@ -197,12 +202,17 @@
                     <span class="text-white">2.1GB</span>
                 </div>
             </div>
-            <div class="w-8 h-8 rounded border border-stark-border p-0.5 relative group cursor-pointer overflow-hidden">
-                <div class="w-full h-full bg-stark-blue/10 flex items-center justify-center grayscale opacity-80 group-hover:grayscale-0 transition-all">
-                    <span class="material-icons-round text-stark-blue text-sm">person</span>
+            <!-- Timer -->
+            <div class="flex items-center gap-2 px-3 py-1.5 border border-stark-border rounded bg-stark-blue/5">
+                <span class="material-icons-round text-stark-blue text-sm">timer</span>
+                <div class="flex flex-col items-end leading-none gap-0.5">
+                    <span class="text-[9px] text-stark-blue/70 uppercase tracking-wider">TIME</span>
+                    <span id="timer-display" class="text-sm font-bold text-stark-blue tabular-nums">05:00</span>
                 </div>
-                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-stark-blue"></div>
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-stark-blue"></div>
+            </div>
+            <div id="editor-team-badge" class="relative flex items-center gap-2 px-3 py-1.5 rounded border border-stark-border bg-stark-blue/5 min-w-0 max-w-[180px]">
+                <span class="material-icons-round text-stark-blue text-sm flex-shrink-0">group</span>
+                <span id="display-team-name" class="text-[10px] font-mono text-stark-blue truncate">—</span>
             </div>
         </div>
     </header>

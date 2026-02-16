@@ -9,8 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalToggleBtn = document.getElementById('terminal-toggle-btn');
     const terminalCloseBtn = document.getElementById('terminal-close-btn');
     const terminalContainer = document.getElementById('terminal-container');
+    const timerDisplay = document.getElementById('timer-display');
     
     let isTerminalOpen = false;
+    
+    // Timer configuration
+    const TIMER_DURATION = 7 * 60; // 5 minutes in seconds
+    let timeRemaining = TIMER_DURATION;
+    let timerInterval = null;
     
     // Backend API configuration
     const API_BASE_URL = 'http://localhost:8000'; // Base URL for the API
@@ -139,11 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputLabel.className = 'text-[10px] font-bold uppercase text-slate-500 mb-2';
                 inputLabel.textContent = 'Input';
                 const inputValue = document.createElement('div');
-                inputValue.className = 'font-mono text-xs text-stark-blue bg-stark-bg-dark/80 p-2 border border-stark-border/30 rounded-sm break-all whitespace-pre-wrap';
-                // Display input clearly - show spaces and newlines
-                const inputText = testCase.input || 'N/A';
-                inputValue.textContent = inputText;
-                inputValue.title = `Raw input: ${JSON.stringify(inputText)}`; // Show raw format on hover
+                inputValue.className = 'font-mono text-xs bg-stark-bg-dark/80 p-2 border rounded-sm break-all whitespace-pre-wrap';
+                
+                if (testCase.hidden) {
+                    // Hide input for hidden test cases
+                    inputValue.className += ' text-yellow-400 border-yellow-500/20';
+                    inputValue.textContent = 'Hidden';
+                } else {
+                    // Display input clearly - show spaces and newlines
+                    inputValue.className += ' text-stark-blue border-stark-border/30';
+                    const inputText = testCase.input || 'N/A';
+                    inputValue.textContent = inputText;
+                    inputValue.title = `Raw input: ${JSON.stringify(inputText)}`; // Show raw format on hover
+                }
+                
                 inputDiv.appendChild(inputLabel);
                 inputDiv.appendChild(inputValue);
                 
@@ -539,6 +554,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submitBtn) {
         submitBtn.addEventListener('click', async () => {
             console.log('Submit Solution clicked');
+            
+            // Check if time is up
+            if (timeRemaining <= 0) {
+                displayTerminalOutput('⏰ Time is up! Submission is disabled.', true);
+                return;
+            }
+            
+            // Check if submit button is disabled
+            if (submitBtn.disabled && submitBtn.textContent.includes('TIME UP')) {
+                displayTerminalOutput('⏰ Time is up! Submission is disabled.', true);
+                return;
+            }
+            
             const code = codeInput.value.trim();
             
             if (!code) {
@@ -575,6 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         displayTerminalOutput(`Input: ${testCase.input}`);
                     } else {
                         displayTerminalOutput(`Running hidden test case ${i + 1}/${totalTests}...`);
+                        // Don't show input for hidden test cases
                     }
                     
                     try {
@@ -620,12 +649,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Final summary
                 displayTerminalOutput('');
-                if (passedTests === totalTests) {
+                const allTestsPassed = passedTests === totalTests;
+                const status = allTestsPassed ? 'PASSED' : 'failed';
+                
+                if (allTestsPassed) {
                     displayTerminalOutput(`✓ All tests passed! (${passedTests}/${totalTests})`);
                     displayTerminalOutput('Solution accepted!');
                 } else {
                     displayTerminalOutput(`✖ Tests passed: ${passedTests}/${totalTests}`, true);
                     displayTerminalOutput('Solution needs improvement.', true);
+                }
+                
+                // Submit to backend
+                displayTerminalOutput('');
+                displayTerminalOutput('Submitting solution to server...');
+                
+                try {
+                    // Get team name from sessionStorage
+                    const teamName = sessionStorage.getItem('teamName');
+                    if (!teamName) {
+                       throw new Error('Team name not found. Please register first.');
+                    }
+                    
+                    // Static values for now
+                    const contestId = 'con';
+                    const problemId = 5;
+                    
+                    // Prepare submission payload
+                    const submissionPayload = {
+                        Team_Name: teamName,
+                        contest_id: contestId,
+                        problem_id: problemId,
+                        code: code,
+                        status: status
+                    };
+                    
+                    console.log('Submitting payload:', {
+                        Team_Name: submissionPayload.Team_Name,
+                        contest_id: submissionPayload.contest_id,
+                        problem_id: submissionPayload.problem_id,
+                        code: submissionPayload.code.substring(0, 50) + '...', // Preview first 50 chars
+                        status: submissionPayload.status
+                    });
+                    
+                    // Send submission to backend
+                    const submitResponse = await fetch(`${API_BASE_URL}/submit`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(submissionPayload)
+                    });
+                    
+                    if (!submitResponse.ok) {
+                        const errorData = await submitResponse.json().catch(() => ({ message: submitResponse.statusText }));
+                        throw new Error(`Submission failed: ${errorData.message || submitResponse.statusText}`);
+                    }
+                    
+                    const submitResult = await submitResponse.json();
+                    displayTerminalOutput(`✓ Submission successful! Status: ${status}`);
+                    if (submitResult.submission_id) {
+                        displayTerminalOutput(`Submission ID: ${submitResult.submission_id}`);
+                    }
+                    if (submitResult.message) {
+                        displayTerminalOutput(`Message: ${submitResult.message}`);
+                    }
+                    
+                } catch (submitError) {
+                    displayTerminalOutput(`✖ Submission error: ${submitError.message}`, true);
+                    console.error('Submission error:', submitError);
                 }
                 
             } catch (error) {
@@ -670,6 +762,72 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (terminalCloseBtn) {
         terminalCloseBtn.addEventListener('click', toggleTerminal);
+    }
+
+    // Timer functionality
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+    
+    function updateTimer() {
+        if (timerDisplay) {
+            timerDisplay.textContent = formatTime(timeRemaining);
+            
+            // Change color when time is running low
+            if (timeRemaining <= 60) {
+                timerDisplay.className = 'text-sm font-bold text-red-400 tabular-nums animate-pulse';
+            } else if (timeRemaining <= 120) {
+                timerDisplay.className = 'text-sm font-bold text-yellow-400 tabular-nums';
+            } else {
+                timerDisplay.className = 'text-sm font-bold text-stark-blue tabular-nums';
+            }
+        }
+        
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            if (timerDisplay) {
+                timerDisplay.textContent = '00:00';
+                timerDisplay.className = 'text-sm font-bold text-red-500 tabular-nums';
+            }
+            // Disable submit button
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.innerHTML = '<span class="material-icons-round text-[12px]">block</span><span class="hidden sm:inline">TIME UP</span>';
+            }
+            // Show notification
+            displayTerminalOutput('⏰ Time is up! Submission disabled.', true);
+            return;
+        }
+        
+        timeRemaining--;
+    }
+    
+    function startTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        timeRemaining = TIMER_DURATION;
+        updateTimer(); // Initial display
+        timerInterval = setInterval(updateTimer, 1000); // Update every second
+    }
+    
+    // Start the timer when page loads
+    startTimer();
+
+    // Display logged-in team name
+    const teamNameEl = document.getElementById('display-team-name');
+    if (teamNameEl) {
+        const teamName = sessionStorage.getItem('teamName');
+        if (teamName) {
+            teamNameEl.textContent = teamName;
+            teamNameEl.title = 'Logged in as ' + teamName;
+        } else {
+            teamNameEl.textContent = 'Not logged in';
+        }
     }
 
     // Initialize

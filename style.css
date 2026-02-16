@@ -112,6 +112,24 @@ html {
     display: block;
 }
 
+.navbar-team-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    background: rgba(0, 217, 255, 0.1);
+    color: rgba(0, 217, 255, 0.95);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    pointer-events: auto;
+}
+.navbar-team-label {
+    font-weight: 600;
+    color: rgba(0, 217, 255, 0.85);
+}
+
 .navbar-menu-button {
     display: flex;
     align-items: center;

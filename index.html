@@ -156,7 +156,7 @@
                     Ready to be filtered? Register now and prove you have what it takes to join Stark Industries.
                 </p>
             </div>
-            <a href="register.html" class="btn-register" target="_blank">
+            <a href="register.html" class="btn-register">
                 <span>REGISTER NOW</span>
                 <span class="btn-arrow">→</span>
             </a>
@@ -275,6 +275,10 @@
                 </g>
             </svg>
         </a>
+        <div id="navbar-team-badge" class="navbar-team-badge" style="display: none;">
+            <span class="navbar-team-label">TEAM:</span>
+            <span id="display-team-name"></span>
+        </div>
         <button class="navbar-menu-button" id="navbar-toggle" aria-label="Toggle navigation">
             <span class="menu-label">Menu</span>
             <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-icon">
@@ -318,6 +322,16 @@
 
     <script src="script.js"></script>
     <script>
+        // Display logged-in team name
+        document.addEventListener('DOMContentLoaded', function () {
+            var teamName = sessionStorage.getItem('teamName');
+            var badge = document.getElementById('navbar-team-badge');
+            var displayEl = document.getElementById('display-team-name');
+            if (teamName && badge && displayEl) {
+                displayEl.textContent = teamName;
+                badge.style.display = 'flex';
+            }
+        });
         // Initialize scroll reveal animations
         document.addEventListener('DOMContentLoaded', function () {
             const hiddenElements = document.querySelectorAll('.reveal-on-scroll');

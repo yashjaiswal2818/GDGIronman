@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showMessage('Registration successful! Redirecting to mission briefing...', 'success');
                     // Redirect to Stage 1 Mission Briefing after 1.5 seconds
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'stageone.html';
                     }, 1500);
                     return; // Exit early to prevent button reset
                 } else {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showMessage('Team registered! Data saved. Redirecting to mission briefing...', 'success');
                 // Redirect to Stage 1 Mission Briefing after 1.5 seconds
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'stageone.html';
                 }, 1500);
                 return; // Exit early to prevent button reset
             }
