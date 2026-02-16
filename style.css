@@ -1969,7 +1969,7 @@ html {
     z-index: 2;
     background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0.95) 100%);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 3rem 2rem 2rem;
+    padding: 2rem 1.5rem 1.5rem;
     margin-top: 5vh;
     pointer-events: auto;
 }
@@ -1979,7 +1979,7 @@ html {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 3rem;
+    gap: 2rem;
     margin-bottom: 0.5rem;
 }
 
@@ -2050,7 +2050,8 @@ html {
 .footer-bottom {
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 2rem;
+    padding-top: 1rem;
+    margin-bottom: 0.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
 }
@@ -2065,7 +2066,7 @@ html {
 @media (max-width: 768px) {
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
         text-align: center;
     }
 
@@ -2078,6 +2079,6 @@ html {
     }
 
     .site-footer {
-        padding: 3rem 1.5rem 1.5rem;
+        padding: 1.5rem 1rem 1rem;
     }
 }

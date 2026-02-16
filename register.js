@@ -72,12 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(payload)
                 });
                 if (response.ok) {
-                    showMessage('Registration successful!', 'success');
+                    showMessage('Registration successful! Redirecting to mission briefing...', 'success');
+                    // Redirect to Stage 1 Mission Briefing after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                    return; // Exit early to prevent button reset
                 } else {
                     throw new Error(`Server error: ${response.status}`);
                 }
             } else {
-                showMessage('Team registered! Data saved. Add API_ENDPOINT and set USE_API=true in register.js when ready.', 'success');
+                showMessage('Team registered! Data saved. Redirecting to mission briefing...', 'success');
+                // Redirect to Stage 1 Mission Briefing after 1.5 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                return; // Exit early to prevent button reset
             }
         } catch (err) {
             showMessage('Registration saved locally. API error: ' + (err.message || 'Unknown error'), 'info');
