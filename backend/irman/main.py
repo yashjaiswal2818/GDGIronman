@@ -14,13 +14,20 @@ from schemas.problem_schema import ProblemCreate
 from schemas.contest_schema import ContestCreate
 from schemas.registration_schema import RegistrationCreate
 from schemas.submission_schema import Submission
-
+from service.problems_service import get_problem_by_id
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # In production, restrict to your frontend origin
+
+   # allow_origins=
+    #    "http://127.0.0.1:5500",
+    #    "http://localhost:5500",
+    #    "http://127.0.0.1:3000",
+    #    "http://localhost:3000",
+    #],  '''
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -86,7 +93,12 @@ async def api_new_submission(
         submission.code,
         submission.status
     )
-
+@app.get("/problem/{problem_id}")
+async def api_get_problem(
+    problem_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    return await get_problem_by_id(db, problem_id)  
     # team = Registration(
     #    Team_Name=team_name,
     #    team_members=team_members
