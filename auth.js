@@ -1,0 +1,81 @@
+/**
+ * Access Control System for Stark Industries Bootcamp
+ * 
+ * Public pages (accessible without registration):
+ * - index.html
+ * - register.html
+ * 
+ * Protected pages (require registration):
+ * - stageone.html
+ * - editor.html
+ * - Any other stage pages
+ */
+
+(function() {
+    'use strict';
+
+    // Get current page name
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    // Define public pages that don't require registration
+    const publicPages = ['index.html', 'register.html'];
+    
+    // Check if current page is public
+    const isPublicPage = publicPages.includes(currentPage);
+    
+    // Check if user is registered (has teamName in sessionStorage)
+    function isRegistered() {
+        try {
+            const teamName = sessionStorage.getItem('teamName');
+            return teamName && teamName.trim() !== '';
+        } catch (e) {
+            console.warn('sessionStorage unavailable:', e);
+            return false;
+        }
+    }
+    
+    // Redirect to register page
+    function redirectToRegister() {
+        // Only redirect if not already on register page
+        if (currentPage !== 'register.html') {
+            window.location.href = 'register.html';
+        }
+    }
+    
+    // Main access control check
+    function checkAccess() {
+        // If it's a public page, allow access
+        if (isPublicPage) {
+            return true;
+        }
+        
+        // If user is registered, allow access
+        if (isRegistered()) {
+            return true;
+        }
+        
+        // User is not registered and trying to access protected page
+        // Redirect to register page
+        redirectToRegister();
+        return false;
+    }
+    
+    // Run access check immediately when script loads
+    // This prevents any content from loading if access is denied
+    if (!checkAccess()) {
+        // Stop execution if access denied
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #fff; font-family: 'Orbitron', sans-serif; flex-direction: column; gap: 1rem;">
+                <div style="font-size: 1.5rem; color: #ff0000; text-shadow: 0 0 15px #ff0000;">ACCESS DENIED</div>
+                <div style="font-size: 0.9rem; color: #00ffff;">Redirecting to registration...</div>
+            </div>
+        `;
+    }
+    
+    // Export functions for use in other scripts if needed
+    window.auth = {
+        isRegistered: isRegistered,
+        checkAccess: checkAccess,
+        redirectToRegister: redirectToRegister
+    };
+})();
