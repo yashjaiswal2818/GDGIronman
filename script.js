@@ -1,8 +1,14 @@
 const canvas = document.getElementById('hero-canvas');
-const context = canvas ? canvas.getContext('2d') : null;
+const context = canvas ? canvas.getContext('2d', { alpha: false, desynchronized: true }) : null;
 const loadingScreen = document.getElementById('loading-screen');
 const progressBar = document.querySelector('.progress');
 const loadingText = document.querySelector('.loading-text');
+
+// Optimize canvas context for performance
+if (context) {
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+}
 
 
 const config = {
@@ -55,9 +61,21 @@ function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    requestAnimationFrame(() => updateImage(getScrollProgress()));
+    // Update target and current progress to match scroll position
+    targetProgress = getScrollProgress();
+    currentProgress = targetProgress;
+    // Reset last drawn frame to force redraw
+    lastDrawnFrameIndex = -1;
+    // Trigger immediate update
+    requestAnimationFrame(() => updateImage(currentProgress));
 }
 
+
+// Smooth scroll progress tracking
+let targetProgress = 0;
+let currentProgress = 0;
+let rafId = null;
+let isScrolling = false;
 
 function getScrollProgress() {
     const scrollTop = document.documentElement.scrollTop;
@@ -67,41 +85,90 @@ function getScrollProgress() {
 }
 
 
-function drawImageProp(ctx, img) {
-    if (!img) return;
+function drawImageProp(ctx, img, opacity = 1, clearCanvas = true) {
+    if (!img || !img.complete) return false; // Return false if image not ready
 
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     const iW = img.width;
     const iH = img.height;
 
-
     const scale = Math.max(w / iW, h / iH);
     const x = (w / 2) - (iW / 2) * scale;
     const y = (h / 2) - (iH / 2) * scale;
 
-    ctx.clearRect(0, 0, w, h);
+    if (opacity < 1) {
+        ctx.save();
+        ctx.globalAlpha = opacity;
+    }
+    
+    // Only clear if explicitly requested (for single frame draws)
+    if (clearCanvas) {
+        ctx.clearRect(0, 0, w, h);
+    }
+    
     ctx.drawImage(img, x, y, iW * scale, iH * scale);
+    
+    if (opacity < 1) {
+        ctx.restore();
+    }
+    
+    return true; // Successfully drawn
 }
 
+
+// Track last drawn frame to prevent black flashes
+let lastDrawnFrameIndex = -1;
 
 function updateImage(progress) {
     if (!context || images.length === 0 || !currentConfig) return;
 
-    const frameIndex = Math.min(
-        currentConfig.count - 1,
-        Math.floor(progress * currentConfig.count)
-    );
+    // Calculate exact frame position (not floored) for smooth interpolation
+    const exactFrame = progress * (currentConfig.count - 1);
+    const frameIndex = Math.floor(exactFrame);
+    const nextFrameIndex = Math.min(frameIndex + 1, currentConfig.count - 1);
+    const blendFactor = exactFrame - frameIndex; // 0 to 1, how much to blend to next frame
 
-    const img = images[frameIndex];
-    if (img && img.complete) {
-        drawImageProp(context, img);
-    } else if (!img) {
+    const currentImg = images[frameIndex];
+    const nextImg = images[nextFrameIndex];
+
+    // Only update if we have a valid image ready
+    if (currentImg && currentImg.complete) {
+        const w = context.canvas.width;
+        const h = context.canvas.height;
+        
+        // If we have both frames and they're loaded, blend between them for smoothness
+        // Only blend if blendFactor is significant enough to be visible
+        if (nextImg && nextImg.complete && frameIndex !== nextFrameIndex && blendFactor > 0.05) {
+            // Clear canvas only when we're ready to draw both frames
+            context.clearRect(0, 0, w, h);
+            
+            // Draw current frame (base layer) - don't clear again
+            if (drawImageProp(context, currentImg, 1, false)) {
+                // Blend next frame on top for smooth transition
+                context.save();
+                context.globalAlpha = blendFactor;
+                context.globalCompositeOperation = 'source-over';
+                drawImageProp(context, nextImg, 1, false);
+                context.restore();
+                
+                lastDrawnFrameIndex = frameIndex;
+            }
+        } else {
+            // Single frame - only clear and redraw if frame changed or if we haven't drawn anything yet
+            if (lastDrawnFrameIndex !== frameIndex || lastDrawnFrameIndex === -1) {
+                // drawImageProp will clear the canvas for single frame draws
+                if (drawImageProp(context, currentImg, 1, true)) {
+                    lastDrawnFrameIndex = frameIndex;
+                }
+            }
+        }
+    } else if (!currentImg) {
         // Preload nearby images if current one isn't loaded yet
         const preloadRange = 5;
-        for (let i = Math.max(0, frameIndex - preloadRange); 
-             i <= Math.min(currentConfig.count - 1, frameIndex + preloadRange); 
-             i++) {
+        for (let i = Math.max(0, frameIndex - preloadRange);
+            i <= Math.min(currentConfig.count - 1, frameIndex + preloadRange);
+            i++) {
             if (!images[i]) {
                 const { path, prefix, suffix, pad } = currentConfig;
                 const imgToLoad = new Image();
@@ -110,12 +177,31 @@ function updateImage(progress) {
                 imgToLoad.onload = () => {
                     images[i] = imgToLoad;
                     // Redraw if this was the frame we needed
-                    if (i === frameIndex) {
+                    if (i === frameIndex || i === nextFrameIndex) {
                         requestAnimationFrame(() => updateImage(progress));
                     }
                 };
             }
         }
+    }
+    // If image isn't ready, don't clear canvas - keep showing last frame
+}
+
+// Smooth animation loop
+function animateProgress() {
+    // Smooth interpolation towards target progress
+    const diff = targetProgress - currentProgress;
+    const smoothingFactor = isScrolling ? 0.15 : 0.08; // Faster when scrolling, slower when idle
+    currentProgress += diff * smoothingFactor;
+    
+    // Update image with interpolated progress
+    updateImage(currentProgress);
+    
+    // Continue animation if we're not at target or if still scrolling
+    if (Math.abs(diff) > 0.001 || isScrolling) {
+        rafId = requestAnimationFrame(animateProgress);
+    } else {
+        rafId = null;
     }
 }
 
@@ -143,7 +229,7 @@ function initImages() {
     function loadImage(index) {
         if (index > count || index < 1) return;
         if (images[index - 1] !== null) return; // Already loading or loaded
-        
+
         const img = new Image();
         const number = padNumber(index, pad);
         img.src = `${path}${prefix}${number}${suffix}`;
@@ -151,7 +237,7 @@ function initImages() {
         img.onload = () => {
             images[index - 1] = img; // Store at index-1 since arrays are 0-indexed
             loadedCount++;
-            
+
             const percent = Math.round((loadedCount / count) * 100);
             if (progressBar) progressBar.style.width = `${percent}%`;
             if (loadingText) loadingText.innerText = `SYSTEM LOADING... ${percent}%`;
@@ -186,20 +272,20 @@ function initImages() {
         setTimeout(() => {
             let batchStart = INITIAL_IMAGES_TO_LOAD + 1;
             const BATCH_SIZE = 10; // Load 10 at a time
-            
+
             function loadBatch() {
                 const batchEnd = Math.min(batchStart + BATCH_SIZE, count + 1);
                 for (let i = batchStart; i < batchEnd; i++) {
                     loadImage(i);
                 }
                 batchStart = batchEnd;
-                
+
                 if (batchStart <= count) {
                     // Load next batch after a short delay
                     setTimeout(loadBatch, 100);
                 }
             }
-            
+
             loadBatch();
         }, 500);
     }
@@ -229,10 +315,25 @@ window.addEventListener('resize', () => {
     checkDevice();
 });
 
+// Optimized scroll handler with smooth animation
+let scrollTimeout;
 window.addEventListener('scroll', () => {
-    const progress = getScrollProgress();
-    requestAnimationFrame(() => updateImage(progress));
-});
+    targetProgress = getScrollProgress();
+    isScrolling = true;
+    
+    // Start animation loop if not already running
+    if (!rafId) {
+        rafId = requestAnimationFrame(animateProgress);
+    }
+    
+    // Clear timeout
+    clearTimeout(scrollTimeout);
+    
+    // Mark as not scrolling after a short delay
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 150);
+}, { passive: true });
 
 
 // --- AWARD-WINNING POLISH (Scroll & Interaction) ---
@@ -299,7 +400,16 @@ document.addEventListener('mousemove', (e) => {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     // Start loading images immediately (only if canvas exists - main page)
-    if (canvas) checkDevice();
+    if (canvas) {
+        checkDevice();
+        // Initialize progress values
+        targetProgress = getScrollProgress();
+        currentProgress = targetProgress;
+        // Start animation loop for smooth updates
+        if (!rafId) {
+            rafId = requestAnimationFrame(animateProgress);
+        }
+    }
 
     const hiddenElements = document.querySelectorAll('.reveal-on-scroll');
     hiddenElements.forEach((el) => observer.observe(el));
