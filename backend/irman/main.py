@@ -1,5 +1,7 @@
 from datetime import datetime
-from fastapi import APIRouter, Depends, FastAPI, Body
+from fastapi import APIRouter, Depends, FastAPI, Body, File, Form, UploadFile
+from typing import List
+from service.round_5_service import submit_round_5_service
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from db import get_db
@@ -120,3 +122,25 @@ async def api_get_problem(
 #                {"name": "Jane", "role": "member", "email" : "jane@example.com"}
 #
 #            ]
+
+@app.post("/round_5")
+async def submit_round_5_endpoint(
+    Team_Name: str = Form(...),
+    abstract: str = Form(...),
+    score_5: int = Form(...),
+    files: List[UploadFile] = File(...),
+    db: AsyncSession = Depends(get_db)
+):
+
+    event, uploaded_urls = await submit_round_5_service(
+        db=db,
+        Team_Name=Team_Name,
+        abstract=abstract,
+        score_5=score_5,
+        files=files
+    )
+
+    return {
+        "message": "Submitted successfully",
+        "urls": uploaded_urls
+    }

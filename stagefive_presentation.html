@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stark OS v8.5 Elite Hub with Navigation</title>
+<!-- Access Control - Must load first -->
+<script src="auth.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "stark-red": "#E21818",
+                        "stark-red-dark": "#8a0c0c",
+                        "stark-gold": "#C6A15B",
+                        "stark-blue": "#00F0FF",
+                        "obsidian": "#0A0A0C",
+                        "void-dark": "#020203",
+                    },
+                    fontFamily: {
+                        "header": ["Orbitron", "sans-serif"],
+                        "body": ["Rajdhani", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'glow-red': '0 0 20px rgba(226, 24, 24, 0.4)',
+                        'glow-blue': '0 0 15px rgba(0, 240, 255, 0.3)',
+                        'glow-gold': '0 0 15px rgba(198, 161, 91, 0.3)',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 20s linear infinite',
+                        'spin-reverse-slow': 'spin 25s linear infinite reverse',
+                        'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 3s linear infinite',
+                        'flicker': 'flicker 4s infinite',
+                    },
+                    keyframes: {
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
+                        },
+                        flicker: {
+                            '0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '0.99' },
+                            '20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.4' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020203;
+        }.quantum-void {
+            background: radial-gradient(circle at 50% 50%, #1a0505 0%, #050505 40%, #000000 100%);
+        }.blueprint-grid {
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            perspective: 1000px;
+        }
+        .arc-reactor-structure {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vh;
+            height: 70vh;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.05), inset 0 0 30px rgba(0, 240, 255, 0.05);
+            z-index: 0;
+        }
+        .reactor-core-ring {
+            border: 2px dashed rgba(0, 240, 255, 0.2);
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }.frosted-obsidian {
+            background: rgba(10, 12, 16, 0.65);
+            backdrop-filter: blur(20px) saturate(110%);
+            -webkit-backdrop-filter: blur(20px) saturate(110%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(226, 24, 24, 0.5);box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 
+                        0 0 0 1px rgba(226, 24, 24, 0.2),
+                        inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }.holo-input-container {
+            position: relative;
+            background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%);
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .holo-input-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: #00F0FF;
+            box-shadow: 0 0 8px #00F0FF;
+            transition: width 0.4s ease-out;
+        }
+        .holo-input:focus ~ .holo-input-line,
+        .holo-input:not(:placeholder-shown) ~ .holo-input-line {
+            width: 100%;
+        }.schematic-port {
+            background: rgba(198, 161, 91, 0.02);
+            border: 1px solid rgba(198, 161, 91, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(198, 161, 91, 0.05);
+        }
+        .schematic-corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: #C6A15B;
+            border-style: solid;
+            transition: all 0.3s ease;
+        }
+        .scan-line-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(198, 161, 91, 0.5);
+            box-shadow: 0 0 10px rgba(198, 161, 91, 0.8);
+            animation: scan 3s linear infinite;
+            opacity: 0;
+        }
+        .schematic-port:hover .scan-line-overlay {
+            opacity: 1;
+        }.crimson-liquid-btn {
+            background: linear-gradient(135deg, #8a0c0c 0%, #E21818 50%, #6e0808 100%);
+            border: 1px solid #ff4d4d;
+            box-shadow: 0 0 15px rgba(226, 24, 24, 0.4), inset 0 0 10px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .crimson-liquid-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            transform: scale(0);
+            transition: transform 0.6s ease-out;
+            pointer-events: none;
+        }
+        .crimson-liquid-btn:hover::before {
+            transform: scale(1);
+        }
+        .crimson-liquid-btn:hover {
+            box-shadow: 0 0 25px rgba(226, 24, 24, 0.7), inset 0 0 5px rgba(255, 100, 100, 0.5);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }.greeble-grid {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E21818; 
+        }
+        @media (max-width: 1024px) {
+            .arc-reactor-structure { width: 50vh; height: 50vh; }
+        }
+        @media (max-width: 768px) {
+            .arc-reactor-structure { width: 35vh; height: 35vh; opacity: 0.15; }
+        }
+        @media (max-height: 800px) {
+            main { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        }
+    </style>
+</head>
+<body class="font-body bg-void-dark text-white min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col relative quantum-void">
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="blueprint-grid absolute inset-0 opacity-20"></div>
+<div class="arc-reactor-structure animate-spin-slow opacity-20"></div>
+<div class="arc-reactor-structure w-[60vh] h-[60vh] reactor-core-ring animate-spin-reverse-slow opacity-30"></div>
+<div class="arc-reactor-structure w-[40vh] h-[40vh] border-dashed border-stark-blue opacity-10 animate-pulse-fast"></div>
+<div class="absolute inset-0 bg-radial-gradient from-transparent to-black opacity-80"></div>
+</div>
+<!-- Navbar -->
+<nav class="sticky top-0 z-40 flex items-center justify-between px-4 md:px-6 lg:px-8 py-3 md:py-4 border-b border-white/10 bg-black/50 backdrop-blur-md font-header">
+<div class="flex items-center gap-3 md:gap-6">
+<a class="flex items-center gap-2 text-white no-underline group" href="stagefive.html">
+<span class="material-symbols-outlined text-stark-red text-lg md:text-xl group-hover:drop-shadow-[0_0_8px_rgba(226,24,24,0.6)] transition-all">chevron_left</span>
+<span class="text-[10px] md:text-xs tracking-[0.15em] font-medium text-white/80 group-hover:text-stark-gold uppercase hidden sm:inline">Back</span>
+</a>
+<div class="h-4 w-px bg-white/20 hidden sm:block"></div>
+<a class="flex items-center gap-2 text-white no-underline" href="stagefive.html">
+<span class="material-symbols-outlined text-stark-red text-xl md:text-2xl">token</span>
+<span class="text-sm md:text-base font-bold tracking-[0.1em] uppercase">Stark OS <span class="text-stark-red">v8.5</span></span>
+</a>
+<div class="h-4 w-px bg-white/20 hidden md:block"></div>
+<div class="hidden md:flex items-center gap-4">
+<a class="text-[10px] tracking-widest uppercase text-white/50 hover:text-stark-blue transition-colors no-underline" href="stagefive.html">Briefing</a>
+<span class="text-[10px] tracking-widest uppercase text-stark-gold border-b border-stark-gold/50 pb-0.5">Pitch</span>
+</div>
+</div>
+<div class="flex items-center gap-3 md:gap-5">
+<div class="hidden sm:flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-stark-red animate-pulse"></span>
+<span class="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase">Secure</span>
+</div>
+<div class="text-right hidden md:block">
+<p class="text-[9px] text-white/30 tracking-widest uppercase">Protocol</p>
+<p class="text-xs font-bold text-stark-blue">INNOVATION PITCH</p>
+</div>
+</div>
+</nav>
+<div class="absolute top-20 md:top-24 left-4 md:left-8 p-0 z-30 pointer-events-none hidden sm:block">
+<div class="flex flex-col gap-1">
+<div class="h-px w-16 md:w-24 bg-stark-blue shadow-glow-blue"></div>
+<div class="flex items-center gap-2 text-[9px] md:text-[10px] text-stark-blue font-header tracking-widest opacity-70">SYS.DIAGNOSTIC</div>
+</div>
+</div>
+<div class="absolute top-0 right-0 p-4 md:p-8 z-30 pointer-events-none text-right hidden sm:block">
+<div class="flex flex-col gap-1 items-end">
+<div class="h-px w-16 md:w-24 bg-stark-red shadow-glow-red"></div>
+<div class="flex items-center gap-2 text-[9px] md:text-[10px] text-stark-red font-header tracking-widest opacity-70">SECURE CHANNEL <span class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-stark-red animate-pulse"></span></div>
+</div>
+</div>
+<div class="absolute bottom-4 md:bottom-6 left-4 md:left-8 z-30 pointer-events-none flex flex-col gap-1 hidden md:flex">
+<div class="text-[9px] md:text-[10px] text-white/30 font-header tracking-[0.2em]">NEURAL LINK: <span class="text-stark-blue animate-pulse">ACTIVE</span></div>
+<div class="flex gap-0.5"><div class="w-0.5 h-2 md:w-1 md:h-3 bg-stark-blue/50"></div><div class="w-0.5 h-2 md:w-1 md:h-3 bg-stark-blue/50"></div><div class="w-0.5 h-3 md:w-1 md:h-5 bg-stark-blue/80"></div><div class="w-0.5 h-2.5 md:w-1 md:h-4 bg-stark-blue/60"></div><div class="w-0.5 h-1.5 md:w-1 md:h-2 bg-stark-blue/40"></div></div>
+</div>
+<div class="absolute bottom-4 md:bottom-6 right-4 md:right-8 z-30 pointer-events-none text-right hidden md:block">
+<div class="text-[9px] md:text-[10px] text-white/30 font-header tracking-[0.2em] mb-1">UPLINK 45.2 TB/S</div>
+<div class="grid grid-cols-4 gap-0.5 md:gap-1 w-20 md:w-32 justify-end ml-auto"><div class="h-0.5 md:h-1 bg-white/10 w-full"></div><div class="h-0.5 md:h-1 bg-white/10 w-full"></div><div class="h-0.5 md:h-1 bg-white/10 w-full"></div><div class="h-0.5 md:h-1 bg-stark-gold w-full animate-pulse"></div></div>
+</div>
+<main class="relative z-20 flex flex-col items-center justify-center w-full min-h-full py-4 md:py-6 px-4 md:px-6">
+<div class="frosted-obsidian w-full max-w-5xl rounded-lg flex flex-col overflow-hidden relative shadow-2xl">
+<div class="absolute top-0 left-4 md:left-10 w-20 md:w-32 h-[1px] bg-stark-red shadow-glow-red"></div>
+<div class="absolute bottom-0 right-4 md:right-10 w-20 md:w-32 h-[1px] bg-stark-blue shadow-glow-blue opacity-50"></div>
+<div class="flex items-center justify-between px-4 md:px-10 py-4 md:py-8 border-b border-white/5 bg-gradient-to-r from-white/5 via-transparent to-transparent">
+<div class="flex items-center gap-2 md:gap-4">
+<div class="relative w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+<div class="absolute inset-0 border border-stark-red rounded-full opacity-50 animate-spin-slow"></div>
+<span class="material-symbols-outlined text-stark-red text-base md:text-xl">token</span>
+</div>
+<div>
+<h1 class="font-header text-sm md:text-xl tracking-[0.1em] md:tracking-[0.15em] font-bold text-white uppercase">Stark OS <span class="text-stark-red">v8.5</span> Elite Hub</h1>
+<p class="text-[9px] md:text-[10px] text-white/40 tracking-[0.2em] md:tracking-[0.3em] font-header uppercase">Top Secret</p>
+</div>
+</div>
+<div class="flex items-center gap-3 md:gap-6">
+<div class="hidden md:flex flex-col items-end">
+<span class="text-[9px] text-white/30 font-header uppercase tracking-widest">Protocol</span>
+<span class="text-xs text-stark-blue font-bold tracking-wider font-header">INNOVATION PITCH</span>
+</div>
+<div class="h-6 md:h-8 w-px bg-white/10"></div>
+<div class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-sm bg-stark-red shadow-[0_0_8px_#E21818]"></div>
+</div>
+</div>
+<form id="round5-form" class="p-4 md:p-8 lg:p-12 flex flex-col gap-6 md:gap-10 relative" novalidate>
+<div class="absolute inset-0 greeble-grid opacity-20 pointer-events-none"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-16 relative z-10">
+<div class="lg:col-span-5 flex flex-col gap-6 md:gap-10">
+<div class="space-y-1 md:space-y-2 border-l-2 border-stark-red pl-3 md:pl-4">
+<h2 class="text-[10px] md:text-xs font-bold tracking-[0.2em] text-stark-red font-header">INPUT STREAM 01</h2>
+<p class="text-xl md:text-2xl lg:text-3xl font-light text-white font-header">Project Metadata</p>
+<p class="text-white/50 text-xs md:text-sm font-light leading-relaxed">Enter schematic identifiers. Encryption active.</p>
+</div>
+<div class="space-y-4 md:space-y-8 mt-1 md:mt-2">
+<div class="holo-input-container p-3 md:p-4 rounded-sm group transition-colors hover:bg-white/5">
+<label class="block text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-stark-blue/70 mb-1 md:mb-2 font-header group-focus-within:text-stark-blue transition-colors"> Team Name <span class="text-stark-red">*</span></label>
+<input id="round5-codename" required class="holo-input w-full bg-transparent border-none p-0 text-base md:text-xl text-white placeholder-white/10 focus:ring-0 font-body tracking-wide" placeholder="MARK LXXXV" type="text"/>
+<div class="holo-input-line"></div>
+</div>
+<div class="holo-input-container p-3 md:p-4 rounded-sm group transition-colors hover:bg-white/5">
+<label class="block text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-stark-blue/70 mb-1 md:mb-2 font-header group-focus-within:text-stark-blue transition-colors">Technical Abstract <span class="text-stark-red">*</span></label>
+<textarea id="round5-abstract" required class="holo-input w-full bg-transparent border-none p-0 text-sm md:text-base text-white placeholder-white/10 focus:ring-0 resize-none font-body leading-relaxed h-20 md:h-24" placeholder="Initialize tactical overview..." rows="3"></textarea>
+<div class="holo-input-line"></div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 flex flex-col justify-center gap-4 md:gap-6">
+<div id="round5-dropzone" class="min-h-[200px] md:min-h-[240px] schematic-port group cursor-pointer transition-all duration-500 hover:bg-[#C6A15B]/5 relative rounded-sm flex flex-col">
+<input type="file" id="round5-files" name="files" multiple accept=".pdf,.ppt,.pptx,.key,image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" title="Select files"/>
+<div class="scan-line-overlay"></div>
+<div class="schematic-corner top-0 left-0 border-t-2 border-l-2"></div>
+<div class="schematic-corner top-0 right-0 border-t-2 border-r-2"></div>
+<div class="schematic-corner bottom-0 left-0 border-b-2 border-l-2"></div>
+<div class="schematic-corner bottom-0 right-0 border-b-2 border-r-2"></div>
+<div class="absolute inset-3 md:inset-4 border border-dashed border-[#C6A15B]/30 transition-all duration-300 group-hover:border-[#C6A15B]/60 group-hover:inset-4 md:group-hover:inset-6 pointer-events-none"></div>
+<div class="relative h-full flex flex-col items-center justify-center p-4 md:p-8 text-center z-10 pointer-events-none">
+<div class="absolute top-3 right-3 md:top-6 md:right-6 flex items-center gap-1.5 md:gap-2">
+<span class="w-1 h-1 md:w-1.5 md:h-1.5 bg-[#C6A15B] rounded-full animate-pulse"></span>
+<span id="round5-files-label" class="text-[8px] md:text-[9px] font-header tracking-widest text-[#C6A15B]">PORT READY</span>
+</div>
+<h2 class="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.25em] text-[#C6A15B] mb-4 md:mb-8 font-header uppercase opacity-80">Schematic Injection Port <span class="text-stark-red">*</span></h2>
+<div class="relative mb-3 md:mb-6 group-hover:-translate-y-2 transition-transform duration-500">
+<div class="w-16 h-16 md:w-24 md:h-24 flex items-center justify-center relative">
+<svg class="w-full h-full absolute inset-0 text-[#C6A15B] opacity-20 fill-current animate-spin-slow" viewBox="0 0 100 100"><polygon fill="none" points="50 1, 95 25, 95 75, 50 99, 5 75, 5 25" stroke="currentColor" stroke-width="2"></polygon></svg>
+<svg class="w-14 h-14 md:w-20 md:h-20 absolute inset-0 m-auto text-[#C6A15B] opacity-40 fill-current" viewBox="0 0 100 100"><polygon fill="none" points="50 1, 95 25, 95 75, 50 99, 5 75, 5 25" stroke="currentColor" stroke-width="1"></polygon></svg>
+<span class="material-symbols-outlined text-[#C6A15B] text-2xl md:text-4xl shadow-glow-gold relative z-10">upload_file</span>
+</div>
+</div>
+<p class="text-sm md:text-lg font-medium text-white mb-1 md:mb-2 font-header tracking-wide">Drag files or click to browse</p>
+<p class="text-xs md:text-sm text-[#C6A15B]/60 mb-4 md:mb-8 font-mono">.PDF, .PPT, .PPTX, .KEY, .JPG, .PNG, .GIF, .WEBP</p>
+<span class="text-[9px] md:text-[10px] text-[#C6A15B]/80 font-header tracking-widest">INITIALIZE BROWSER</span>
+</div>
+</div>
+<div id="round5-preview" class="flex flex-wrap gap-3 md:gap-4 p-3 md:p-4 border-t border-[#C6A15B]/20 min-h-0 overflow-y-auto max-h-[280px] md:max-h-[320px] hidden"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-center pt-4 md:pt-6">
+<button type="submit" id="round5-submit-btn" class="crimson-liquid-btn group px-8 md:px-14 py-3 md:py-4 rounded-sm relative">
+<div class="relative flex items-center gap-2 md:gap-3 z-10">
+<span class="material-symbols-outlined text-white text-base md:text-lg group-hover:animate-pulse">send</span>
+<span class="text-white font-bold tracking-[0.15em] md:tracking-[0.2em] text-xs md:text-sm font-header uppercase">Submit</span>
+</div>
+</button>
+</div>
+<div class="pt-4 md:pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 mt-2">
+<div class="flex-1 w-full max-w-md">
+<div class="flex justify-between items-end mb-1.5 md:mb-2">
+<span class="text-[9px] md:text-[10px] tracking-[0.15em] md:tracking-[0.2em] text-white/40 font-header uppercase">Mission Completion</span>
+<span class="text-stark-red font-bold font-header text-[10px] md:text-xs tracking-widest">STAGE 5 READY</span>
+</div>
+<div class="flex items-center gap-0.5 md:gap-1">
+<div class="h-1 md:h-1.5 flex-1 bg-stark-red shadow-[0_0_10px_rgba(226,24,24,0.6)]"></div>
+<div class="h-1 md:h-1.5 w-0.5 md:w-1 bg-stark-red/50"></div>
+<div class="h-1 md:h-1.5 w-0.5 md:w-1 bg-stark-red/30"></div>
+<div class="h-1 md:h-1.5 w-6 md:w-12 bg-white/5"></div>
+</div>
+<div class="mt-1 flex justify-between text-[8px] md:text-[9px] text-white/20 font-mono">
+<span>T-MINUS 00:00:00</span>
+<span>SYS.OK</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2 w-full sm:w-auto">
+<div id="round5-message" class="text-[9px] md:text-[10px] font-header tracking-wider hidden"></div>
+</div>
+</div>
+</form>
+</div>
+<div class="absolute bottom-0 right-0 p-2">
+<svg class="text-white/20" height="20" width="20">
+<path d="M20 0 V20 H0" fill="none" stroke="currentColor" stroke-width="1"></path>
+</svg>
+</div>
+<div class="absolute top-0 left-0 p-2 transform rotate-180">
+<svg class="text-white/20" height="20" width="20">
+<path d="M20 0 V20 H0" fill="none" stroke="currentColor" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</main>
+<script src="stagefive_presentation.js"></script>
+</body></html>

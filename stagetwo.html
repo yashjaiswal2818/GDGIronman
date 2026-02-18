@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stage 2 Mission Briefing</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13ecec",
+              "background-light": "#f6f8f8",
+              "background-dark": "#102222",
+              "obsidian": "#050a0a", // Deep obsidian for the specific request
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            backgroundImage: {
+                'cyber-grid': "radial-gradient(circle at 50% 50%, rgba(19, 236, 236, 0.05) 0%, rgba(0, 0, 0, 0) 70%)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom glow effects for that Stark Tech feel */
+        .text-glow {
+            text-shadow: 0 0 15px rgba(19, 236, 236, 0.5);
+        }
+        .border-glow {
+            box-shadow: 0 0 10px rgba(19, 236, 236, 0.2);
+        }
+        .btn-glow {
+            box-shadow: 0 0 20px rgba(19, 236, 236, 0.4);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(19, 236, 236, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        /* Thin HUD lines */
+        .hud-line {
+            position: absolute;
+            background-color: #13ecec;
+            opacity: 0.3;
+        }
+        
+        /* Prevent scrolling */
+        html, body {
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Ensure main content fits */
+        main {
+            max-height: calc(100vh - 2rem);
+            overflow: hidden;
+            justify-content: center;
+        }
+        
+        /* Compact spacing for viewport fit */
+        @media (min-height: 800px) {
+            main {
+                max-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen w-screen flex flex-col items-center justify-center relative">
+<!-- Navigation -->
+<div class="fixed top-4 left-4 z-20">
+    <a href="editor.html" class="inline-flex items-center gap-1.5 text-primary/70 hover:text-primary text-[10px] transition-colors group">
+        <span class="material-icons text-xs group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span class="font-mono tracking-wide hidden sm:inline">BACK</span>
+    </a>
+</div>
+<div id="stagetwo-team-badge" class="fixed top-4 right-4 z-20 hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-icons text-xs">group</span>
+    <span id="display-team-name">—</span>
+</div>
+<!-- Decorative HUD Corners -->
+<!-- Top Left -->
+<div class="absolute top-4 left-4 w-12 h-12 border-l-2 border-t-2 border-primary/30 pointer-events-none"></div>
+<div class="absolute top-4 left-20 w-3 h-0.5 bg-primary/30 pointer-events-none"></div>
+<div class="absolute top-20 left-4 w-0.5 h-3 bg-primary/30 pointer-events-none"></div>
+<!-- Top Right -->
+<div class="absolute top-4 right-4 w-12 h-12 border-r-2 border-t-2 border-primary/30 pointer-events-none"></div>
+<div class="absolute top-4 right-20 w-3 h-0.5 bg-primary/30 pointer-events-none"></div>
+<div class="absolute top-20 right-4 w-0.5 h-3 bg-primary/30 pointer-events-none"></div>
+<!-- Bottom Left -->
+<div class="absolute bottom-4 left-4 w-12 h-12 border-l-2 border-b-2 border-primary/30 pointer-events-none"></div>
+<div class="absolute bottom-4 left-20 w-3 h-0.5 bg-primary/30 pointer-events-none"></div>
+<div class="absolute bottom-20 left-4 w-0.5 h-3 bg-primary/30 pointer-events-none"></div>
+<!-- Bottom Right -->
+<div class="absolute bottom-4 right-4 w-12 h-12 border-r-2 border-b-2 border-primary/30 pointer-events-none"></div>
+<div class="absolute bottom-4 right-20 w-3 h-0.5 bg-primary/30 pointer-events-none"></div>
+<div class="absolute bottom-20 right-4 w-0.5 h-3 bg-primary/30 pointer-events-none"></div>
+<!-- Background Ambient Glow -->
+<div class="absolute inset-0 bg-cyber-grid pointer-events-none z-0"></div>
+<!-- Main Content Container -->
+<main class="relative z-10 w-full max-w-4xl px-4 md:px-6 flex flex-col items-center justify-center text-center overflow-hidden h-full py-4">
+<!-- Header Section -->
+<div class="space-y-2 md:space-y-3 animate-fade-in-up">
+<div class="flex items-center justify-center gap-2 opacity-60">
+<div class="h-px w-6 bg-primary"></div>
+<span class="text-[10px] md:text-xs tracking-[0.2em] text-primary uppercase">Classified // Sequence 892</span>
+<div class="h-px w-6 bg-primary"></div>
+</div>
+<h1 class="text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-primary/50 text-glow leading-none">
+                STAGE <span class="text-primary">02</span>
+            </h1>
+<h2 class="text-sm md:text-base lg:text-lg font-normal tracking-wider text-white uppercase opacity-90 mt-1">
+                Mission Briefing: Jarvis Command Room
+            </h2>
+</div>
+<!-- Description Paragraph -->
+<div class="max-w-2xl mx-auto px-2 md:px-4 mt-2 md:mt-3">
+<p class="text-xs md:text-sm lg:text-base font-light text-gray-300 leading-snug border-l-2 border-primary/20 pl-3 md:pl-4 text-left">
+<span class="text-primary font-medium">Objective:</span> Construct the central interface for the next generation of Iron Legion armor. Candidates must demonstrate proficiency in building interactive web dashboards, mastering real-time data visualization, and optimizing frontend workflows. System integrity is paramount.
+            </p>
+</div>
+<!-- Mission Protocols List -->
+<div class="w-full max-w-xl mx-auto mt-2 md:mt-3 px-2 md:px-4">
+<div class="flex items-center justify-between mb-2 md:mb-3 border-b border-primary/20 pb-1">
+<span class="text-[10px] md:text-xs tracking-wider text-primary/70 uppercase">Mission Protocols</span>
+<span class="text-[9px] md:text-[10px] text-primary/40">v.2.0.4</span>
+</div>
+<ul class="space-y-0">
+<!-- Protocol 01 -->
+<li class="group flex items-center justify-between py-2 md:py-2.5 border-b border-white/5 hover:border-primary/50 transition-all duration-300 cursor-default">
+<span class="text-xs md:text-sm font-light text-gray-300 group-hover:text-primary transition-colors">01. </span>
+
+</li>
+<!-- Protocol 02 -->
+<li class="group flex items-center justify-between py-2 md:py-2.5 border-b border-white/5 hover:border-primary/50 transition-all duration-300 cursor-default">
+<span class="text-xs md:text-sm font-light text-gray-300 group-hover:text-primary transition-colors">02. </span>
+
+</li>
+<!-- Protocol 03 -->
+<li class="group flex items-center justify-between py-2 md:py-2.5 border-b border-white/5 hover:border-primary/50 transition-all duration-300 cursor-default">
+<span class="text-xs md:text-sm font-light text-gray-300 group-hover:text-primary transition-colors">03.</span>
+
+</li>
+<!-- Protocol 04 -->
+<li class="group flex items-center justify-between py-2 md:py-2.5 border-b border-white/5 hover:border-primary/50 transition-all duration-300 cursor-default">
+<span class="text-xs md:text-sm font-light text-gray-300 group-hover:text-primary transition-colors">04. </span>
+
+</li>
+<!-- Protocol 05 -->
+<li class="group flex items-center justify-between py-2 md:py-2.5 border-b border-white/5 hover:border-primary/50 transition-all duration-300 cursor-default">
+<span class="text-xs md:text-sm font-light text-gray-300 group-hover:text-primary transition-colors">05. </span>
+
+</li>
+</ul>
+</div>
+<!-- Footer Action -->
+<div class="pt-2 md:pt-3 pb-2 md:pb-4">
+<button onclick="window.location.href='website.html'" class="relative group bg-transparent overflow-hidden rounded px-6 md:px-8 py-2 md:py-2.5 transition-all duration-300 btn-glow border border-primary/50 hover:border-primary cursor-pointer">
+<div class="absolute inset-0 w-full h-full bg-primary/10 group-hover:bg-primary/20 transition-all duration-300"></div>
+<div class="absolute inset-0 w-0 bg-primary/30 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+<span class="relative z-10 font-bold tracking-[0.15em] text-primary group-hover:text-white transition-colors duration-300 uppercase text-[10px] md:text-xs">
+                    Access Command Room
+                </span>
+</button>
+<div class="mt-2 text-[8px] md:text-[9px] text-gray-500 tracking-wider uppercase opacity-60">
+                Authorized Personnel Only
+            </div>
+</div>
+</main>
+<!-- Background Decorative Image (Subtle Texture) -->
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none mix-blend-overlay" data-alt="Abstract dark technology circuit pattern texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4hxCtcL8ck_8gL2r0edgv_rbe37X_S6lc80-f8MWgwMAXnkUKFuL8d6wVq-yNLrZNUUiZ81fwuzvkxeWYWHpGLuYjfKUyvEyZxvpW0_WxPN1FIJbvw_bQlMvFWH8q4I9viyK4LO5_JHXTlJB2M6lPofxVr1X32eeYbRsC77eGxAtZ7MTgBEGVceiliXL322YjiiQ5LtGNAtOC1a7mRwyQHGaweNK6d35mqokfvwSLayYwoXjMZG5nd33HI6jd8THcAgZ62zbjs4eT'); background-size: cover; background-position: center;">
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('stagetwo-team-badge');
+        var displayEl = document.getElementById('display-team-name');
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
+</body></html>

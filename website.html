@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Knowledge Ingestion Core</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void': '#020204',
+                        'ingest-green': '#10b981',
+                        'ingest-blue': '#3b82f6',
+                        'ingest-purple': '#a855f7',
+                        'hologram': '#00f2ff',
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'rajdhani': ['Rajdhani', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        html, body {
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #0a0a0a;
+            color: #e2e8f0;
+        }
+        .terminal-line {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glitch {
+            animation: glitch 2s infinite;
+        }
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .command-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+        }
+        .command-box:focus-within {
+            border-color: rgba(0, 242, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+        input:focus {
+            outline: none;
+        }
+        button {
+            outline: none;
+        }
+        button:focus-visible {
+            outline: 1px solid rgba(0, 242, 255, 0.5);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="font-mono overflow-hidden antialiased relative">
+<div class="scan-line"></div>
+
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-30 border-b border-white/10 bg-black/80 backdrop-blur-sm">
+    <div class="max-w-full mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+        <a href="stagetwo.html" class="inline-flex items-center gap-2 text-hologram/70 hover:text-hologram text-xs transition-colors group font-mono">
+            <span class="material-icons text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            <span>[BACK]</span>
+        </a>
+        <div id="website-team-badge" class="hidden items-center gap-2 px-3 py-1.5 border border-hologram/40 bg-black/50 text-hologram font-mono text-xs rounded">
+            <span class="material-icons text-base">group</span>
+            <span id="display-team-name">—</span>
+        </div>
+    </div>
+</nav>
+
+<main class="h-screen flex flex-col p-6 md:p-8 pt-20">
+<!-- Header -->
+<div class="mb-10">
+<div class="terminal-line text-hologram text-xs mb-3 tracking-wide">
+    <span class="text-ingest-green">$</span> SYSTEM_INITIALIZED
+</div>
+<h1 class="text-4xl md:text-5xl font-orbitron font-bold text-white mb-2 glitch tracking-tight">
+    &gt; INGESTION_CORE
+</h1>
+<div class="terminal-line text-white/40 text-xs tracking-wide">
+    <span class="text-ingest-green">[READY]</span> Neural data processing interface v4.0
+</div>
+</div>
+
+<!-- Main Content -->
+<div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 min-h-0">
+<!-- Left Column - Inputs -->
+<div class="lg:col-span-2 space-y-5">
+<div class="terminal-line text-xs text-hologram/70 mb-4 tracking-wide">
+    <span class="text-ingest-green">$</span> SELECT_DATA_SOURCE
+</div>
+
+<div class="command-box rounded-lg p-6 md:p-7 space-y-5">
+<div class="group">
+<div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
+    <span class="text-ingest-green font-semibold">[1]</span>
+    <span class="material-symbols-outlined text-base">image</span>
+    <span class="font-semibold">IMAGE_INPUT</span>
+</div>
+<input class="w-full bg-black/50 border border-white/10 rounded-md px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-hologram/50 focus:bg-black/70 transition-all font-mono" placeholder="file://path/to/image.jpg" type="file"/>
+</div>
+
+<div class="group">
+<div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
+    <span class="text-ingest-blue font-semibold">[2]</span>
+    <span class="material-symbols-outlined text-base">language</span>
+    <span class="font-semibold">WEB_URL</span>
+</div>
+<input class="w-full bg-black/50 border border-white/10 rounded-md px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-hologram/50 focus:bg-black/70 transition-all font-mono" placeholder="https://example.com" type="url"/>
+</div>
+
+<div class="group">
+<div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
+    <span class="text-ingest-purple font-semibold">[3]</span>
+    <span class="material-symbols-outlined text-base">terminal</span>
+    <span class="font-semibold">REPO_LINK</span>
+</div>
+<input class="w-full bg-black/50 border border-white/10 rounded-md px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-hologram/50 focus:bg-black/70 transition-all font-mono" placeholder="github.com/user/repo" type="text"/>
+</div>
+</div>
+</div>
+
+<!-- Right Column - Status -->
+<div class="space-y-5">
+<div class="terminal-line text-xs text-hologram/70 mb-4 tracking-wide">
+    <span class="text-ingest-green">$</span> SYSTEM_STATUS
+</div>
+
+<div class="command-box rounded-lg p-5 md:p-6 space-y-5">
+<div class="flex items-start gap-3.5">
+<div class="p-2.5 rounded-md bg-black/50 border border-ingest-green/30 flex-shrink-0">
+<span class="material-symbols-outlined text-ingest-green text-xl">camera</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="terminal-line text-xs text-white/90 mb-1.5 font-semibold tracking-wide">VISUAL</div>
+<div class="terminal-line text-xs text-white/40 tracking-wide">IDLE</div>
+</div>
+</div>
+
+<div class="flex items-start gap-3.5">
+<div class="p-2.5 rounded-md bg-black/50 border border-ingest-blue/30 flex-shrink-0">
+<span class="material-symbols-outlined text-ingest-blue text-xl">public</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="terminal-line text-xs text-white/90 mb-1.5 font-semibold tracking-wide">NETWORK</div>
+<div class="terminal-line text-xs text-white/40 tracking-wide">READY</div>
+</div>
+</div>
+
+<div class="flex items-start gap-3.5">
+<div class="p-2.5 rounded-md bg-black/50 border border-ingest-purple/30 flex-shrink-0">
+<span class="material-symbols-outlined text-ingest-purple text-xl">code_blocks</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="terminal-line text-xs text-white/90 mb-1.5 font-semibold tracking-wide">REPOSITORY</div>
+<div class="terminal-line text-xs text-white/40 tracking-wide">READY</div>
+</div>
+</div>
+</div>
+
+<button onclick="window.location.href='editor.html'" class="w-full command-box rounded-lg py-4 px-5 text-sm font-mono text-white hover:text-hologram transition-all hover:border-hologram/50 flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">send</span>
+<span class="tracking-wide">SUBMIT THE PROTOTYPE</span>
+</button>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 pt-5 mt-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+<div class="terminal-line text-xs text-white/50 flex items-center gap-2.5 tracking-wide">
+    <span class="w-1.5 h-1.5 bg-ingest-green rounded-full animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.6)]"></span>
+    <span class="text-ingest-green font-semibold">STATUS:</span>
+    <span>OPERATIONAL</span>
+</div>
+
+</footer>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('website-team-badge');
+        var displayEl = document.getElementById('display-team-name');
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
+</body></html>

@@ -9,10 +9,30 @@
  * - stageone.html
  * - editor.html
  * - Any other stage pages
+ * 
+ * TO ENABLE/DISABLE: Set ENABLE_ACCESS_CONTROL to true/false
  */
 
 (function() {
     'use strict';
+
+    // ============================================
+    // TESTING FLAG - Set to false to disable access control
+    // ============================================
+    const ENABLE_ACCESS_CONTROL = false; // Set to true to enable access control
+    // ============================================
+
+    // If access control is disabled, exit early
+    if (!ENABLE_ACCESS_CONTROL) {
+        console.log('🔓 Access control disabled for testing');
+        // Export functions for use in other scripts if needed
+        window.auth = {
+            isRegistered: function() { return true; },
+            checkAccess: function() { return true; },
+            redirectToRegister: function() {}
+        };
+        return; // Exit early, allow all access
+    }
 
     // Get current page name
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';

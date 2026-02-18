@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mark 85 OS - Mission Briefing</title>
+<!-- Access Control - Must load first -->
+<script src="auth.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4d125",
+                        "ice-blue": "#90e0ef",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#050505",
+                        "obsidian": "#0a0a0a",
+                        "glass-border": "rgba(144, 224, 239, 0.2)"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #050505;
+            overflow-x: hidden;
+        }
+        .hud-scanline {
+            background: linear-gradient(to bottom, transparent 0%, rgba(244, 209, 37, 0.05) 50%, transparent 100%);
+            background-size: 100% 4px;
+        }
+        .metallic-glow {
+            box-shadow: 0 0 15px rgba(244, 209, 37, 0.3);
+        }
+        .letter-spacing-widest {
+            letter-spacing: 0.3em;
+        }
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 3rem !important;
+            }
+        }
+        @media (max-height: 800px) {
+            main {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white overflow-y-auto selection:bg-primary selection:text-black">
+<!-- HUD Decorative Layer -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<!-- Corner Brackets -->
+<div class="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-ice-blue/30 rounded-tl-lg"></div>
+<div class="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-ice-blue/30 rounded-tr-lg"></div>
+<div class="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-ice-blue/30 rounded-bl-lg"></div>
+<div class="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-ice-blue/30 rounded-br-lg"></div>
+<!-- Grid Background -->
+<div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#90e0ef 0.5px, transparent 0.5px); background-size: 40px 40px;"></div>
+</div>
+<!-- Main Container -->
+<div class="relative z-10 flex flex-col min-h-screen">
+<!-- Top Navigation / HUD Bar -->
+<header class="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-ice-blue/10 bg-black/40 backdrop-blur-md">
+<div class="flex items-center gap-3 md:gap-4">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-xl md:text-2xl">deployed_code</span>
+<h2 class="text-sm md:text-base font-bold tracking-[0.15em] uppercase">Mark 85 OS</h2>
+</div>
+<div class="h-3 w-px bg-ice-blue/20 hidden sm:block"></div>
+<div class="hidden md:flex gap-3 text-ice-blue/60 text-[10px] font-medium tracking-widest uppercase">
+<span>System: Online</span>
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<div class="hidden sm:flex gap-2">
+
+</div>
+<div class="text-right hidden md:block">
+<p class="text-[10px] text-ice-blue/40 tracking-widest uppercase">Location</p>
+<p class="text-xs font-bold text-ice-blue">MALIBU_HQ</p>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 md:px-6 py-4 md:py-6 max-w-6xl mx-auto w-full">
+<!-- Mission Indicator -->
+<div class="mb-2 md:mb-4 text-center">
+<p class="text-ice-blue/60 tracking-[0.3em] uppercase text-xs md:text-sm mb-2 md:mb-3">Mission Briefing</p>
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-primary leading-none tracking-tighter filter drop-shadow-[0_0_20px_rgba(244,209,37,0.4)]">
+                    STAGE 05
+                </h1>
+</div>
+<!-- Central Glass Card -->
+<div class="w-full max-w-5xl bg-obsidian/60 border border-glass-border rounded-xl p-4 md:p-6 lg:p-8 backdrop-blur-xl relative overflow-hidden">
+<!-- Inner technical elements -->
+<div class="absolute top-0 left-0 w-12 h-px bg-primary/40"></div>
+<div class="absolute top-0 left-0 h-12 w-px bg-primary/40"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
+<!-- Left Column: Objective -->
+<div class="lg:col-span-7 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-3 md:mb-4">
+<span class="h-px w-6 bg-primary"></span>
+<h3 class="text-primary font-bold tracking-[0.15em] uppercase text-xs md:text-sm">Objective</h3>
+</div>
+<h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-4 tracking-tight leading-tight">
+                                Communication &amp; Innovation Presentation
+                            </h2>
+<p class="text-ice-blue/70 text-sm md:text-base leading-relaxed font-light">
+                                Prepare a 2-slide presentation proposing a technology solution for a real-world problem. Your solution must integrate with the existing Stark Ecosystem and demonstrate scalability.
+                            </p>
+</div>
+<div class="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
+<button
+    class="px-6 md:px-8 py-3 md:py-4 bg-primary text-black font-black tracking-widest uppercase text-xs md:text-sm rounded-lg metallic-glow hover:bg-white transition-all transform hover:-translate-y-1 active:translate-y-0"
+    onclick="window.location.href='stagefive_presentation.html' " target="_blank">
+    Initialize Pitch
+</button>
+<!--<button class="px-6 md:px-8 py-3 md:py-4 border border-ice-blue/30 text-ice-blue font-bold tracking-widest uppercase text-xs md:text-sm rounded-lg hover:bg-ice-blue/5 transition-all">
+                                Archive
+                            </button> -->
+</div>
+</div>
+<!-- Right Column: Protocols -->
+<div class="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-ice-blue/10 pt-4 lg:pt-0 lg:pl-6">
+<div class="flex items-center gap-2 mb-4 md:mb-6">
+<h3 class="text-ice-blue/60 font-bold tracking-[0.15em] uppercase text-xs md:text-sm">Protocols</h3>
+</div>
+<div class="space-y-4 md:space-y-6">
+<!-- Protocol 1 -->
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[10px] md:text-xs text-ice-blue/40 font-bold tracking-widest uppercase">Protocol 01</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</div>
+<h4 class="text-white font-bold text-sm md:text-base group-hover:text-primary transition-colors">Problem Identification</h4>
+<div class="w-full h-0.5 bg-ice-blue/10 mt-1.5 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary/40"></div>
+</div>
+</div>
+<!-- Protocol 2 -->
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[10px] md:text-xs text-ice-blue/40 font-bold tracking-widest uppercase">Protocol 02</span>
+<div class="flex gap-0.5">
+<span class="w-0.5 h-1.5 bg-ice-blue/20"></span>
+<span class="w-0.5 h-1.5 bg-ice-blue/20"></span>
+<span class="w-0.5 h-1.5 bg-ice-blue/20"></span>
+</div>
+</div>
+<h4 class="text-white font-bold text-sm md:text-base group-hover:text-primary transition-colors">Solution Framing</h4>
+<div class="w-full h-0.5 bg-ice-blue/10 mt-1.5 rounded-full"></div>
+</div>
+<!-- Protocol 3 -->
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[10px] md:text-xs text-ice-blue/40 font-bold tracking-widest uppercase">Protocol 03</span>
+<span class="material-symbols-outlined text-xs text-ice-blue/20">lock</span>
+</div>
+<h4 class="text-white/40 font-bold text-sm md:text-base">Presentation Delivery</h4>
+<div class="w-full h-0.5 bg-ice-blue/5 mt-1.5 rounded-full"></div>
+</div>
+</div>
+<div class="mt-6 md:mt-8 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+<div class="flex items-center gap-1.5 text-primary mb-1">
+<span class="material-symbols-outlined text-xs">info</span>
+<span class="text-[9px] font-bold tracking-widest uppercase">Note</span>
+</div>
+<p class="text-[10px] text-primary/70 leading-relaxed font-medium uppercase tracking-wider">
+                                Biometrical validation required before final submission.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Status Bar -->
+<footer class="mt-auto flex flex-col sm:flex-row items-center justify-between px-4 md:px-6 py-2 md:py-3 bg-black/60 border-t border-ice-blue/5 gap-2">
+<div class="flex flex-wrap gap-2 md:gap-3">
+<div class="flex items-center gap-1.5 bg-primary/10 px-2 py-1 rounded border border-primary/20">
+<span class="w-1 h-1 bg-primary rounded-full animate-ping"></span>
+<span class="text-[9px] md:text-[10px] text-primary font-bold tracking-widest uppercase">Live</span>
+</div>
+<div class="hidden sm:flex items-center gap-1.5 bg-ice-blue/5 px-2 py-1 rounded border border-ice-blue/10">
+<span class="text-[9px] md:text-[10px] text-ice-blue/50 font-bold tracking-widest uppercase">Status: Optimal</span>
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-3">
+<span class="hidden md:inline text-[9px] text-ice-blue/40 font-bold tracking-widest uppercase">v.8.5.12</span>
+<div class="flex gap-0.5">
+<div class="w-2 h-0.5 bg-primary"></div>
+<div class="w-2 h-0.5 bg-primary"></div>
+<div class="w-2 h-0.5 bg-primary/20"></div>
+</div>
+</div>
+</footer>
+</div>
+<!-- Tech Background Image Overlay (Simulating HUD elements) -->
+<div class="fixed bottom-[-50px] left-[-50px] w-[300px] h-[300px] md:w-[400px] md:h-[400px] opacity-5 pointer-events-none rotate-12">
+<img class="w-full h-full object-contain" data-alt="Futuristic rotating gear and circuit pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCNMi-EKBQg2CiTPG1YEiftnhZJUBKXXlin6FOrASfJIXC3fPEVL_ZQL65RjQ1FqReba8AohvtsJibLCHuKaWvoLTd8j9TrbKE7SNZ09BdPGZ5ys4NXnvNZrbxTS96RmHvG2a8geDkCbhB_sBVAmquwl-miQxmhXxFhPgm02ILwSJbeaTyPHey-tCMR1hPmFWWUpqLNKUWx3zrK8mfpjan6qTJRKrjNjFja9iyCV7HRVZZWI7YoHUG_9nTRf8E_IIT46RI_rcU7uj"/>
+</div>
+<script>
+    // Display logged-in team name (if registered)
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        // You can add a team badge display here if needed
+        if (teamName) {
+            console.log('Team:', teamName);
+        }
+    });
+</script>
+</body></html>
