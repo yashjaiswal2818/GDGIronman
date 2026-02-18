@@ -1,4 +1,5 @@
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from fastapi import APIRouter, Depends, FastAPI, Body, Form, File, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
