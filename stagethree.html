@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mark UI Design Bay Elite Briefing Clean</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec131e",
+              "primary-dark": "#b90e16",
+              "background-light": "#f8f6f6",
+              "background-dark": "#0a0a0a", // Deep obsidian
+              "obsidian": "#050505",
+              "silver": "#C0C0C0",
+              "silver-dim": "#8c8c8c",
+              "crimson-glow": "rgba(236, 19, 30, 0.4)",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "mono": ["Space Grotesk", "monospace"], 
+            },
+            backgroundImage: {
+               'metallic-gradient': 'linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 50%, #505050 100%)',
+               'crimson-gradient': 'radial-gradient(circle at center, rgba(236, 19, 30, 0.15) 0%, rgba(5, 5, 5, 0) 70%)',
+            },
+             boxShadow: {
+                'glow-silver': '0 0 15px rgba(192, 192, 192, 0.3)',
+                'glow-primary': '0 0 20px rgba(236, 19, 30, 0.4)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .text-glow-red {
+            text-shadow: 0 0 15px rgba(236, 19, 30, 0.6);
+        }::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ec131e; 
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-white min-h-screen flex flex-col font-display overflow-x-hidden selection:bg-primary selection:text-white">
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute inset-0 bg-[#050505]"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#2a0a0a] via-[#0a0a0a] to-[#050505] opacity-80"></div>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#1a1a1a] via-transparent to-transparent opacity-40"></div>
+<div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
+</div>
+<nav class="relative z-20 border-b border-white/10 bg-obsidian/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4 text-white">
+<div class="text-primary animate-pulse">
+<span class="material-symbols-outlined !text-3xl">change_history</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-white text-lg font-bold leading-none tracking-[0.1em]">STARK</h2>
+<span class="text-silver-dim text-[10px] tracking-[0.2em] font-medium">INDUSTRIES</span>
+</div>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-12 items-center">
+<div class="flex items-center gap-8">
+<a class="text-silver-dim hover:text-white text-xs font-semibold tracking-widest transition-colors" href="#">HOME</a>
+<a class="text-white text-xs font-bold tracking-widest border-b-2 border-primary pb-1" href="#">MISSIONS</a>
+<a class="text-silver-dim hover:text-white text-xs font-semibold tracking-widest transition-colors" href="#">ARMORY</a>
+<a class="text-silver-dim hover:text-white text-xs font-semibold tracking-widest transition-colors" href="#">PROFILE</a>
+</div>
+<div class="flex gap-4 border-l border-white/10 pl-8">
+<button class="text-silver-dim hover:text-white transition-colors">
+<span class="material-symbols-outlined !text-[20px]">settings</span>
+</button>
+<button class="relative text-silver-dim hover:text-white transition-colors">
+<span class="material-symbols-outlined !text-[20px]">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+</button>
+</div>
+</div>
+<button class="md:hidden text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<main class="relative z-10 flex-grow flex flex-col justify-center py-12 px-6">
+<div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7 flex flex-col gap-8 relative">
+<div class="inline-flex items-center gap-2 self-start border border-primary/30 bg-primary/10 px-3 py-1 rounded-full backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_#ec131e]"></span>
+<span class="text-primary text-xs font-bold tracking-widest uppercase">Encryption Level: Elite</span>
+</div>
+<div class="space-y-2">
+<h1 class="text-6xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-silver to-gray-500 text-glow" style="font-feature-settings: 'ss04' on;">
+                        STAGE 03
+                    </h1>
+<div class="h-1 w-32 bg-primary shadow-glow-primary"></div>
+<h2 class="text-2xl md:text-3xl font-light text-silver tracking-[0.3em] uppercase pt-2">
+                        Mark UI Design Bay
+                    </h2>
+</div>
+<p class="text-silver-dim text-lg leading-relaxed max-w-2xl border-l-2 border-white/10 pl-6 py-2">
+<span class="text-primary font-bold tracking-widest block text-sm mb-2">MISSION OBJECTIVE</span>
+                    Evaluate interface design protocols, usability heuristics, and visual hierarchy by constructing the next-generation helmet HUD interface. Precision and clarity are paramount for operator survival.
+                </p>
+<div class="pt-8">
+<button class="group relative inline-flex items-center justify-center px-8 py-4 bg-transparent border border-silver/30 overflow-hidden rounded-lg transition-all hover:border-white/80 hover:shadow-glow-silver">
+<div class="absolute inset-0 bg-white/5 group-hover:bg-white/10 transition-colors"></div>
+<span class="relative flex items-center gap-3 text-white font-bold tracking-[0.15em] text-sm">
+<span class="material-symbols-outlined !text-lg text-primary group-hover:text-white transition-colors">terminal</span>
+                            INITIALIZE DESIGN PROTOCOLS
+                        </span>
+<span class="absolute top-0 left-0 w-2 h-2 border-t border-l border-white"></span>
+<span class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white"></span>
+</button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="relative bg-obsidian/60 backdrop-blur-xl border border-white/10 p-8 rounded-xl overflow-hidden shadow-2xl">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined !text-6xl text-white rotate-12">design_services</span>
+</div>
+<div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+<h3 class="text-white font-bold tracking-widest text-sm">ACTIVE PROTOCOLS</h3>
+<span class="text-primary text-xs font-mono">SYS.READY</span>
+</div>
+<div class="space-y-1">
+<label class="group flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5">
+<div class="mt-1">
+<input checked="" class="appearance-none w-5 h-5 border border-silver-dim rounded bg-transparent checked:bg-primary checked:border-primary focus:ring-0 transition-all relative cursor-pointer after:content-[''] after:hidden checked:after:block after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:absolute after:left-[6px] after:top-[2px] after:rotate-45" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-silver group-hover:text-white font-medium tracking-wide text-lg transition-colors">01. HUD Information Hierarchy</span>
+<span class="text-silver-dim text-xs tracking-wider opacity-60">Priority: Alpha // Visual Stacking</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5">
+<div class="mt-1">
+<input class="appearance-none w-5 h-5 border border-silver-dim rounded bg-transparent checked:bg-primary checked:border-primary focus:ring-0 transition-all relative cursor-pointer after:content-[''] after:hidden checked:after:block after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:absolute after:left-[6px] after:top-[2px] after:rotate-45" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-silver group-hover:text-white font-medium tracking-wide text-lg transition-colors">02. Usability Stress Test</span>
+<span class="text-silver-dim text-xs tracking-wider opacity-60">Priority: Beta // Cognitive Load</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5">
+<div class="mt-1">
+<input class="appearance-none w-5 h-5 border border-silver-dim rounded bg-transparent checked:bg-primary checked:border-primary focus:ring-0 transition-all relative cursor-pointer after:content-[''] after:hidden checked:after:block after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:absolute after:left-[6px] after:top-[2px] after:rotate-45" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-silver group-hover:text-white font-medium tracking-wide text-lg transition-colors">03. Visual Contrast Analysis</span>
+<span class="text-silver-dim text-xs tracking-wider opacity-60">Priority: Gamma // Ocular Strain</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5">
+<div class="mt-1">
+<input class="appearance-none w-5 h-5 border border-silver-dim rounded bg-transparent checked:bg-primary checked:border-primary focus:ring-0 transition-all relative cursor-pointer after:content-[''] after:hidden checked:after:block after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:absolute after:left-[6px] after:top-[2px] after:rotate-45" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-silver group-hover:text-white font-medium tracking-wide text-lg transition-colors">04. Interaction Latency Check</span>
+<span class="text-silver-dim text-xs tracking-wider opacity-60">Priority: Delta // Response Time</span>
+</div>
+</label>
+<label class="group flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5">
+<div class="mt-1">
+<input class="appearance-none w-5 h-5 border border-silver-dim rounded bg-transparent checked:bg-primary checked:border-primary focus:ring-0 transition-all relative cursor-pointer after:content-[''] after:hidden checked:after:block after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:absolute after:left-[6px] after:top-[2px] after:rotate-45" type="checkbox"/>
+</div>
+<div class="flex flex-col">
+<span class="text-silver group-hover:text-white font-medium tracking-wide text-lg transition-colors">05. Emergency Override Systems</span>
+<span class="text-silver-dim text-xs tracking-wider opacity-60">Priority: Omega // Failsafe Protocols</span>
+</div>
+</label>
+</div>
+<div class="mt-8 flex items-center gap-3">
+<span class="text-[10px] text-silver-dim font-mono">LOADING ASSETS</span>
+<div class="flex-1 h-[2px] bg-white/10 relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 w-1/3 bg-primary animate-[pulse_2s_infinite]"></div>
+</div>
+<span class="text-[10px] text-primary font-mono">33%</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="relative z-20 border-t border-white/5 bg-obsidian py-2 px-6">
+<div class="max-w-7xl mx-auto flex justify-between items-center text-[10px] uppercase tracking-widest text-silver-dim font-mono">
+<div class="flex gap-6">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                    System Online
+                </span>
+<span>Server: US-East-Stark-1</span>
+</div>
+<div class="flex gap-6">
+<span>V. 4.0.2</span>
+<span class="text-white">Secure Connection</span>
+</div>
+</div>
+</footer>
+
+</body></html>

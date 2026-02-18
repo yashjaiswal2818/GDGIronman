@@ -1,8 +1,6 @@
-from datetime import datetime
-from fastapi import APIRouter, Depends, FastAPI, Body, File, Form, UploadFile
 from typing import List
-from service.round_5_service import submit_round_5_service
-from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
+from fastapi import APIRouter, Depends, FastAPI, Body, Form, File, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 from db import get_db
 from models.model import Registration
@@ -10,14 +8,19 @@ from models.contests import Contest
 from models.probelms import Problem
 from service.registration_service import registration_service
 from service.contest_service import create_contest
+from service.round_2_service import submit_round_2_service
+from service.round_3_service import submit_round_3_service
 from service.submission_service import submission_service
 from service.problems_service import create_problem
 from schemas.problem_schema import ProblemCreate
 from schemas.contest_schema import ContestCreate
 from schemas.registration_schema import RegistrationCreate
 from schemas.submission_schema import Submission
+from schemas.round_5_schema import Round_5_Submit
+from service.round_5_service import submit_round_5_service
 from service.problems_service import get_problem_by_id
-from service.round_2_service import submit_round_2_service
+from schemas.round_4_schema import Round_4_Submit
+from service.round_4_service import submit_round_4_service
 
 app = FastAPI()
 
@@ -168,4 +171,24 @@ async def submit_round_2_endpoint(
     return {
         "message": "Submitted successfully",
         "urls": uploaded_urls
+    }
+
+@app.post("/round_4")
+async def submit_round_4_endpoint(
+    round_4: Round_4_Submit,
+    db: AsyncSession = Depends(get_db)
+):
+
+    event = await submit_round_4_service(
+        db=db,
+        Team_Name=round_4.Team_Name,
+        structured_submission=round_4.structured_submission,
+        status_4=round_4.status_4,
+        question=round_4.question,
+        score_4=round_4.score_4
+    )
+
+    return {
+        "message": "Submitted successfully",
+        "event": event
     }
