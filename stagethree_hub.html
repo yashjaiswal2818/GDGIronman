@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mark UI Design Bay Elite Hub Clean Fixed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#47b4eb",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111c21", 
+                        "glass-surface": "rgba(22, 34, 41, 0.7)", 
+                        "border-subtle": "rgba(71, 180, 235, 0.2)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(71, 180, 235, 0.3), 0 0 20px rgba(71, 180, 235, 0.1)",
+                        "panel": "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111c21; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #243b47; 
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #47b4eb; 
+        }
+        .glass-panel {
+            background: rgba(26, 42, 50, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(71, 180, 235, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen flex flex-col text-slate-200 overflow-hidden selection:bg-primary selection:text-background-dark">
+<header class="w-full h-[60px] border-b border-[#243b47] bg-[#111c22]/90 backdrop-blur-sm z-50 flex-none">
+<div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+<div class="flex items-center gap-4 text-white">
+<a href="stagethree.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-primary text-[10px] font-bold tracking-[0.1em] uppercase transition-colors group">
+<span class="material-symbols-outlined !text-[20px] group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+BACK
+</a>
+<div class="size-6 text-primary animate-pulse flex items-center justify-center">
+<span class="material-symbols-outlined !text-[24px]">deployed_code</span>
+</div>
+<h2 class="text-white text-base font-bold leading-tight tracking-[0.1em] uppercase">Design Bay</h2>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex items-center gap-6">
+
+
+</nav>
+
+<button class="md:hidden text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow relative flex items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1a2a32] via-[#111c21] to-[#0d1418] h-[calc(100vh-100px)]">
+<div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: linear-gradient(#243b47 1px, transparent 1px), linear-gradient(90deg, #243b47 1px, transparent 1px); background-size: 80px 80px;">
+</div>
+<div class="relative w-full max-w-[800px] glass-panel rounded-lg shadow-panel border-t border-t-primary/30 flex flex-col max-h-[calc(100vh-140px)]">
+<div class="px-6 py-4 border-b border-[#243b47]/50 flex justify-between items-end flex-none">
+<div>
+<p class="text-primary text-[10px] font-bold tracking-[0.2em] mb-0.5">SECURE TRANSMISSION</p>
+<h1 class="text-2xl font-bold tracking-tight text-white uppercase">Stage 3: Uplink Protocol</h1>
+</div>
+<div class="hidden sm:flex flex-col items-end gap-0.5">
+<div class="flex items-center gap-1.5">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest text-emerald-500">ONLINE</span>
+</div>
+<span class="text-[9px] text-slate-500 font-mono">ID: MK-UI-8821-X</span>
+</div>
+</div>
+<div class="p-6 grid gap-4 overflow-y-auto">
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-bold tracking-widest text-slate-300 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary !text-[16px]">link</span>
+                            FIGMA SOURCE LINK
+                        </label>
+<span class="text-[9px] text-primary/60 font-mono opacity-0 group-hover:opacity-100 transition-opacity">REQUIRED</span>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-slate-500 font-mono text-xs">https://</span>
+</div>
+<input class="w-full bg-[#0d1418]/80 border border-[#243b47] text-white text-xs font-mono rounded pl-16 pr-8 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all placeholder-slate-600" placeholder=" figma.com/file/secure-id..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+<span class="material-symbols-outlined text-slate-600 !text-[16px]">lock</span>
+</div>
+</div>
+</div>
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-bold tracking-widest text-slate-300 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary !text-[16px]">image</span>
+                            INTERFACE SCHEMATICS
+                        </label>
+<span class="text-[9px] text-slate-500 font-mono">PNG/JPG (MAX 25MB)</span>
+</div>
+<div class="relative w-full h-32 rounded border border-dashed border-[#345565] bg-[#15232b]/50 hover:bg-[#1a2a32]/80 hover:border-primary/50 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group-hover:shadow-[0_0_15px_rgba(71,180,235,0.05)]">
+<div class="h-8 w-8 rounded-full bg-[#111c22] border border-[#243b47] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary !text-[18px]">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="text-white font-bold text-xs tracking-wide">INITIATE UPLOAD</p>
+<p class="text-slate-500 text-[10px] mt-0.5">Drag files or <span class="text-primary underline decoration-primary/30 underline-offset-2">browse</span></p>
+</div>
+<div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary opacity-50"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary opacity-50"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary opacity-50"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary opacity-50"></div>
+</div>
+</div>
+<div class="group">
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-xs font-bold tracking-widest text-slate-300 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary !text-[16px]">description</span>
+                            TACTICAL RATIONALE
+                        </label>
+<span class="text-[9px] text-slate-500 font-mono">0/500</span>
+</div>
+<div class="relative">
+<textarea class="w-full bg-[#0d1418]/80 border border-[#243b47] text-white text-xs font-body rounded p-3 focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none placeholder-slate-600" placeholder="Brief protocol description detailing design decisions..." rows="3"></textarea>
+<div class="absolute bottom-2 right-2 pointer-events-none">
+<div class="w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#243b47]/50 flex-none bg-[#162229]/30">
+<div class="flex items-center gap-2 text-slate-500 text-[10px] font-mono">
+<span class="material-symbols-outlined !text-[14px]">verified_user</span>
+<span>ENCRYPTED CONNECTION</span>
+</div>
+<button class="w-full sm:w-auto relative group overflow-hidden rounded bg-primary px-8 py-2.5 text-[#111c22] font-bold text-xs tracking-widest transition-all hover:bg-[#72cbf7] hover:shadow-neon focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#111c22]">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                        TRANSMIT DATA
+                        <span class="material-symbols-outlined !text-[16px] group-hover:translate-x-1 transition-transform">send</span>
+</span>
+<div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
+</button>
+</div>
+<div class="h-0.5 w-full bg-[#1a2a32] rounded-b-lg overflow-hidden flex flex-none">
+<div class="h-full bg-primary/20 w-1/4"></div>
+<div class="h-full bg-transparent w-1/2"></div>
+<div class="h-full bg-primary/40 w-1/4"></div>
+</div>
+</div>
+</main>
+</body></html>
