@@ -55,9 +55,9 @@
      * Format score as percentage (assuming max is 100)
      */
     function formatEfficiency(score) {
-        if (!score) return '0.0%';
+        if (!score) return '0.0 points';
         var percentage = Math.min(100, score);
-        return percentage.toFixed(1) + '%';
+        return percentage.toFixed(1) + ' points';
     }
 
     /**
@@ -195,20 +195,6 @@
         var totalSquads = document.querySelector('footer .text-white.text-base');
         if (totalSquads && teams.length > 0) {
             totalSquads.textContent = teams.length;
-        }
-
-        // Calculate average efficiency
-        if (teams.length > 0) {
-            var totalScore = teams.reduce(function (sum, team) {
-                return sum + (team.team_score || 0);
-            }, 0);
-            var avgScore = totalScore / teams.length;
-            var avgEfficiency = formatEfficiency(avgScore);
-
-            var avgElement = document.querySelector('footer .text-white.text-base:last-of-type');
-            if (avgElement) {
-                avgElement.textContent = avgEfficiency;
-            }
         }
     }
 

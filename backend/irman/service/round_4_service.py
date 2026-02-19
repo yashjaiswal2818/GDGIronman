@@ -4,7 +4,8 @@ from typing import List
 from fastapi import UploadFile
 
 load_dotenv()
-from models.round_4 import  Round_4
+from models.round_4 import Round_4
+from service.leaderboard_service import update_leaderboard_score
 
 
 async def submit_round_4_service(
@@ -28,5 +29,8 @@ async def submit_round_4_service(
     db.add(event)
     await db.commit()
     await db.refresh(event)
+
+    # Update leaderboard score
+    await update_leaderboard_score(db, Team_Name)
 
     return event

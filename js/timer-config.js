@@ -22,19 +22,19 @@
     // Set to 60 for 1-minute testing, or adjust for events
     window.TIMER_CONFIG = {
         // Stage 1 (Editor) - Competitive Programming
-        STAGE_1_DURATION: 60, // 1 minute for testing (change to 420 for 7 minutes, 1800 for 30 minutes)
+        STAGE_1_DURATION: 300, // 5 minutes
         
         // Stage 2 (Website) - Web Development
-        STAGE_2_DURATION: 60, // 1 minute for testing (change to 600 for 10 minutes, 1800 for 30 minutes)
+        STAGE_2_DURATION: 300, // 5 minutes
         
         // Stage 3 (Design) - UI/UX Design
-        STAGE_3_DURATION: 60, // 1 minute for testing (change to 600 for 10 minutes, 1800 for 30 minutes)
+        STAGE_3_DURATION: 300, // 5 minutes
         
         // Stage 4 (Logic) - Logic & Decision Making
-        STAGE_4_DURATION: 60, // 1 minute for testing (change to 600 for 10 minutes, 1800 for 30 minutes)
+        STAGE_4_DURATION: 300, // 5 minutes
         
         // Stage 5 (Presentation) - Presentation
-        STAGE_5_DURATION: 60, // 1 minute for testing (change to 900 for 15 minutes, 1800 for 30 minutes)
+        STAGE_5_DURATION: 300, // 5 minutes
         
         // Enable/disable timer warnings
         SHOW_WARNING_AT: 30, // Show warning when X seconds remaining

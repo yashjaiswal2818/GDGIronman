@@ -8,6 +8,7 @@ from fastapi import UploadFile
 
 load_dotenv()
 from models.round_5 import Round_5
+from service.leaderboard_service import update_leaderboard_score
 
 
 cloudinary.config(
@@ -46,5 +47,8 @@ async def submit_round_5_service(
     db.add(event)
     await db.commit()
     await db.refresh(event)
+
+    # Update leaderboard score
+    await update_leaderboard_score(db, Team_Name)
 
     return event, uploaded_urls

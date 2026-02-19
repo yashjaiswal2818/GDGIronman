@@ -20,7 +20,7 @@
             var intervalId = null;
             var formatTime = window.formatTimerTime || function (secs) {
                 var mins = Math.floor(secs / 60);
-                var s = secs % 60;
+                var s = sec % 60;
                 return (mins < 10 ? '0' : '') + mins + ':' + (s < 10 ? '0' : '') + s;
             };
 
