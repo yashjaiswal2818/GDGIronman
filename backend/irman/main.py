@@ -22,6 +22,8 @@ from service.round_5_service import submit_round_5_service
 from service.problems_service import get_problem_by_id
 from schemas.round_4_schema import Round_4_Submit
 from service.round_4_service import submit_round_4_service
+from service.leaderboard_service import get_records_desc
+
 
 app = FastAPI()
 
