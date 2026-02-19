@@ -216,3 +216,8 @@ async def submit_round_4_endpoint(
         "message": "Submitted successfully",
         "event": event
     }
+
+@app.get("/leaderboard")
+async def get_leaderboard(db: AsyncSession = Depends(get_db)):
+    records = await get_records_desc(db)
+    return records
