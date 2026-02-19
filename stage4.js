@@ -27,6 +27,34 @@
         return nodes;
     }
 
+    var stage4Timer = null;
+
+    function initTimer() {
+        var timerWrap = document.getElementById('stage4-timer');
+        var timerDisplay = document.getElementById('stage4-timer-display');
+        var submitBtn = document.getElementById('initialize-uplink-btn');
+
+        if (!timerWrap || !timerDisplay) return;
+
+        timerWrap.classList.remove('hidden');
+        timerWrap.classList.add('flex');
+
+        stage4Timer = window.TimerUtils.init('STAGE_4_DURATION', timerDisplay, function () {
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            var feedback = document.getElementById('stage4-feedback');
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.textContent = 'Time is up. Submission disabled.';
+                feedback.className = 'text-xs font-mono py-2 text-red-500';
+            }
+        });
+
+        stage4Timer.start();
+    }
+
     function init() {
         var submitBtn = document.getElementById('initialize-uplink-btn');
         var tacticalEl = document.getElementById('tactical-rationale');
@@ -36,6 +64,11 @@
 
         submitBtn.addEventListener('click', function (e) {
             e.preventDefault();
+
+            if (stage4Timer && stage4Timer.getRemaining() <= 0) {
+                showFeedback(feedbackEl, 'Time is up. Submission disabled.', true);
+                return;
+            }
 
             var teamName = getTeamName();
             var nodes = collectLogicNodes();
@@ -70,6 +103,7 @@
                 .then(function (result) {
                     if (result.ok) {
                         showFeedback(feedbackEl, 'Submitted successfully.', false);
+                        if (stage4Timer) stage4Timer.stop();
                         setTimeout(function () {
                             window.location.href = 'leaderboard.html?from=4';
                         }, 800);
@@ -102,5 +136,10 @@
         el.className = 'text-xs font-mono py-2 ' + (isError ? 'text-red-400' : 'text-emerald-400');
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window.TimerUtils) {
+            initTimer();
+        }
+        init();
+    });
 })();

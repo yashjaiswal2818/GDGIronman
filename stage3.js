@@ -8,7 +8,7 @@
 
     var API_BASE = 'http://127.0.0.1:8000';
     var ROUND_3_ENDPOINT = API_BASE + '/round_3';
-    var TEST_TEAM_NAME = 'm';
+    var TEST_TEAM_NAME = 'xyz';
 
     var previewObjectUrls = [];
 
@@ -185,5 +185,125 @@
         el.className = 'text-xs font-mono py-2 ' + (isError ? 'text-red-400' : 'text-emerald-400');
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+    var stage3Timer = null;
+
+    function initTimer() {
+        var timerWrap = document.getElementById('stage3-timer');
+        var timerDisplay = document.getElementById('stage3-timer-display');
+        var transmitBtn = document.getElementById('transmit-data-btn');
+
+        if (!timerWrap || !timerDisplay) return;
+
+        timerWrap.classList.remove('hidden');
+        timerWrap.classList.add('flex');
+
+        stage3Timer = window.TimerUtils.init('STAGE_3_DURATION', timerDisplay, function () {
+            if (transmitBtn) {
+                transmitBtn.disabled = true;
+                transmitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            var feedback = document.getElementById('stage3-feedback');
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.textContent = 'Time is up. Submission disabled.';
+                feedback.className = 'text-xs font-mono py-2 text-red-500';
+            }
+        });
+
+        stage3Timer.start();
+    }
+
+    function init() {
+        var transmitBtn = document.getElementById('transmit-data-btn');
+        var figmaInput = document.getElementById('figma-link');
+        var descInput = document.getElementById('tactical-rationale');
+        var filesInput = document.getElementById('interface-schematics');
+        var uploadArea = document.getElementById('upload-area');
+        var feedbackEl = document.getElementById('stage3-feedback');
+        var previewWrap = document.getElementById('stage3-preview-wrap');
+        var previewEl = document.getElementById('stage3-preview');
+
+        // File upload area click
+        if (uploadArea && filesInput) {
+            uploadArea.addEventListener('click', function () {
+                filesInput.click();
+            });
+            filesInput.addEventListener('change', function () {
+                var count = this.files ? this.files.length : 0;
+                var label = document.getElementById('upload-area-label');
+                if (label) label.textContent = count ? count + ' FILE(S) SELECTED' : 'INITIATE UPLOAD (multiple images)';
+                renderPreviews(filesInput, previewWrap, previewEl);
+            });
+        }
+
+        if (!transmitBtn) return;
+
+        transmitBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (stage3Timer && stage3Timer.getRemaining() <= 0) {
+                showFeedback(feedbackEl, 'Time is up. Submission disabled.', true);
+                return;
+            }
+
+            var teamName = getTeamName();
+            var figmaLinks = figmaInput ? figmaInput.value.trim() : '';
+            var description = descInput ? descInput.value.trim() : '';
+            var fileList = filesInput && filesInput.files ? filesInput.files : [];
+
+            if (!figmaLinks) {
+                showFeedback(feedbackEl, 'Figma source link is required.', true);
+                return;
+            }
+
+            if (fileList.length === 0) {
+                showFeedback(feedbackEl, 'Please upload at least one interface schematic.', true);
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('Team_Name', teamName);
+            formData.append('figma_links', figmaLinks);
+            formData.append('description', description);
+            for (var i = 0; i < fileList.length; i++) {
+                formData.append('files', fileList[i]);
+            }
+
+            transmitBtn.disabled = true;
+            transmitBtn.innerHTML = '<span class="material-symbols-outlined !text-[16px] animate-pulse">hourglass_empty</span><span>TRANSMITTING…</span>';
+            showFeedback(feedbackEl, 'Transmitting to backend…', false);
+
+            fetch(ROUND_3_ENDPOINT, {
+                method: 'POST',
+                body: formData
+            })
+                .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; }); })
+                .then(function (result) {
+                    if (result.ok) {
+                        showFeedback(feedbackEl, 'Submitted successfully.' + (result.data.urls && result.data.urls.length ? ' ' + result.data.urls.length + ' file(s) uploaded.' : ''), false);
+                        if (stage3Timer) stage3Timer.stop();
+                        setTimeout(function () {
+                            window.location.href = 'leaderboard.html?from=3';
+                        }, 800);
+                    } else {
+                        var msg = (result.data && result.data.detail) ? (typeof result.data.detail === 'string' ? result.data.detail : JSON.stringify(result.data.detail)) : 'Submission failed: ' + result.status;
+                        showFeedback(feedbackEl, msg, true);
+                        transmitBtn.disabled = false;
+                        transmitBtn.innerHTML = '<span class="relative z-10 flex items-center justify-center gap-2">TRANSMIT DATA<span class="material-symbols-outlined !text-[16px] group-hover:translate-x-1 transition-transform">send</span></span>';
+                    }
+                })
+                .catch(function (err) {
+                    showFeedback(feedbackEl, 'Network error: ' + (err.message || 'Could not reach server.'), true);
+                    transmitBtn.disabled = false;
+                    transmitBtn.innerHTML = '<span class="relative z-10 flex items-center justify-center gap-2">TRANSMIT DATA<span class="material-symbols-outlined !text-[16px] group-hover:translate-x-1 transition-transform">send</span></span>';
+                });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window.TimerUtils) {
+            initTimer();
+        }
+        init();
+    });
 })();

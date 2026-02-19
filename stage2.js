@@ -8,7 +8,7 @@
 
     var API_BASE = 'http://127.0.0.1:8000';
     var ROUND_2_ENDPOINT = API_BASE + '/round_2';
-    var TEST_TEAM_NAME = 'm'; // fallback for testing without registration
+    var TEST_TEAM_NAME = 'xyz'; // fallback for testing without registration
 
     /**
      * Initializes the team badge display from sessionStorage.
@@ -83,6 +83,15 @@
         }
 
         btn.addEventListener('click', function () {
+            if (stage2Timer && stage2Timer.getRemaining() <= 0) {
+                if (feedback) {
+                    feedback.classList.remove('hidden');
+                    feedback.innerHTML = '<span class="text-red-500">Time is up. Submission disabled.</span>';
+                    feedback.className = 'mb-3 p-4 rounded-lg border border-red-500/50 bg-red-500/5 text-xs font-mono';
+                }
+                return;
+            }
+
             var status = showUploadStatus();
 
             if (status.hasImage && status.hasWebUrl && status.hasRepo) {
@@ -94,6 +103,14 @@
 
         if (proceedBtn) {
             proceedBtn.addEventListener('click', function () {
+                if (stage2Timer && stage2Timer.getRemaining() <= 0) {
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                        feedback.innerHTML = '<span class="text-red-500">Time is up. Submission disabled.</span>';
+                        feedback.className = 'mb-3 p-4 rounded-lg border border-red-500/50 bg-red-500/5 text-xs font-mono';
+                    }
+                    return;
+                }
                 window.location.href = 'leaderboard.html?from=2';
             });
         }
@@ -140,6 +157,7 @@
                             feedback.innerHTML = '<span class="text-ingest-green">Submitted successfully.' + (result.data.urls && result.data.urls.length ? ' ' + result.data.urls.length + ' file(s) uploaded.' : '') + '</span>';
                             feedback.className = 'mb-3 p-4 rounded-lg border border-ingest-green/50 bg-ingest-green/5 text-xs font-mono';
                         }
+                        if (stage2Timer) stage2Timer.stop();
                         setTimeout(function () {
                             window.location.href = 'leaderboard.html?from=2';
                         }, 800);
@@ -164,8 +182,44 @@
         }
     }
 
+    var stage2Timer = null;
+
+    function initTimer() {
+        var timerWrap = document.getElementById('stage2-timer');
+        var timerDisplay = document.getElementById('stage2-timer-display');
+        var submitBtn = document.getElementById('submit-prototype-btn');
+        var proceedBtn = document.getElementById('proceed-anyway-btn');
+
+        if (!timerWrap || !timerDisplay) return;
+
+        timerWrap.classList.remove('hidden');
+        timerWrap.classList.add('flex');
+
+        stage2Timer = window.TimerUtils.init('STAGE_2_DURATION', timerDisplay, function () {
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            if (proceedBtn) {
+                proceedBtn.disabled = true;
+                proceedBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            var feedback = document.getElementById('upload-feedback');
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.innerHTML = '<span class="text-red-500">Time is up. Submission disabled.</span>';
+                feedback.className = 'mb-3 p-4 rounded-lg border border-red-500/50 bg-red-500/5 text-xs font-mono';
+            }
+        });
+
+        stage2Timer.start();
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         initTeamBadge();
         initSubmitPrototype();
+        if (window.TimerUtils) {
+            initTimer();
+        }
     });
 })();

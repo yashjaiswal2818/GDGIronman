@@ -24,7 +24,7 @@
 
     // If access control is disabled, exit early
     if (!ENABLE_ACCESS_CONTROL) {
-        console.log('🔓 Access control disabled for testing');
+        console.log('Access control disabled for testing');
         // Export functions for use in other scripts if needed
         window.auth = {
             isRegistered: function() { return true; },

@@ -6,6 +6,8 @@
     <title>J.A.R.V.I.S. Code Editor - Stark Industries</title>
     <!-- Access Control - Must load first -->
     <script src="auth.js"></script>
+    <!-- Timer Configuration - Must load before editor.js -->
+    <script src="timer-config.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@100;300;400;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -376,10 +378,10 @@ function stabilizeFlow(readings) {
                             <span class="text-green-500">➜</span> <span class="text-blue-400">~</span> <span class="text-slate-300">Running optimization_test_v1.0.2...</span>
                         </div>
                         <div class="flex items-center gap-2 text-green-400">
-                            <span class="text-green-500">✓</span> Test 01: Core Voltage Filter: [PASSED]
+                            <span class="text-green-500">[OK]</span> Test 01: Core Voltage Filter: [PASSED]
                         </div>
                         <div class="flex items-start gap-2 text-red-400 pt-1">
-                            <span class="text-red-500">✖</span>
+                            <span class="text-red-500">[FAIL]</span>
                             <div>
                                 Test 02: Variance Accuracy: [FAILED - 4% Deviation]<br/>
                                 <span class="opacity-70 text-[10px] ml-1">at RepulsorController.calibrate (line 14:15)</span>

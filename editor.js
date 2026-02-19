@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let isTerminalOpen = false;
     
-    // Timer configuration
-    const TIMER_DURATION = 7 * 60; // 5 minutes in seconds
+    // Timer configuration - uses timer-config.js
+    const TIMER_DURATION = (window.TIMER_CONFIG && window.TIMER_CONFIG.STAGE_1_DURATION) || 60; // Default 1 minute for testing
     let timeRemaining = TIMER_DURATION;
     let timerInterval = null;
     
@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isError) {
                 outputDiv.className = 'flex items-start gap-2 text-red-400 pt-1';
                 if (index === 0) {
-                    outputDiv.innerHTML = `<span class="text-red-500">✖</span> <span>${escapeHtml(line)}</span>`;
+                    outputDiv.innerHTML = `<span class="text-red-500">[FAIL]</span> <span>${escapeHtml(line)}</span>`;
                 } else {
                     outputDiv.className = 'text-red-400 pt-1 pl-5';
                     outputDiv.innerHTML = `<span>${escapeHtml(line)}</span>`;
@@ -557,13 +557,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Check if time is up
             if (timeRemaining <= 0) {
-                displayTerminalOutput('⏰ Time is up! Submission is disabled.', true);
+                displayTerminalOutput('Time is up. Submission disabled.', true);
                 return;
             }
             
             // Check if submit button is disabled
             if (submitBtn.disabled && submitBtn.textContent.includes('TIME UP')) {
-                displayTerminalOutput('⏰ Time is up! Submission is disabled.', true);
+                displayTerminalOutput('Time is up. Submission disabled.', true);
                 return;
             }
             
@@ -617,12 +617,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (output === expectedOutput) {
                                 passedTests++;
                                 if (isHidden) {
-                                    displayTerminalOutput(`✓ Test ${i + 1}: PASSED (hidden)`);
+                                    displayTerminalOutput(`[OK] Test ${i + 1}: PASSED (hidden)`);
                                 } else {
-                                    displayTerminalOutput(`✓ Test ${i + 1}: PASSED`);
+                                    displayTerminalOutput(`[OK] Test ${i + 1}: PASSED`);
                                 }
                             } else {
-                                displayTerminalOutput(`✖ Test ${i + 1}: FAILED`, true);
+                                displayTerminalOutput(`[FAIL] Test ${i + 1}: FAILED`, true);
                                 if (!isHidden) {
                                     displayTerminalOutput(`  Expected: ${expectedOutput}`);
                                     displayTerminalOutput(`  Got: ${output}`);
@@ -632,18 +632,18 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         } else if (result.status && result.status.id === 6) {
                             // Compilation Error
-                            displayTerminalOutput(`✖ Test ${i + 1}: COMPILATION ERROR`, true);
+                            displayTerminalOutput(`[FAIL] Test ${i + 1}: COMPILATION ERROR`, true);
                             displayTerminalOutput(`  ${result.compile_output || 'Unknown compilation error'}`);
                             break; // Stop testing if compilation fails
                         } else if (result.status && result.status.id === 7) {
                             // Runtime Error
-                            displayTerminalOutput(`✖ Test ${i + 1}: RUNTIME ERROR`, true);
+                            displayTerminalOutput(`[FAIL] Test ${i + 1}: RUNTIME ERROR`, true);
                             displayTerminalOutput(`  ${result.stderr || result.message || 'Unknown runtime error'}`);
                         } else {
-                            displayTerminalOutput(`✖ Test ${i + 1}: ${result.status?.description || 'FAILED'}`, true);
+                            displayTerminalOutput(`[FAIL] Test ${i + 1}: ${result.status?.description || 'FAILED'}`, true);
                         }
                     } catch (error) {
-                        displayTerminalOutput(`✖ Test ${i + 1}: ERROR - ${error.message}`, true);
+                        displayTerminalOutput(`[FAIL] Test ${i + 1}: ERROR - ${error.message}`, true);
                     }
                 }
                 
@@ -653,10 +653,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const status = allTestsPassed ? 'PASSED' : 'failed';
                 
                 if (allTestsPassed) {
-                    displayTerminalOutput(`✓ All tests passed! (${passedTests}/${totalTests})`);
+                    displayTerminalOutput(`[OK] All tests passed (${passedTests}/${totalTests})`);
                     displayTerminalOutput('Solution accepted!');
                 } else {
-                    displayTerminalOutput(`✖ Tests passed: ${passedTests}/${totalTests}`, true);
+                    displayTerminalOutput(`[FAIL] Tests passed: ${passedTests}/${totalTests}`, true);
                     displayTerminalOutput('Solution needs improvement.', true);
                 }
                 
@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     const submitResult = await submitResponse.json();
-                    displayTerminalOutput(`✓ Submission successful! Status: ${status}`);
+                    displayTerminalOutput(`[OK] Submission successful. Status: ${status}`);
                     if (submitResult.submission_id) {
                         displayTerminalOutput(`Submission ID: ${submitResult.submission_id}`);
                     }
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                 } catch (submitError) {
-                    displayTerminalOutput(`✖ Submission error: ${submitError.message}`, true);
+                    displayTerminalOutput(`[FAIL] Submission error: ${submitError.message}`, true);
                     console.error('Submission error:', submitError);
                 }
                 
@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.innerHTML = '<span class="material-icons-round text-[12px]">block</span><span class="hidden sm:inline">TIME UP</span>';
             }
             // Show notification
-            displayTerminalOutput('⏰ Time is up! Submission disabled.', true);
+            displayTerminalOutput('Time is up. Submission disabled.', true);
             return;
         }
         

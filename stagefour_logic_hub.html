@@ -89,6 +89,10 @@ BACK
 <p class="text-[10px] text-slate-400 uppercase tracking-widest">Uplink Status</p>
 <p class="text-sm font-mono text-primary">SECURE</p>
 </div>
+<div id="stage4-timer" class="hidden items-center gap-2 px-3 py-1.5 border border-primary/40 bg-black/50 text-primary font-mono text-xs rounded">
+<span class="material-symbols-outlined text-sm">timer</span>
+<span id="stage4-timer-display">00:00</span>
+</div>
 <div class="h-8 w-[1px] bg-slate-700"></div>
 </div>
 </header>
@@ -200,5 +204,7 @@ BACK
 </button>
 </footer>
 </div>
+<script src="timer-config.js"></script>
+<script src="timer-utils.js"></script>
 <script src="stage4.js"></script>
 </body></html>

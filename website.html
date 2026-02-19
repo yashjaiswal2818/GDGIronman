@@ -97,9 +97,15 @@
             <span class="material-icons text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
             <span>[BACK]</span>
         </a>
-        <div id="website-team-badge" class="hidden items-center gap-2 px-3 py-1.5 border border-hologram/40 bg-black/50 text-hologram font-mono text-xs rounded">
-            <span class="material-icons text-base">group</span>
-            <span id="display-team-name">—</span>
+        <div class="flex items-center gap-3">
+            <div id="stage2-timer" class="hidden items-center gap-2 px-3 py-1.5 border border-hologram/40 bg-black/50 text-hologram font-mono text-xs rounded">
+                <span class="material-icons text-base">timer</span>
+                <span id="stage2-timer-display">00:00</span>
+            </div>
+            <div id="website-team-badge" class="hidden items-center gap-2 px-3 py-1.5 border border-hologram/40 bg-black/50 text-hologram font-mono text-xs rounded">
+                <span class="material-icons text-base">group</span>
+                <span id="display-team-name">—</span>
+            </div>
         </div>
     </div>
 </nav>
@@ -218,5 +224,7 @@
 </footer>
 </main>
 
+<script src="timer-config.js"></script>
+<script src="timer-utils.js"></script>
 <script src="stage2.js"></script>
 </body></html>
