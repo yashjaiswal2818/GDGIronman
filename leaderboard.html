@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stark Industries Filtering Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "primary-glow": "#13a4ec80",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#050505",
+                        "stark-gold": "#ffd700",
+                        "stark-silver": "#c0c0c0",
+                        "stark-bronze": "#cd7f32",
+                        "glass": "rgba(255, 255, 255, 0.03)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Space Grotesk", "monospace"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glow-text {
+            text-shadow: 0 0 10px rgba(19, 164, 236, 0.5);
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(19, 164, 236, 0.15);
+        }
+        .gold-glow {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3) !important;
+        }
+        .silver-glow {
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.1);
+            border-color: rgba(192, 192, 192, 0.3) !important;
+        }
+        .bronze-glow {
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.1);
+            border-color: rgba(205, 127, 50, 0.3) !important;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen overflow-hidden flex flex-col relative selection:bg-primary selection:text-white">
+<!-- Background Grid Effect -->
+<div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-size: 40px 40px; background-image: linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px);"></div>
+<!-- Ambient Glows -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+<div class="absolute bottom-0 right-0 w-[500px] h-[400px] bg-blue-900/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+<!-- HUD Frame Corners -->
+<div class="fixed top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-primary/40 rounded-tl-lg pointer-events-none z-50"></div>
+<div class="fixed top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-primary/40 rounded-tr-lg pointer-events-none z-50"></div>
+<div class="fixed bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-primary/40 rounded-bl-lg pointer-events-none z-50"></div>
+<div class="fixed bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-primary/40 rounded-br-lg pointer-events-none z-50"></div>
+<!-- Main Content Wrapper -->
+<div class="relative z-10 flex flex-col h-screen p-8 md:p-12 lg:px-16 lg:py-10 max-w-[1600px] mx-auto w-full">
+<!-- Header Section -->
+<header class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+<div class="flex items-center gap-6">
+<a id="leaderboard-back-link" href="index.html" class="group flex items-center gap-2 text-primary/70 hover:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span class="text-sm tracking-widest font-medium">BACK</span>
+</a>
+<div class="h-6 w-px bg-white/10 mx-2"></div>
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-white glow-text leading-none">FILTERING RANKINGS</h1>
+<p class="text-xs text-primary/60 tracking-[0.2em] mt-1 font-mono">STARK INDUSTRIES // SECTOR 7 // BOOTCAMP</p>
+</div>
+</div>
+<div class="hidden md:flex flex-col items-end gap-1">
+<div class="flex items-center gap-2 text-primary/80">
+<span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></span>
+<span class="text-xs font-mono tracking-widest">SYSTEM ONLINE</span>
+</div>
+<div class="text-[10px] text-slate-500 font-mono">HUD V.42.0 // LATENCY: 12ms</div>
+</div>
+</header>
+<!-- Ranking Engine (Table) -->
+<main class="flex-1 flex flex-col relative overflow-hidden rounded-xl border border-white/10 bg-glass backdrop-blur-md shadow-2xl glow-border">
+<!-- Decorative header line -->
+<div class="h-1 w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/5 bg-white/[0.02] text-xs font-bold tracking-widest text-slate-400 select-none">
+<div class="col-span-1 text-center">RANK</div>
+<div class="col-span-5 md:col-span-4 pl-4">SQUAD NAME</div>
+<div class="col-span-3 md:col-span-4 text-center">STAGES CLEARED</div>
+<div class="col-span-3 text-right pr-4">LOGIC EFFICIENCY</div>
+</div>
+<!-- Table Body (Scrollable container) -->
+<div class="overflow-y-auto flex-1 custom-scrollbar pr-1">
+<!-- Rank 01: Gold -->
+<div class="group relative grid grid-cols-12 gap-4 px-6 py-5 items-center border-b border-white/5 hover:bg-white/[0.03] transition-all duration-300 cursor-default">
+<div class="absolute inset-x-2 inset-y-1 rounded-lg border border-transparent gold-glow opacity-60 group-hover:opacity-100 transition-opacity"></div>
+<div class="col-span-1 relative z-10 text-center">
+<span class="text-2xl font-bold text-stark-gold drop-shadow-[0_0_8px_rgba(255,215,0,0.4)]">01</span>
+</div>
+<div class="col-span-5 md:col-span-4 pl-4 relative z-10">
+<div class="text-white font-semibold tracking-wide text-lg">Squad Alpha</div>
+<div class="text-stark-gold/70 text-xs tracking-wider uppercase mt-0.5">Ldr: T. Stark</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5 relative z-10">
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<span class="ml-2 text-xs text-primary/80 font-mono">5/5</span>
+</div>
+<div class="col-span-3 text-right pr-4 relative z-10">
+<span class="text-xl font-bold text-white">99.8%</span>
+</div>
+</div>
+<!-- Rank 02: Silver -->
+<div class="group relative grid grid-cols-12 gap-4 px-6 py-5 items-center border-b border-white/5 hover:bg-white/[0.03] transition-all duration-300 cursor-default">
+<div class="absolute inset-x-2 inset-y-1 rounded-lg border border-transparent silver-glow opacity-40 group-hover:opacity-80 transition-opacity"></div>
+<div class="col-span-1 relative z-10 text-center">
+<span class="text-2xl font-bold text-stark-silver drop-shadow-[0_0_8px_rgba(192,192,192,0.4)]">02</span>
+</div>
+<div class="col-span-5 md:col-span-4 pl-4 relative z-10">
+<div class="text-white font-semibold tracking-wide text-lg">Squad War Machine</div>
+<div class="text-stark-silver/70 text-xs tracking-wider uppercase mt-0.5">Ldr: J. Rhodes</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5 relative z-10">
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<span class="ml-2 text-xs text-primary/80 font-mono">5/5</span>
+</div>
+<div class="col-span-3 text-right pr-4 relative z-10">
+<span class="text-xl font-bold text-white">97.2%</span>
+</div>
+</div>
+<!-- Rank 03: Bronze -->
+<div class="group relative grid grid-cols-12 gap-4 px-6 py-5 items-center border-b border-white/5 hover:bg-white/[0.03] transition-all duration-300 cursor-default">
+<div class="absolute inset-x-2 inset-y-1 rounded-lg border border-transparent bronze-glow opacity-40 group-hover:opacity-80 transition-opacity"></div>
+<div class="col-span-1 relative z-10 text-center">
+<span class="text-2xl font-bold text-stark-bronze drop-shadow-[0_0_8px_rgba(205,127,50,0.4)]">03</span>
+</div>
+<div class="col-span-5 md:col-span-4 pl-4 relative z-10">
+<div class="text-white font-semibold tracking-wide text-lg">Squad Vision</div>
+<div class="text-stark-bronze/70 text-xs tracking-wider uppercase mt-0.5">Ldr: V. Shade</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5 relative z-10">
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_#13a4ec]"></div>
+<div class="h-2 w-2 rounded-full bg-white/20"></div>
+<span class="ml-2 text-xs text-slate-400 font-mono">4/5</span>
+</div>
+<div class="col-span-3 text-right pr-4 relative z-10">
+<span class="text-xl font-bold text-white">94.5%</span>
+</div>
+</div>
+<!-- Rank 04–09 (abbreviated for brevity) -->
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">04</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Spider</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: P. Parker</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">4/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">91.0%</span></div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">05</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Widow</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: N. Romanoff</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">4/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">89.5%</span></div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">06</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Hawk</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: C. Barton</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">3/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">85.2%</span></div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">07</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Ant</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: S. Lang</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">3/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">82.1%</span></div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">08</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Wasp</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: H. van Dyne</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">3/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">80.4%</span></div>
+</div>
+<div class="grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-white/5 hover:bg-white/[0.03] transition-colors duration-200">
+<div class="col-span-1 text-center"><span class="text-lg font-medium text-slate-500 font-mono">09</span></div>
+<div class="col-span-5 md:col-span-4 pl-4">
+<div class="text-slate-200 font-medium tracking-wide">Squad Falcon</div>
+<div class="text-slate-500 text-xs tracking-wider uppercase mt-0.5">Ldr: S. Wilson</div>
+</div>
+<div class="col-span-3 md:col-span-4 flex justify-center items-center gap-1.5">
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-primary/70"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-white/10"></div>
+<span class="ml-2 text-xs text-slate-500 font-mono">2/5</span>
+</div>
+<div class="col-span-3 text-right pr-4"><span class="text-lg font-medium text-slate-300">76.3%</span></div>
+</div>
+</div>
+<!-- Table Footer Gradient -->
+<div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background-dark/80 to-transparent pointer-events-none"></div>
+</main>
+<!-- Footer Stats & Continue Button -->
+<footer class="mt-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 text-xs font-mono text-slate-500 tracking-wider">
+<div class="flex gap-8">
+<div>
+<span class="block text-primary/40 mb-1">TOTAL SQUADS</span>
+<span class="text-white text-base">42</span>
+</div>
+<div>
+<span class="block text-primary/40 mb-1">AVG EFFICIENCY</span>
+<span class="text-white text-base">82.4%</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block">
+<span class="block text-primary/40 mb-1">SERVER STATUS</span>
+<span class="text-primary flex items-center justify-end gap-2">OPTIMAL <span class="material-symbols-outlined text-sm">wifi</span></span>
+</div>
+<a id="leaderboard-continue-btn" href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 hover:bg-primary/20 border border-primary/40 text-primary font-bold tracking-widest uppercase text-xs rounded transition-all duration-300 hover:shadow-[0_0_20px_rgba(19,164,236,0.3)]">
+<span>CONTINUE</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</a>
+</div>
+</footer>
+</div>
+<script src="leaderboard.js"></script>
+</body></html>

@@ -184,16 +184,5 @@
 <!-- Background Decorative Image (Subtle Texture) -->
 <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none mix-blend-overlay" data-alt="Abstract dark technology circuit pattern texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4hxCtcL8ck_8gL2r0edgv_rbe37X_S6lc80-f8MWgwMAXnkUKFuL8d6wVq-yNLrZNUUiZ81fwuzvkxeWYWHpGLuYjfKUyvEyZxvpW0_WxPN1FIJbvw_bQlMvFWH8q4I9viyK4LO5_JHXTlJB2M6lPofxVr1X32eeYbRsC77eGxAtZ7MTgBEGVceiliXL322YjiiQ5LtGNAtOC1a7mRwyQHGaweNK6d35mqokfvwSLayYwoXjMZG5nd33HI6jd8THcAgZ62zbjs4eT'); background-size: cover; background-position: center;">
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var teamName = sessionStorage.getItem('teamName');
-        var badge = document.getElementById('stagetwo-team-badge');
-        var displayEl = document.getElementById('display-team-name');
-        if (teamName && badge && displayEl) {
-            displayEl.textContent = teamName;
-            badge.classList.remove('hidden');
-            badge.classList.add('flex');
-        }
-    });
-</script>
+<script src="stage2.js"></script>
 </body></html>

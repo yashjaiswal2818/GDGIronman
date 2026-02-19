@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Friday Logic Core Submission Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2b90d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a0a",
+                        "glass": "rgba(20, 20, 20, 0.7)",
+                        "glass-border": "rgba(242, 185, 13, 0.15)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                    boxShadow: {
+                        "glow": "0 0 20px rgba(242, 185, 13, 0.3)",
+                        "glow-sm": "0 0 10px rgba(242, 185, 13, 0.2)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f2b90d;
+        }
+
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display h-screen w-screen overflow-hidden flex flex-col">
+<!-- Background Effects -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+<div class="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vh] bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vh] bg-emerald-500/5 rounded-full blur-[120px]"></div>
+</div>
+<!-- Main Content Wrapper -->
+<div class="relative z-10 flex flex-col h-full w-full max-w-[1600px] mx-auto p-6 md:p-8 lg:p-10">
+<!-- Header Section -->
+<header class="flex items-center justify-between mb-8 shrink-0">
+<div class="flex items-center gap-4">
+<a href="stagefour.html" class="inline-flex items-center gap-2 text-slate-500 hover:text-primary text-[10px] font-bold tracking-[0.2em] uppercase transition-colors group">
+<span class="material-symbols-outlined !text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+BACK
+</a>
+<div class="size-10 flex items-center justify-center rounded border border-primary/30 bg-primary/10 text-primary shadow-glow-sm">
+<span class="material-symbols-outlined text-2xl">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-2xl font-bold tracking-widest text-white uppercase leading-none">Friday Logic Core</h1>
+<div class="flex items-center gap-2 mt-1">
+<span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<p class="text-xs text-primary font-medium tracking-[0.2em] uppercase">Stage 04 // Online</p>
+</div>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase tracking-widest">System Latency</p>
+<p class="text-sm font-mono text-emerald-400">12ms</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase tracking-widest">Uplink Status</p>
+<p class="text-sm font-mono text-primary">SECURE</p>
+</div>
+<div class="h-8 w-[1px] bg-slate-700"></div>
+
+</div>
+</header>
+<!-- Main Workspace (Dual Pane) -->
+<main class="flex-1 flex gap-6 min-h-0">
+<!-- Left Pane: Tactile Conditions -->
+<section class="flex-1 flex flex-col bg-glass backdrop-blur-md border border-glass-border rounded-xl overflow-hidden shadow-2xl relative group">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50"></div>
+<div class="p-6 border-b border-white/5 flex items-center justify-between">
+<h2 class="text-lg font-bold tracking-wider text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">hub</span>
+                        TACTILE CONDITIONS
+                    </h2>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-1 rounded border border-primary/20 tracking-widest">INPUT_MODE</span>
+</div>
+<div class="flex-1 p-6 overflow-y-auto flex flex-col gap-6">
+<!-- Logic Block 1 -->
+<div class="bg-black/40 border border-white/10 rounded-lg p-5 hover:border-primary/40 transition-colors duration-300">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-mono text-slate-400">LOGIC_NODE_01</span>
+<span class="material-symbols-outlined text-slate-600 text-sm cursor-pointer hover:text-white">close</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] uppercase tracking-widest text-primary font-bold">If (Condition)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-sm">data_object</span>
+<input class="logic-condition w-full bg-[#151515] border border-slate-700 rounded text-sm text-white pl-9 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary placeholder-slate-600 font-mono transition-all" type="text" value="threat_level &gt; 8"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold">Then (Action)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-sm">bolt</span>
+<input class="logic-action w-full bg-[#151515] border border-slate-700 rounded text-sm text-white pl-9 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder-slate-600 font-mono transition-all" type="text" value="initiate_protocol('veronica')"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Logic Block 2 -->
+<div class="bg-black/40 border border-white/10 rounded-lg p-5 hover:border-primary/40 transition-colors duration-300">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-mono text-slate-400">LOGIC_NODE_02</span>
+<span class="material-symbols-outlined text-slate-600 text-sm cursor-pointer hover:text-white">close</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-[10px] uppercase tracking-widest text-primary font-bold">If (Condition)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-sm">data_object</span>
+<input class="logic-condition w-full bg-[#151515] border border-slate-700 rounded text-sm text-white pl-9 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary placeholder-slate-600 font-mono transition-all" type="text" value="suit_integrity &lt; 20%"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold">Then (Action)</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-sm">bolt</span>
+<input class="logic-action w-full bg-[#151515] border border-slate-700 rounded text-sm text-white pl-9 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 placeholder-slate-600 font-mono transition-all" type="text" value="reroute_power('auxiliary')"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Add New Node Button -->
+<button class="w-full py-3 border border-dashed border-slate-700 rounded text-slate-500 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-xs tracking-widest uppercase font-bold">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Add Logic Node
+                    </button>
+</div>
+</section>
+<!-- Right Pane: Tactical Response -->
+<section class="flex-1 flex flex-col bg-glass backdrop-blur-md border border-glass-border rounded-xl overflow-hidden shadow-2xl relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-50"></div>
+<div class="p-6 border-b border-white/5 flex items-center justify-between">
+<h2 class="text-lg font-bold tracking-wider text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-400 text-sm">terminal</span>
+                        TACTICAL RESPONSE
+                    </h2>
+<span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded border border-emerald-500/20 tracking-widest">LOGS_ACTIVE</span>
+</div>
+<div class="flex-1 p-6 flex flex-col relative">
+<!-- Editor Container -->
+<div class="flex-1 bg-black/60 border border-white/10 rounded-lg p-4 font-mono text-sm leading-relaxed text-slate-300 relative overflow-hidden focus-within:border-emerald-500/50 transition-colors">
+<div class="absolute left-0 top-4 bottom-4 w-10 text-right pr-3 text-slate-700 select-none border-r border-slate-800 leading-relaxed font-mono text-xs">
+                            1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12
+                        </div>
+<textarea id="tactical-rationale" class="w-full h-full bg-transparent border-none resize-none focus:ring-0 pl-10 text-sm leading-relaxed placeholder-slate-600/50 text-emerald-50" placeholder="// Enter tactical rationale regarding decision trees...
+// Explain prioritizing 'Veronica' protocol over standard evasion.
+// "></textarea>
+</div>
+<div class="mt-4 flex items-center justify-between text-[10px] uppercase tracking-wider text-slate-500">
+<div class="flex items-center gap-2">
+<span class="size-1.5 bg-emerald-500 rounded-full"></span>
+<span>Autosave Enabled</span>
+</div>
+<span>Ln 1, Col 1</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer / CTA Section -->
+<footer class="mt-8 shrink-0 flex flex-col items-center justify-center relative gap-2">
+<div id="stage4-feedback" class="hidden text-xs font-mono"></div>
+<div class="absolute h-[1px] w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent top-1/2 -z-10"></div>
+<button id="initialize-uplink-btn" type="button" class="group relative flex items-center justify-center gap-3 bg-black border border-primary text-primary px-12 py-4 rounded hover:bg-primary hover:text-black transition-all duration-300 shadow-glow overflow-hidden cursor-pointer">
+<div class="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<span class="material-symbols-outlined text-xl transition-transform group-hover:rotate-90">settings_power</span>
+<span class="text-sm font-bold tracking-[0.2em] uppercase relative z-10">Initialize Logic Uplink</span>
+<span class="material-symbols-outlined text-xl transition-transform group-hover:-rotate-90">settings_power</span>
+</button>
+</footer>
+</div>
+<script src="stage4.js"></script>
+</body></html>
