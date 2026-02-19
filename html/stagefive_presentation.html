@@ -4,7 +4,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Stark OS v8.5 Elite Hub with Navigation</title>
 <!-- Access Control - Must load first -->
-<script src="auth.js"></script>
+<script src="../js/auth.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -219,6 +219,10 @@
 <span class="w-1.5 h-1.5 rounded-full bg-stark-red animate-pulse"></span>
 <span class="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase">Secure</span>
 </div>
+<div id="stage5-timer" class="hidden items-center gap-2 px-3 py-1.5 border border-stark-blue/40 bg-black/50 text-stark-blue font-mono text-xs rounded">
+<span class="material-symbols-outlined text-sm">timer</span>
+<span id="stage5-timer-display">00:00</span>
+</div>
 <div class="text-right hidden md:block">
 <p class="text-[9px] text-white/30 tracking-widest uppercase">Protocol</p>
 <p class="text-xs font-bold text-stark-blue">INNOVATION PITCH</p>
@@ -363,5 +367,10 @@
 </div>
 </div>
 </main>
-<script src="stagefive_presentation.js"></script>
+<script src="../js/api-config.js"></script>
+<script src="../js/form-utils.js"></script>
+<script src="../js/ui-utils.js"></script>
+<script src="../js/timer-config.js"></script>
+<script src="../js/timer-utils.js"></script>
+<script src="../js/stagefive_presentation.js"></script>
 </body></html>

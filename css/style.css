@@ -5,18 +5,19 @@
 
     /* Cinematic Stage Colors */
     --stage-1-color: #f2b90d;
-    /* Yellow */
     --stage-2-color: #06f9f9;
-    /* Cyan */
     --stage-3-color: #f20d0d;
-    /* Red */
     --stage-4-cyan: #00f3ff;
     --stage-4-gold: #ffd700;
     --stage-5-cyan: #00f0ff;
 
     --bg-color: #050505;
 
-    --bg-color: #050505;
+    /* Robustness: safe areas, touch targets */
+    --touch-target-min: 44px;
+    --safe-area-inset: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+    --transition-fast: 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-normal: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 * {
@@ -25,14 +26,56 @@
     box-sizing: border-box;
 }
 
+/* Prevent text overflow on narrow viewports */
+p,
+.card-description {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+html {
+    overflow-x: clip;
+    scrollbar-gutter: stable;
+}
+
+/* Smooth scrolling - respect user preference */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 body {
     background-color: var(--bg-color);
     color: white;
     font-family: 'Rajdhani', sans-serif;
-    overflow-x: hidden;
-    height: 100vh;
-    width: 100vw;
+    overflow-x: clip;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    max-width: 100vw;
     cursor: default;
+}
+
+/* Skip link for accessibility - visible on focus */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 10000;
+    padding: 0.75rem 1.25rem;
+    background: var(--hud-color);
+    color: #050505;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 1rem;
+    outline: 3px solid white;
+    outline-offset: 2px;
 }
 
 /* Custom cursor for interactive elements */
@@ -43,9 +86,27 @@ button,
     cursor: pointer;
 }
 
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
+/* Accessibility: visible focus for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+.btn-stark:focus-visible,
+.btn-register:focus-visible,
+.stage-card:focus-visible,
+.register-card .register-cta-btn:focus-visible {
+    outline: 3px solid var(--hud-color);
+    outline-offset: 3px;
+}
+
+/* Ensure focus ring isn't clipped by overflow:hidden on cards */
+.stage-card:focus-visible {
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling - respect user preference */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 
@@ -77,6 +138,9 @@ html {
     padding-bottom: 25vh;
     align-items: center;
     scroll-margin-top: 60px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 /* ========== Navbar ========== */
@@ -397,55 +461,205 @@ html {
     margin-top: 0.5rem;
 }
 
-/* ========== About Section ========== */
-.section-about .section-header {
-    margin-bottom: 1.5rem;
-}
-
-.section-about .section-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: rgba(242, 185, 13, 0.8);
-    margin-bottom: 0.25rem;
-    text-transform: uppercase;
-}
-
-.section-about .section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-}
-
-.section-body {
+/* ========== About Section (Neobrutalist card - same style as stage cards) ========== */
+.section-about {
     display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+    justify-content: center;
 }
 
-.about-description {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 1.05rem;
-    line-height: 1.6;
+.about-card {
+    --primary: #f2b90d;
+    --primary-hover: #ffe082;
+    --secondary: #f2b90d;
+    --secondary-hover: #ffe082;
+    --accent: #ffecb3;
 }
 
-.objectives-section {
-    margin-top: 1rem;
+@supports (color: color-mix(in srgb, red, blue)) {
+    .about-card {
+        --primary-hover: color-mix(in srgb, #f2b90d 85%, white);
+        --secondary-hover: color-mix(in srgb, #f2b90d 85%, white);
+        --accent: color-mix(in srgb, #f2b90d 70%, white);
+    }
 }
 
-.objectives-title {
+.about-card {
+    --text: #050505;
+    --bg: #ffffff;
+    --shadow-color: #000000;
+    --pattern-color: #cfcfcf;
+
+    position: relative;
+    width: 100%;
+    max-width: 28em;
+    background: var(--bg);
+    border: 0.35em solid var(--text);
+    border-radius: 0.6em;
+    box-shadow:
+        0.7em 0.7em 0 var(--shadow-color),
+        inset 0 0 0 0.15em rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    font-family: 'Orbitron', 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+    transform-origin: center;
+}
+
+.about-card:hover {
+    transform: translate(-0.4em, -0.4em) scale(1.02);
+    box-shadow: 1em 1em 0 var(--shadow-color);
+}
+
+.about-card:hover .card-pattern-grid,
+.about-card:hover .card-overlay-dots {
+    opacity: 1;
+}
+
+.about-card:active {
+    transform: translate(0.1em, 0.1em) scale(0.98);
+    box-shadow: 0.5em 0.5em 0 var(--shadow-color);
+}
+
+.about-card::before {
+    content: "";
+    position: absolute;
+    top: -1em;
+    right: -1em;
+    width: 4em;
+    height: 4em;
+    background: var(--accent);
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.about-card::after {
+    content: "★";
+    position: absolute;
+    top: 0.4em;
+    right: 0.4em;
+    color: var(--text);
+    font-size: 1.2em;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.about-card .card-pattern-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 0.5em 0.5em;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.about-card .card-overlay-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+    background-size: 1em 1em;
+    background-position: -0.5em -0.5em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.about-card .bold-pattern {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6em;
+    height: 6em;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.about-card .card-title-area {
+    position: relative;
+    padding: 1.4em;
+    background: var(--primary);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.35em solid var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.about-card .card-title-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 0.5em, transparent 0.5em, transparent 1em);
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.about-card .card-tag {
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.6em;
+    font-weight: 800;
+    padding: 0.4em 0.8em;
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0 var(--shadow-color);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(3deg);
+    transition: all 0.3s ease;
+}
+
+.about-card:hover .card-tag {
+    transform: rotate(-2deg) scale(1.1);
+    box-shadow: 0.25em 0.25em 0 var(--shadow-color);
+}
+
+.about-card .card-body {
+    position: relative;
+    padding: 1.5em;
+    z-index: 2;
+}
+
+.about-card .card-description {
+    margin-bottom: 1.5em;
+    color: var(--text);
+    font-size: 0.95em;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.about-card .card-description .highlight {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.about-card .objectives-section {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.about-card .objectives-title {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2em;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
 }
 
-.objectives-list {
+.about-card .objectives-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -453,53 +667,122 @@ html {
     flex-direction: column;
     gap: 0.5rem;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text);
 }
 
-.objectives-list .bullet {
-    color: var(--hud-color);
+.about-card .objectives-list .bullet {
+    color: var(--primary);
     margin-right: 0.5rem;
 }
 
-.target-audience .code-module {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+.about-card .target-audience .code-module {
+    background: rgba(0, 0, 0, 0.06);
+    border: 0.2em solid var(--text);
+    border-radius: 0.4em;
     overflow: hidden;
+    box-shadow: 0.2em 0.2em 0 rgba(0, 0, 0, 0.2);
 }
 
-.code-header {
+.about-card .code-header {
     padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--primary);
+    border-bottom: 0.2em solid var(--text);
 }
 
-.code-filename {
+.about-card .code-filename {
     font-family: 'Orbitron', sans-serif;
     font-size: 0.75rem;
-    color: var(--hud-color);
+    font-weight: 700;
+    color: var(--bg);
 }
 
-.code-body {
+.about-card .code-body {
     padding: 1rem;
+    background: rgba(0, 0, 0, 0.04);
 }
 
-.code-line {
-    font-family: 'Rajdhani', sans-serif;
+.about-card .code-line {
+    font-family: 'Rajdhani', 'Courier New', monospace;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text);
     margin-bottom: 0.25rem;
 }
 
-.line-num {
-    color: rgba(255, 255, 255, 0.4);
+.about-card .line-num {
+    color: rgba(0, 0, 0, 0.5);
     margin-right: 0.75rem;
+}
+
+.about-card .dots-pattern {
+    position: absolute;
+    bottom: 2em;
+    left: -2em;
+    width: 8em;
+    height: 4em;
+    opacity: 0.3;
+    transform: rotate(-10deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.about-card .accent-shape {
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    background: var(--secondary);
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    transform: rotate(45deg);
+    bottom: -1.2em;
+    right: 2em;
+    z-index: 0;
+    transition: transform 0.3s ease;
+}
+
+.about-card:hover .accent-shape {
+    transform: rotate(55deg) scale(1.1);
+}
+
+.about-card .stamp {
+    position: absolute;
+    bottom: 1.5em;
+    left: 1.5em;
+    width: 4em;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.15em solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.about-card .stamp-text {
+    font-size: 0.6em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.about-card .corner-slice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--bg);
+    border-right: 0.25em solid var(--text);
+    border-top: 0.25em solid var(--text);
+    border-radius: 0 0.5em 0 0;
+    z-index: 1;
 }
 
 /* ========== Stages Section ========== */
 .section-stages {
     width: 100%;
-    max-width: 1000px;
+    max-width: 100%;
 }
 
 .stages-header {
@@ -526,215 +809,770 @@ html {
 }
 
 .stages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding-left: max(1.5rem, calc(50vw - 500px));
+    padding-right: max(1.5rem, calc(50vw - 500px));
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+/* Stage cards - Uiverse neobrutalist design (adapted from seoulchik) */
+.stage-card {
+    --primary: var(--stage-primary, #f2b90d);
+    --primary-hover: #ffe082;
+    --secondary: var(--stage-primary, #f2b90d);
+    --secondary-hover: #ffe082;
+    --accent: #ffecb3;
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+    .stage-card {
+        --primary-hover: color-mix(in srgb, var(--primary) 85%, white);
+        --secondary-hover: color-mix(in srgb, var(--secondary) 85%, white);
+        --accent: color-mix(in srgb, var(--primary) 70%, white);
+    }
 }
 
 .stage-card {
+    --text: #050505;
+    --bg: #ffffff;
+    --shadow-color: #000000;
+    --pattern-color: #cfcfcf;
+
     position: relative;
-    background: linear-gradient(135deg, rgba(34, 30, 16, 0.95) 0%, rgba(20, 15, 10, 0.98) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 20em;
+    background: var(--bg);
+    border: 0.35em solid var(--text);
+    border-radius: 0.6em;
+    box-shadow:
+        0.7em 0.7em 0 var(--shadow-color),
+        inset 0 0 0 0.15em rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     overflow: hidden;
+    font-family: 'Orbitron', 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+    transform-origin: center;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
+
+.stage-card:nth-child(odd) {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.stage-card:nth-child(even) {
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .stage-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    transform: translate(-0.4em, -0.4em) scale(1.02);
+    box-shadow: 1em 1em 0 var(--shadow-color);
 }
 
-.stage-number {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.15);
-    line-height: 1;
-    margin-bottom: 0.75rem;
-}
-
-.stage-info {
-    position: relative;
-    z-index: 2;
-}
-
-.stage-name {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 0.35rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.stage-category {
-    font-size: 0.85rem;
-    color: var(--hud-color);
-    margin-bottom: 0.25rem;
-    font-weight: 500;
-}
-
-.stage-description {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.4;
-}
-
-.stage-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    border-radius: 0.75rem;
-}
-
-.stage-card:hover .stage-glow {
+.stage-card:hover .card-pattern-grid,
+.stage-card:hover .card-overlay-dots {
     opacity: 1;
 }
 
-.stage-glow-yellow {
-    background: linear-gradient(135deg, rgba(242, 185, 13, 0.2) 0%, transparent 100%);
+.stage-card:active {
+    transform: translate(0.1em, 0.1em) scale(0.98);
+    box-shadow: 0.5em 0.5em 0 var(--shadow-color);
 }
 
-.stage-glow-cyan {
-    background: linear-gradient(135deg, rgba(6, 249, 249, 0.2) 0%, transparent 100%);
+.stage-card::before {
+    content: "";
+    position: absolute;
+    top: -1em;
+    right: -1em;
+    width: 4em;
+    height: 4em;
+    background: var(--accent);
+    transform: rotate(45deg);
+    z-index: 1;
 }
 
-.stage-glow-red {
-    background: linear-gradient(135deg, rgba(242, 13, 13, 0.2) 0%, transparent 100%);
+.stage-card::after {
+    content: "★";
+    position: absolute;
+    top: 0.4em;
+    right: 0.4em;
+    color: var(--text);
+    font-size: 1.2em;
+    font-weight: bold;
+    z-index: 2;
 }
 
-.stage-glow-gold {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, transparent 100%);
+.stage-card .card-pattern-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 0.5em 0.5em;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+    z-index: 1;
 }
 
-.stage-card[data-stage="1"]:hover {
-    border-color: rgba(242, 185, 13, 0.5);
+.stage-card .card-overlay-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+    background-size: 1em 1em;
+    background-position: -0.5em -0.5em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
 }
 
-.stage-card[data-stage="2"]:hover {
-    border-color: rgba(6, 249, 249, 0.5);
+.stage-card .bold-pattern {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6em;
+    height: 6em;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.stage-card[data-stage="3"]:hover {
-    border-color: rgba(242, 13, 13, 0.5);
+.stage-card .card-title-area {
+    position: relative;
+    padding: 1.4em;
+    background: var(--primary);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.35em solid var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+    overflow: hidden;
 }
 
-.stage-card[data-stage="4"]:hover {
-    border-color: rgba(255, 215, 0, 0.5);
+.stage-card .card-title-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 0.5em, transparent 0.5em, transparent 1em);
+    pointer-events: none;
+    opacity: 0.3;
 }
 
-.stage-card[data-stage="5"]:hover {
-    border-color: rgba(6, 249, 249, 0.5);
+.stage-card .card-tag {
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.6em;
+    font-weight: 800;
+    padding: 0.4em 0.8em;
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0 var(--shadow-color);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(3deg);
+    transition: all 0.3s ease;
 }
 
-.stage-card[data-stage="1"] .stage-number {
-    color: rgba(242, 185, 13, 0.3);
+.stage-card:hover .card-tag {
+    transform: rotate(-2deg) scale(1.1);
+    box-shadow: 0.25em 0.25em 0 var(--shadow-color);
 }
 
-.stage-card[data-stage="2"] .stage-number {
-    color: rgba(6, 249, 249, 0.3);
+.stage-card .card-body {
+    position: relative;
+    padding: 1.5em;
+    z-index: 2;
 }
 
-.stage-card[data-stage="3"] .stage-number {
-    color: rgba(242, 13, 13, 0.3);
+.stage-card .card-description {
+    margin-bottom: 1.5em;
+    color: var(--text);
+    font-size: 0.95em;
+    line-height: 1.4;
+    font-weight: 500;
 }
 
-.stage-card[data-stage="4"] .stage-number {
-    color: rgba(255, 215, 0, 0.3);
+.stage-card .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin-bottom: 1.5em;
 }
 
-.stage-card[data-stage="5"] .stage-number {
-    color: rgba(6, 249, 249, 0.3);
+.stage-card .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    transition: transform 0.2s ease;
 }
 
-.stage-card[data-stage="1"] .stage-category {
-    color: rgba(242, 185, 13, 0.9);
+.stage-card .feature-item:hover {
+    transform: translateX(0.3em);
 }
 
-.stage-card[data-stage="2"] .stage-category {
-    color: rgba(6, 249, 249, 0.9);
+.stage-card .feature-icon {
+    width: 1.4em;
+    height: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--secondary);
+    border: 0.12em solid var(--text);
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
-.stage-card[data-stage="3"] .stage-category {
-    color: rgba(242, 13, 13, 0.9);
+.stage-card .feature-item:hover .feature-icon {
+    background: var(--secondary-hover);
+    transform: rotate(-5deg);
 }
 
-.stage-card[data-stage="4"] .stage-category {
-    color: rgba(255, 215, 0, 0.9);
+.stage-card .feature-icon svg {
+    width: 0.9em;
+    height: 0.9em;
+    fill: var(--bg);
 }
 
-.stage-card[data-stage="5"] .stage-category {
-    color: rgba(6, 249, 249, 0.9);
+.stage-card .feature-text {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text);
 }
 
-/* ========== Register CTA Section ========== */
+.stage-card .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.5em;
+    padding-top: 1.2em;
+    border-top: 0.15em dashed rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.stage-card .card-actions::before {
+    content: "✂";
+    position: absolute;
+    top: -0.8em;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+    background: var(--bg);
+    padding: 0 0.5em;
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.stage-card .card-button {
+    position: relative;
+    background: var(--secondary);
+    color: var(--bg);
+    font-size: 0.9em;
+    font-weight: 700;
+    padding: 0.7em 1.2em;
+    border: 0.2em solid var(--text);
+    border-radius: 0.4em;
+    box-shadow: 0.3em 0.3em 0 var(--shadow-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stage-card .card-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transition: left 0.6s ease;
+}
+
+.stage-card:hover .card-button {
+    background: var(--secondary-hover);
+    transform: translate(-0.1em, -0.1em);
+    box-shadow: 0.4em 0.4em 0 var(--shadow-color);
+}
+
+.stage-card:hover .card-button::before {
+    left: 100%;
+}
+
+.stage-card .card-button:active {
+    transform: translate(0.1em, 0.1em);
+    box-shadow: 0.15em 0.15em 0 var(--shadow-color);
+}
+
+.stage-card .dots-pattern {
+    position: absolute;
+    bottom: 2em;
+    left: -2em;
+    width: 8em;
+    height: 4em;
+    opacity: 0.3;
+    transform: rotate(-10deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.stage-card .accent-shape {
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    background: var(--secondary);
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    transform: rotate(45deg);
+    bottom: -1.2em;
+    right: 2em;
+    z-index: 0;
+    transition: transform 0.3s ease;
+}
+
+.stage-card:hover .accent-shape {
+    transform: rotate(55deg) scale(1.1);
+}
+
+.stage-card .stamp {
+    position: absolute;
+    bottom: 1.5em;
+    left: 1.5em;
+    width: 4em;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.15em solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.stage-card .stamp-text {
+    font-size: 0.6em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stage-card .corner-slice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--bg);
+    border-right: 0.25em solid var(--text);
+    border-top: 0.25em solid var(--text);
+    border-radius: 0 0.5em 0 0;
+    z-index: 1;
+}
+
+.stage-card[data-stage="1"] { --stage-primary: #f2b90d; }
+.stage-card[data-stage="2"] { --stage-primary: #06f9f9; }
+.stage-card[data-stage="3"] { --stage-primary: #f20d0d; }
+.stage-card[data-stage="4"] { --stage-primary: #ffd700; }
+.stage-card[data-stage="5"] { --stage-primary: #00f0ff; }
+
+/* ========== Register CTA Section (Neobrutalist card) ========== */
 .section-register {
     margin: 0 auto;
     width: 100%;
-    max-width: 600px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
-.register-content {
-    margin-bottom: 2rem;
+.register-card {
+    --primary: #ff0000;
+    --primary-hover: #ff6666;
+    --secondary: #ff0000;
+    --secondary-hover: #ff6666;
+    --accent: #ff9999;
 }
 
-.section-register .register-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: rgba(255, 0, 0, 0.7);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
+@supports (color: color-mix(in srgb, red, blue)) {
+    .register-card {
+        --primary-hover: color-mix(in srgb, #ff0000 85%, white);
+        --secondary-hover: color-mix(in srgb, #ff0000 85%, white);
+        --accent: color-mix(in srgb, #ff0000 70%, white);
+    }
 }
 
-.section-register .register-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: white;
+.register-card {
+    --text: #050505;
+    --bg: #ffffff;
+    --shadow-color: #000000;
+    --pattern-color: #cfcfcf;
+
+    position: relative;
+    width: 100%;
+    max-width: 42em;
+    background: var(--bg);
+    border: 0.35em solid var(--text);
+    border-radius: 0.6em;
+    box-shadow:
+        0.7em 0.7em 0 var(--shadow-color),
+        inset 0 0 0 0.15em rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    font-family: 'Orbitron', 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+    transform-origin: center;
+}
+
+.register-card:hover {
+    transform: translate(-0.4em, -0.4em) scale(1.02);
+    box-shadow: 1em 1em 0 var(--shadow-color);
+}
+
+.register-card:hover .card-pattern-grid,
+.register-card:hover .card-overlay-dots {
+    opacity: 1;
+}
+
+.register-card:active {
+    transform: translate(0.1em, 0.1em) scale(0.98);
+    box-shadow: 0.5em 0.5em 0 var(--shadow-color);
+}
+
+.register-card::before {
+    content: "";
+    position: absolute;
+    top: -1em;
+    right: -1em;
+    width: 4em;
+    height: 4em;
+    background: var(--accent);
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.register-card::after {
+    content: "★";
+    position: absolute;
+    top: 0.4em;
+    right: 0.4em;
+    color: var(--text);
+    font-size: 1.2em;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.register-card .card-pattern-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 0.5em 0.5em;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.register-card .card-overlay-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+    background-size: 1em 1em;
+    background-position: -0.5em -0.5em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.register-card .bold-pattern {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6em;
+    height: 6em;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.register-card .card-title-area {
+    position: relative;
+    padding: 1.4em;
+    background: var(--primary);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.35em solid var(--text);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    z-index: 2;
+    overflow: hidden;
 }
 
-.register-description {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 500px;
-    margin: 0 auto 1.5rem;
+.register-card .card-title-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 0.5em, transparent 0.5em, transparent 1em);
+    pointer-events: none;
+    opacity: 0.3;
 }
 
-.section-register .btn-register {
+.register-card .card-tag {
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.6em;
+    font-weight: 800;
+    padding: 0.4em 0.8em;
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0 var(--shadow-color);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(3deg);
+    transition: all 0.3s ease;
+}
+
+.register-card:hover .card-tag {
+    transform: rotate(-2deg) scale(1.1);
+    box-shadow: 0.25em 0.25em 0 var(--shadow-color);
+}
+
+.register-card .card-body {
+    position: relative;
+    padding: 1.5em;
+    z-index: 2;
+}
+
+.register-card .card-description {
+    margin-bottom: 1.5em;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.register-card .register-cta-btn {
+    position: relative;
+    background: var(--secondary);
+    color: var(--bg);
+    font-size: 1em;
+    font-weight: 700;
+    padding: 0.9em 1.5em;
+    border: 0.2em solid var(--text);
+    border-radius: 0.4em;
+    box-shadow: 0.3em 0.3em 0 var(--shadow-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    width: 100%;
+    max-width: 20em;
+    margin: 0 auto;
 }
 
-.register-footer {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+.register-card .register-cta-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transition: left 0.6s ease;
 }
 
-.register-note {
+.register-card:hover .register-cta-btn {
+    background: var(--secondary-hover);
+    transform: translate(-0.1em, -0.1em);
+    box-shadow: 0.4em 0.4em 0 var(--shadow-color);
+}
+
+.register-card:hover .register-cta-btn::before {
+    left: 100%;
+}
+
+.register-card .register-cta-btn:active {
+    transform: translate(0.1em, 0.1em);
+    box-shadow: 0.15em 0.15em 0 var(--shadow-color);
+}
+
+.register-card .register-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 0.15em dashed rgba(0, 0, 0, 0.15);
+}
+
+.register-card .register-note {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.6);
     letter-spacing: 0.1em;
+}
+
+.register-card .dots-pattern {
+    position: absolute;
+    bottom: 2em;
+    left: -2em;
+    width: 8em;
+    height: 4em;
+    opacity: 0.3;
+    transform: rotate(-10deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.register-card .accent-shape {
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    background: var(--secondary);
+    border: 0.15em solid var(--text);
+    border-radius: 0.3em;
+    transform: rotate(45deg);
+    bottom: -1.2em;
+    right: 2em;
+    z-index: 0;
+    transition: transform 0.3s ease;
+}
+
+.register-card:hover .accent-shape {
+    transform: rotate(55deg) scale(1.1);
+}
+
+.register-card .stamp {
+    position: absolute;
+    bottom: 1.5em;
+    left: 1.5em;
+    width: 4em;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.15em solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.register-card .stamp-text {
+    font-size: 0.6em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.register-card .corner-slice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--bg);
+    border-right: 0.25em solid var(--text);
+    border-top: 0.25em solid var(--text);
+    border-radius: 0 0.5em 0 0;
+    z-index: 1;
+}
+
+/* ========== Card robustness: responsive, reduced-motion, touch targets ========== */
+@media (max-width: 640px) {
+    .stages-grid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .stage-card:nth-child(odd),
+    .stage-card:nth-child(even) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .about-card,
+    .register-card {
+        max-width: calc(100% - 1rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section-about,
+    .section-register {
+        padding: 0 0.5rem;
+    }
+
+    .stages-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Touch targets: ensure buttons are at least 44px */
+.stage-card,
+.about-card,
+.register-card {
+    min-height: var(--touch-target-min);
+}
+
+.register-card .register-cta-btn,
+.stage-card .card-button {
+    min-height: var(--touch-target-min);
+    padding: 0.75em 1.25em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stage-card:hover,
+    .about-card:hover,
+    .register-card:hover {
+        transform: none;
+    }
+
+    .stage-card:hover .card-tag,
+    .about-card:hover .card-tag,
+    .register-card:hover .card-tag {
+        transform: none;
+    }
+
+    .stage-card:hover .accent-shape,
+    .about-card:hover .accent-shape,
+    .register-card:hover .accent-shape {
+        transform: rotate(45deg);
+    }
+
+    .stage-card .card-button::before,
+    .register-card .register-cta-btn::before {
+        transition: none;
+    }
 }
 
 .hud-section {
     pointer-events: auto;
-    /* Re-enable interaction for content cards */
 }
 
 .spacer {
@@ -1454,19 +2292,29 @@ html {
 
 .hud-section {
     position: relative;
-    /* Changed from absolute */
     width: 90%;
-    /* Mobile default */
     max-width: 600px;
-    /* Increased max width for better readability */
     margin-bottom: 0;
-    /* Gap handled by parent */
     pointer-events: auto;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
+}
+
+/* Card sections need full width for their internal layout */
+.section-about,
+.section-stages,
+.section-register {
+    max-width: 100%;
+    width: 100%;
 }
 
 .hud-section:hover {
     transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hud-section:hover {
+        transform: none;
+    }
 }
 
 

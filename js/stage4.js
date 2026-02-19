@@ -2,16 +2,15 @@
  * Stage 4: Friday Logic Core
  * Handles stagefour_logic_hub.html - Logic nodes + tactical rationale
  * Backend: POST /round_4 (JSON: Team_Name, structured_submission, status_4, question, score_4)
+ * Requires: api-config.js, form-utils.js
  */
 (function () {
     'use strict';
 
-    var API_BASE = 'http://127.0.0.1:8000';
-    var ROUND_4_ENDPOINT = API_BASE + '/round_4';
-    var TEST_TEAM_NAME = 'xyz';
+    var ROUND_4_ENDPOINT = (window.API_CONFIG && window.API_CONFIG.getUrl('round_4')) || 'http://127.0.0.1:8000/round_4';
 
     function getTeamName() {
-        return (sessionStorage.getItem('teamName') || '').trim() || TEST_TEAM_NAME;
+        return (window.FormUtils && window.FormUtils.getTeamName()) || (sessionStorage.getItem('teamName') || '').trim() || 'xyz';
     }
 
     function collectLogicNodes() {
@@ -66,7 +65,11 @@
             e.preventDefault();
 
             if (stage4Timer && stage4Timer.getRemaining() <= 0) {
-                showFeedback(feedbackEl, 'Time is up. Submission disabled.', true);
+                if (window.UIUtils) {
+                    window.UIUtils.showToast('Time is up. Submission disabled.', 'error', 3000);
+                } else {
+                    showFeedback(feedbackEl, 'Time is up. Submission disabled.', true);
+                }
                 return;
             }
 
@@ -90,9 +93,15 @@
                 score_4: score_4
             };
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl animate-pulse">hourglass_empty</span><span class="text-sm font-bold tracking-[0.2em] uppercase relative z-10">TRANSMITTING…</span>';
-            showFeedback(feedbackEl, 'Transmitting to backend…', false);
+            var matrixLoader = null;
+            if (window.UIUtils) {
+                window.UIUtils.setButtonLoading(submitBtn, true, 'TRANSMITTING…');
+                matrixLoader = window.UIUtils.showMatrixLoader('TRANSMITTING');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl animate-pulse">hourglass_empty</span><span class="text-sm font-bold tracking-[0.2em] uppercase relative z-10">TRANSMITTING…</span>';
+                showFeedback(feedbackEl, 'Transmitting to backend…', false);
+            }
 
             fetch(ROUND_4_ENDPOINT, {
                 method: 'POST',
@@ -101,23 +110,41 @@
             })
                 .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, status: res.status, data: data }; }); })
                 .then(function (result) {
+                    if (matrixLoader) matrixLoader.remove();
                     if (result.ok) {
-                        showFeedback(feedbackEl, 'Submitted successfully.', false);
+                        if (window.UIUtils) {
+                            window.UIUtils.showToast('Submitted successfully.', 'success', 2000);
+                            window.UIUtils.setButtonLoading(submitBtn, false);
+                        } else {
+                            showFeedback(feedbackEl, 'Submitted successfully.', false);
+                        }
                         if (stage4Timer) stage4Timer.stop();
                         setTimeout(function () {
                             window.location.href = 'leaderboard.html?from=4';
-                        }, 800);
+                        }, 1500);
                     } else {
-                        var msg = (result.data && result.data.detail) ? (typeof result.data.detail === 'string' ? result.data.detail : JSON.stringify(result.data.detail)) : 'Submission failed: ' + result.status;
-                        showFeedback(feedbackEl, msg, true);
-                        submitBtn.disabled = false;
-                        resetSubmitButton(submitBtn);
+                        var msg = (window.FormUtils && window.FormUtils.parseApiError(result.data, result.status)) || 'Submission failed: ' + result.status;
+                        if (window.UIUtils) {
+                            window.UIUtils.showToast(msg, 'error', 4000);
+                            window.UIUtils.setButtonLoading(submitBtn, false);
+                        } else {
+                            showFeedback(feedbackEl, msg, true);
+                            submitBtn.disabled = false;
+                            resetSubmitButton(submitBtn);
+                        }
                     }
                 })
                 .catch(function (err) {
-                    showFeedback(feedbackEl, 'Network error: ' + (err.message || 'Could not reach server.'), true);
-                    submitBtn.disabled = false;
-                    resetSubmitButton(submitBtn);
+                    if (matrixLoader) matrixLoader.remove();
+                    var errMsg = 'Network error: ' + (err.message || 'Could not reach server.');
+                    if (window.UIUtils) {
+                        window.UIUtils.showToast(errMsg, 'error', 4000);
+                        window.UIUtils.setButtonLoading(submitBtn, false);
+                    } else {
+                        showFeedback(feedbackEl, errMsg, true);
+                        submitBtn.disabled = false;
+                        resetSubmitButton(submitBtn);
+                    }
                 });
         });
     }

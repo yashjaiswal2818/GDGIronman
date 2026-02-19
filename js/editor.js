@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeRemaining = TIMER_DURATION;
     let timerInterval = null;
     
-    // Backend API configuration
-    const API_BASE_URL = 'http://localhost:8000'; // Base URL for the API
+    // Backend API configuration - uses api-config.js when available
+    const API_BASE_URL = (window.API_CONFIG && window.API_CONFIG.BASE_URL) || 'http://127.0.0.1:8000';
     const JUDGE0_API = 'https://ce.judge0.com/submissions?wait=true&base64_encoded=false';
     
     // Language configuration

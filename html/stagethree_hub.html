@@ -96,7 +96,7 @@ BACK
 </div>
 </div>
 <div class="p-4 grid gap-3 overflow-y-auto min-h-0 flex-1">
-<div class="group">
+<div class="group form-group">
 <div class="flex items-center justify-between mb-1.5">
 <label class="text-xs font-bold tracking-widest text-slate-300 flex items-center gap-1.5">
 <span class="material-symbols-outlined text-primary !text-[16px]">link</span>
@@ -114,16 +114,16 @@ BACK
 </div>
 </div>
 </div>
-<div class="group">
+<div class="group form-group">
 <div class="flex items-center justify-between mb-1.5">
 <label class="text-xs font-bold tracking-widest text-slate-300 flex items-center gap-1.5">
 <span class="material-symbols-outlined text-primary !text-[16px]">image</span>
                             INTERFACE SCHEMATICS
                         </label>
-<span class="text-[9px] text-slate-500 font-mono">PNG/JPG (MAX 25MB)</span>
+<span class="text-[9px] text-slate-500 font-mono">PNG/JPG (MAX 10MB)</span>
 </div>
 <input id="interface-schematics" type="file" multiple accept="image/*,.png,.jpg,.jpeg,.webp" class="hidden"/>
-<div id="upload-area" class="relative w-full h-20 rounded border border-dashed border-[#345565] bg-[#15232b]/50 hover:bg-[#1a2a32]/80 hover:border-primary/50 transition-all cursor-pointer flex flex-col items-center justify-center gap-1 group-hover:shadow-[0_0_15px_rgba(71,180,235,0.05)]">
+<div id="upload-area" class="relative w-full h-20 rounded border border-dashed border-[#345565] bg-[#15232b]/50 hover:bg-[#1a2a32]/80 hover:border-primary/50 transition-all cursor-pointer flex flex-col items-center justify-center gap-1 group-hover:shadow-[0_0_15px_rgba(71,180,235,0.05)] ui-drag-drop">
 <div class="h-6 w-6 rounded-full bg-[#111c22] border border-[#243b47] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
 <span class="material-symbols-outlined text-primary !text-[14px]">cloud_upload</span>
 </div>
@@ -147,7 +147,7 @@ BACK
 <span class="material-symbols-outlined text-primary !text-[16px]">description</span>
                             TACTICAL RATIONALE
                         </label>
-<span class="text-[9px] text-slate-500 font-mono">0/500</span>
+<span id="tactical-rationale-count" class="text-[9px] text-slate-500 font-mono">0/500</span>
 </div>
 <div class="relative">
 <textarea id="tactical-rationale" class="w-full bg-[#0d1418]/80 border border-[#243b47] text-white text-xs font-body rounded p-2.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none placeholder-slate-600" placeholder="Brief protocol description detailing design decisions..." rows="2"></textarea>
@@ -165,17 +165,19 @@ BACK
 </div>
 <div id="stage3-feedback" class="hidden text-xs font-mono"></div>
 </div>
-<button id="transmit-data-btn" type="button" class="w-full sm:w-auto relative group overflow-hidden rounded bg-primary px-8 py-2.5 text-[#111c22] font-bold text-xs tracking-widest transition-all hover:bg-[#72cbf7] hover:shadow-neon focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#111c22] inline-flex justify-center cursor-pointer">
-<span class="relative z-10 flex items-center justify-center gap-2">
-                        TRANSMIT DATA
-                        <span class="material-symbols-outlined !text-[16px] group-hover:translate-x-1 transition-transform">send</span>
+<button id="transmit-data-btn" type="button" class="ui-btn w-full sm:w-auto min-w-[10em] flex items-center justify-center gap-2">
+<span>
+<span class="material-symbols-outlined !text-[16px]">send</span>
+<span class="font-bold text-xs tracking-widest">TRANSMIT DATA</span>
 </span>
-<div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
 </button>
 </div>
 </div>
 </main>
-<script src="timer-config.js"></script>
-<script src="timer-utils.js"></script>
-<script src="stage3.js"></script>
+<script src="../js/api-config.js"></script>
+<script src="../js/form-utils.js"></script>
+<script src="../js/ui-utils.js"></script>
+<script src="../js/timer-config.js"></script>
+<script src="../js/timer-utils.js"></script>
+<script src="../js/stage3.js"></script>
 </body></html>

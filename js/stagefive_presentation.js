@@ -1,23 +1,29 @@
 /**
- * Stark OS v8.5 Elite Hub - Round 5 (Innovation Pitch) submission
- * Submits to POST http://127.0.0.1:8000/round_5
+ * Stage 5: Arc Reactor Pitch
+ * Handles stagefive_presentation.html - Innovation Pitch submission
+ * Backend: POST /round_5 (Team_Name, abstract, score_5, files)
+ * Requires: api-config.js, form-utils.js
  */
 (function () {
     'use strict';
 
-    const API_BASE = 'http://127.0.0.1:8000';
-    const ROUND_5_ENDPOINT = API_BASE + '/round_5';
+    var ROUND_5_ENDPOINT = (window.API_CONFIG && window.API_CONFIG.getUrl('round_5')) || 'http://127.0.0.1:8000/round_5';
 
-    const formEl = document.getElementById('round5-form');
-    const codenameEl = document.getElementById('round5-codename');
-    const abstractEl = document.getElementById('round5-abstract');
-    const filesInput = document.getElementById('round5-files');
-    const filesLabel = document.getElementById('round5-files-label');
-    const previewEl = document.getElementById('round5-preview');
-    const submitBtn = document.getElementById('round5-submit-btn');
-    const messageEl = document.getElementById('round5-message');
+    var formEl = document.getElementById('round5-form');
+    var codenameEl = document.getElementById('round5-codename');
+    var abstractEl = document.getElementById('round5-abstract');
+    var filesInput = document.getElementById('round5-files');
+    var filesLabel = document.getElementById('round5-files-label');
+    var previewEl = document.getElementById('round5-preview');
+    var submitBtn = document.getElementById('round5-submit-btn');
+    var messageEl = document.getElementById('round5-message');
 
     var previewObjectUrls = [];
+    var stage5Timer = null;
+
+    function getTeamName() {
+        return (window.FormUtils && window.FormUtils.getTeamName()) || (sessionStorage.getItem('teamName') || '').trim() || 'xyz';
+    }
 
     function showMessage(text, isError) {
         if (!messageEl) return;
@@ -89,15 +95,43 @@
         });
     }
 
+    function initTimer() {
+        var timerWrap = document.getElementById('stage5-timer');
+        var timerDisplay = document.getElementById('stage5-timer-display');
+        var submitBtn = document.getElementById('round5-submit-btn');
+
+        if (!timerWrap || !timerDisplay) return;
+
+        timerWrap.classList.remove('hidden');
+        timerWrap.classList.add('flex');
+
+        stage5Timer = window.TimerUtils.init('STAGE_5_DURATION', timerDisplay, function () {
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            if (messageEl) {
+                showMessage('Time is up. Submission disabled.', true);
+            }
+        });
+
+        stage5Timer.start();
+    }
+
     function handleSubmit(e) {
         if (e && e.preventDefault) e.preventDefault();
 
         (async function () {
-         //   var teamName = sessionStorage.getItem('teamName');
-         //   if (!teamName || !teamName.trim()) {
-              //  showMessage('Register first. No team name in //session.', true);
-             //   return;
-         //   }
+            if (stage5Timer && stage5Timer.getRemaining() <= 0) {
+                if (window.UIUtils) {
+                    window.UIUtils.showToast('Time is up. Submission disabled.', 'error', 3000);
+                } else {
+                    showMessage('Time is up. Submission disabled.', true);
+                }
+                return;
+            }
+
+            var teamName = getTeamName();
             var codename = codenameEl ? (codenameEl.value || '').trim() : '';
             if (!codename) {
                 showMessage('Project Codename is required.', true);
@@ -113,18 +147,31 @@
                 showMessage('Please upload at least one file (PDF, PPT, PPTX, KEY, or images).', true);
                 return;
             }
+            if (fileList.length > 0 && window.FormUtils && window.FormUtils.validateFileSize) {
+                var fs = window.FormUtils.validateFileSize(fileList);
+                if (!fs.valid) {
+                    showMessage(fs.message, true);
+                    return;
+                }
+            }
 
             var formData = new FormData();
-            formData.append('Team_Name', "xyz");
+            formData.append('Team_Name', teamName);
             formData.append('abstract', abstract);
             formData.append('score_5', '0');
             for (var i = 0; i < fileList.length; i++) {
                 formData.append('files', fileList[i]);
             }
 
-            submitBtn.disabled = true;
-            hideMessage();
-            showMessage('Transmitting...', false);
+            var matrixLoader = null;
+            if (window.UIUtils) {
+                window.UIUtils.setButtonLoading(submitBtn, true, 'Transmitting...');
+                matrixLoader = window.UIUtils.showMatrixLoader('TRANSMITTING');
+            } else {
+                submitBtn.disabled = true;
+                hideMessage();
+                showMessage('Transmitting...', false);
+            }
 
             try {
                 var res = await fetch(ROUND_5_ENDPOINT, {
@@ -132,15 +179,39 @@
                     body: formData
                 });
                 var data = await res.json().catch(function () { return {}; });
+                if (matrixLoader) matrixLoader.remove();
                 if (res.ok) {
-                    showMessage('Submitted successfully. ' + (data.urls && data.urls.length ? data.urls.length + ' file(s) uploaded.' : ''), false);
+                    var successMsg = 'Submitted successfully. ' + (data.urls && data.urls.length ? data.urls.length + ' file(s) uploaded.' : '');
+                    if (window.UIUtils) {
+                        window.UIUtils.showToast(successMsg, 'success', 2000);
+                        window.UIUtils.setButtonLoading(submitBtn, false);
+                    } else {
+                        showMessage(successMsg, false);
+                    }
+                    if (stage5Timer) stage5Timer.stop();
+                    setTimeout(function () {
+                        window.location.href = 'leaderboard.html?from=5';
+                    }, 1500);
                 } else {
-                    showMessage(data.detail || 'Submission failed: ' + res.status, true);
+                    var errMsg = data.detail || 'Submission failed: ' + res.status;
+                    if (window.UIUtils) {
+                        window.UIUtils.showToast(errMsg, 'error', 4000);
+                        window.UIUtils.setButtonLoading(submitBtn, false);
+                    } else {
+                        showMessage(errMsg, true);
+                        submitBtn.disabled = false;
+                    }
                 }
             } catch (err) {
-                showMessage('Network error: ' + (err.message || 'Could not reach server.'), true);
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
+                if (matrixLoader) matrixLoader.remove();
+                var netErr = 'Network error: ' + (err.message || 'Could not reach server.');
+                if (window.UIUtils) {
+                    window.UIUtils.showToast(netErr, 'error', 4000);
+                    window.UIUtils.setButtonLoading(submitBtn, false);
+                } else {
+                    showMessage(netErr, true);
+                    submitBtn.disabled = false;
+                }
             }
         })();
 
@@ -151,5 +222,9 @@
         formEl.addEventListener('submit', handleSubmit);
     } else if (submitBtn) {
         submitBtn.addEventListener('click', handleSubmit);
+    }
+
+    if (window.TimerUtils) {
+        initTimer();
     }
 })();

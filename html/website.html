@@ -133,7 +133,7 @@
 </div>
 
 <div class="command-box rounded-lg p-6 md:p-7 space-y-5">
-<div class="group">
+<div class="group form-group">
 <div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
     <span class="text-ingest-green font-semibold">[1]</span>
     <span class="material-symbols-outlined text-base">image</span>
@@ -142,7 +142,7 @@
 <input id="image-input" class="w-full bg-black/50 border border-white/10 rounded-md px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-hologram/50 focus:bg-black/70 transition-all font-mono" placeholder="file://path/to/image.jpg" type="file"/>
 </div>
 
-<div class="group">
+<div class="group form-group">
 <div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
     <span class="text-ingest-blue font-semibold">[2]</span>
     <span class="material-symbols-outlined text-base">language</span>
@@ -151,7 +151,7 @@
 <input id="web-url" class="w-full bg-black/50 border border-white/10 rounded-md px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-hologram/50 focus:bg-black/70 transition-all font-mono" placeholder="https://example.com" type="url"/>
 </div>
 
-<div class="group">
+<div class="group form-group">
 <div class="terminal-line text-xs text-white/60 mb-3 flex items-center gap-2.5 tracking-wide">
     <span class="text-ingest-purple font-semibold">[3]</span>
     <span class="material-symbols-outlined text-base">terminal</span>
@@ -207,9 +207,11 @@
 <span>PROCEED ANYWAY</span>
 </button>
 </div>
-<button id="submit-prototype-btn" class="w-full command-box rounded-lg py-4 px-5 text-sm font-mono text-white hover:text-hologram transition-all hover:border-hologram/50 flex items-center justify-center gap-2 group">
-<span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">send</span>
+<button id="submit-prototype-btn" type="button" class="ui-btn w-full max-w-xs mx-auto flex items-center justify-center gap-2">
+<span>
+<span class="material-symbols-outlined text-base">send</span>
 <span class="tracking-wide">SUBMIT THE PROTOTYPE</span>
+</span>
 </button>
 </div>
 </div>
@@ -224,7 +226,10 @@
 </footer>
 </main>
 
-<script src="timer-config.js"></script>
-<script src="timer-utils.js"></script>
-<script src="stage2.js"></script>
+<script src="../js/api-config.js"></script>
+<script src="../js/form-utils.js"></script>
+<script src="../js/ui-utils.js"></script>
+<script src="../js/timer-config.js"></script>
+<script src="../js/timer-utils.js"></script>
+<script src="../js/stage2.js"></script>
 </body></html>
