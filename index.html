@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#050505">
-    <title>Iron Man: Stark Industries Bootcamp</title>
+    <meta name="description" content="Iron Man: Stark Industries Bootcamp — A technical skill-development event by Google Developer Groups. Enhance problem-solving, logical reasoning, and design thinking through themed hands-on challenges.">
+    <title>Iron Man: Stark Industries Bootcamp | GDG Pillai College</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,12 +17,12 @@
 
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div id="loading-screen">
-        <div class="loader">
+    <div id="loading-screen" role="status" aria-live="polite" aria-label="Loading">
+        <div class="loader" aria-hidden="true">
             <div class="arc"></div>
             <div class="dodecahedron"></div>
         </div>
-        <div class="loading-text">INITIALIZING BOOTCAMP PROTOCOL...</div>
+        <div class="loading-text" aria-hidden="true">INITIALIZING BOOTCAMP PROTOCOL...</div>
         <div class="progress-bar">
             <div class="progress"></div>
         </div>
@@ -41,7 +42,7 @@
                 </h1>
                 <div class="hero-meta">
                     <span class="meta-label">ORGANIZED BY:</span>
-                    <span class="meta-value">GOOGLE DEVELOPER GROUPS</span>
+                    <span class="meta-value">GOOGLE DEVELOPERS GROUP ON CAMPUS. PILLAI COLLEGE OF ENGINEERING</span>
                     <span class="meta-separator">//</span>
                     <span class="meta-label">STATUS:</span>
                     <span class="meta-value">FILTERING CANDIDATES</span>
@@ -436,8 +437,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3 class="footer-title">ORGANIZED BY</h3>
-                <p class="footer-text">Google Developer Groups</p>
-                <p class="footer-subtext">On Campus Pillai College of Engineering</p>
+                <p class="footer-text">Google Developers Group on Campus. Pillai College of Engineering</p>
             </div>
             <div class="footer-section">
                 <h3 class="footer-title">EVENT</h3>
@@ -445,19 +445,19 @@
                 <p class="footer-subtext">"Stark Industries doesn't recruit... it filters."</p>
             </div>
             <div class="footer-section">
-                <h3 class="footer-title">CONNECT</h3>
+                <h3 class="footer-title">QUICK LINKS</h3>
                 <div class="footer-links">
-                    <a href="#" class="footer-link">Website</a>
+                    <a href="html/leaderboard.html" class="footer-link">Leaderboard</a>
+                    <a href="html/register.html" class="footer-link">Register</a>
                     <a href="https://www.instagram.com/gdgpce?igsh=cXZuenJtdTAwMmpn" target="_blank"
-                        class="footer-link">Social Media</a>
-                    <a href="#" class="footer-link">Contact</a>
+                        rel="noopener noreferrer" class="footer-link">Instagram</a>
                 </div>
             </div>
         </div>
 
     </footer>
 
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" aria-label="Main navigation">
         <a href="#home" class="navbar-logo">
             <svg version="1.1" id="GDSC" class="loaded navbar-logo-svg" data-name="GDSC"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950.62 464.86">
@@ -537,6 +537,10 @@
                     <line x1="75" y1="232.57" x2="352.62" y2="389.86" />
                 </g>
             </svg>
+            <div class="navbar-logo-text">
+                <span class="navbar-logo-title">Google Developers Group</span>
+                <span class="navbar-logo-subtitle">On Campus. Pillai College of Engineering</span>
+            </div>
         </a>
         <div id="navbar-team-badge" class="navbar-team-badge" style="display: none;">
             <span class="navbar-team-label">TEAM:</span>
@@ -574,6 +578,9 @@
                 </li>
                 <li class="menu-item">
                     <a href="#stages" class="menu-link">STAGES</a>
+                </li>
+                <li class="menu-item">
+                    <a href="html/leaderboard.html" class="menu-link">LEADERBOARD</a>
                 </li>
                 <li class="menu-item">
                     <a href="#register" class="menu-link">REGISTER</a>
@@ -652,13 +659,11 @@
             menuLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
                     const href = this.getAttribute('href');
-                    if (href.startsWith('#')) {
+                    closeMenu(); // Always close menu on nav click
+                    if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-
-                        // Close menu
-                        closeMenu();
 
                         if (targetElement) {
                             const offset = 0;

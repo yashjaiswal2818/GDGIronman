@@ -1,6 +1,7 @@
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.leaderboard import Leaderboard
+from models.model import Registration
 from models.round_2 import Round_2
 from models.round_3 import Round_3
 from models.round_4 import Round_4
@@ -8,10 +9,34 @@ from models.round_5 import Round_5
 
 
 async def get_records_desc(db: AsyncSession):
-    result = await db.execute(
-        select(Leaderboard).order_by(desc(Leaderboard.team_score))
-    )
-    records = result.scalars().all()
+    """
+    Get all registered teams with their scores, sorted by score descending.
+    Includes all registered teams, even if they haven't submitted anything (score = 0).
+    """
+    # Get all registered teams
+    registration_result = await db.execute(select(Registration))
+    all_teams = registration_result.scalars().all()
+    
+    # Get all leaderboard entries
+    leaderboard_result = await db.execute(select(Leaderboard))
+    leaderboard_dict = {entry.Team_Name: entry.team_score for entry in leaderboard_result.scalars().all()}
+    
+    # Create records for all registered teams with their scores
+    records = []
+    for team in all_teams:
+        team_name = team.Team_Name
+        score = leaderboard_dict.get(team_name, 0)  # Use 0 if no leaderboard entry exists
+        
+        # Create a dictionary matching Leaderboard model structure
+        record = {
+            "Team_Name": team_name,
+            "team_score": score
+        }
+        records.append(record)
+    
+    # Sort by score descending
+    records.sort(key=lambda x: x["team_score"], reverse=True)
+    
     return records
 
 

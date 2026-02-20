@@ -4,6 +4,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Mark UI Design Bay Elite Briefing</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/back-button.css"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -78,10 +79,13 @@
 <nav class="relative z-50 px-8 py-6">
 <div class="max-w-7xl mx-auto flex items-center justify-between">
 <div class="flex items-center gap-3">
-<a href="stagetwo.html" class="inline-flex items-center gap-2 text-white/60 hover:text-primary text-[10px] font-bold tracking-[0.2em] uppercase transition-colors group">
-<span class="material-symbols-outlined !text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
-BACK
+<a href="stagetwo.html" class="back-btn back-btn-stage3">
+    <p class="text">BACK</p>
 </a>
+</div>
+<div id="stagethree-team-badge" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-symbols-outlined !text-xs">group</span>
+    <span id="display-team-name">—</span>
 </div>
 </div>
 </nav>
@@ -202,5 +206,16 @@ BACK
 </div>
 </div>
 </footer>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('stagethree-team-badge');
+        var displayEl = document.getElementById('display-team-name');
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
 </body></html>

@@ -14,12 +14,6 @@
 (function () {
     'use strict';
 
-    // ============================================
-    // TIMER CONFIGURATION - Modify these values
-    // ============================================
-    
-    // Default timer duration in seconds
-    // Set to 60 for 1-minute testing, or adjust for events
     window.TIMER_CONFIG = {
         // Stage 1 (Editor) - Competitive Programming
         STAGE_1_DURATION: 300, // 5 minutes

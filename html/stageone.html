@@ -8,6 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/back-button.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -78,9 +79,8 @@
 <div class="fixed inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] z-0"></div>
 <!-- Navigation -->
 <div class="fixed top-4 left-4 z-20">
-    <a href="../index.html" class="inline-flex items-center gap-1.5 text-primary/70 hover:text-primary text-[10px] transition-colors group">
-        <span class="material-icons text-xs group-hover:-translate-x-1 transition-transform">arrow_back</span>
-        <span class="font-mono tracking-wide hidden sm:inline">BACK</span>
+    <a href="../index.html" class="back-btn back-btn-stage1">
+        <p class="text">BACK</p>
     </a>
 </div>
 <div id="stageone-team-badge" class="fixed top-4 right-4 z-20 hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">

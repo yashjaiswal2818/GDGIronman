@@ -8,6 +8,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/back-button.css"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -62,9 +63,8 @@
 <header class="w-full h-12 min-h-[48px] border-b border-[#243b47] bg-[#111c22]/90 backdrop-blur-sm z-50 flex-none shrink-0">
 <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
 <div class="flex items-center gap-4 text-white">
-<a href="stagethree.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-primary text-[10px] font-bold tracking-[0.1em] uppercase transition-colors group">
-<span class="material-symbols-outlined !text-[20px] group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
-BACK
+<a href="stagethree.html" class="back-btn back-btn-stage3hub">
+    <p class="text">BACK</p>
 </a>
 <div class="size-6 text-primary animate-pulse flex items-center justify-center">
 <span class="material-symbols-outlined !text-[24px]">deployed_code</span>
@@ -72,6 +72,10 @@ BACK
 <h2 class="text-white text-base font-bold leading-tight tracking-[0.1em] uppercase">Design Bay</h2>
 </div>
 <div class="flex items-center gap-3">
+<div id="stagethree-hub-team-badge" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-symbols-outlined !text-xs">group</span>
+    <span id="display-team-name">—</span>
+</div>
 <div id="stage3-timer" class="hidden items-center gap-2 px-3 py-1.5 border border-primary/40 bg-black/50 text-primary font-mono text-xs rounded">
 <span class="material-symbols-outlined !text-[16px]">timer</span>
 <span id="stage3-timer-display">00:00</span>
@@ -180,4 +184,16 @@ BACK
 <script src="../js/timer-config.js"></script>
 <script src="../js/timer-utils.js"></script>
 <script src="../js/stage3.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('stagethree-hub-team-badge');
+        var displayEl = badge ? badge.querySelector('#display-team-name') : null;
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
 </body></html>

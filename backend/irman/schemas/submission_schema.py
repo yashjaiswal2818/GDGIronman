@@ -7,7 +7,8 @@ class Submission(BaseModel):
     contest_id: str
     problem_id: int
     code: str
-    status: str
+    status: str  # "Accepted" or "Rejected"
+    score: int = 0  # Points earned (5 per test case passed)
 
 
 #submission_id = Column(Integer, primary_key=True, index=True)

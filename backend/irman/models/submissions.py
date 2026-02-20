@@ -15,6 +15,8 @@ class Submission(Base):
 
     code = Column(Text, nullable=False)
 
-    status = Column(Text, nullable=True)  
+    status = Column(Text, nullable=True)
+
+    score = Column(Integer, nullable=True, default=0)  
 
     

@@ -6,6 +6,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/back-button.css"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -65,9 +66,8 @@
 <!-- Header Section -->
 <header class="flex items-center justify-between mb-8 shrink-0">
 <div class="flex items-center gap-4">
-<a href="stagefour.html" class="inline-flex items-center gap-2 text-slate-500 hover:text-primary text-[10px] font-bold tracking-[0.2em] uppercase transition-colors group">
-<span class="material-symbols-outlined !text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
-BACK
+<a href="stagefour.html" class="back-btn back-btn-stage4hub">
+    <p class="text">BACK</p>
 </a>
 <div class="size-10 flex items-center justify-center rounded border border-primary/30 bg-primary/10 text-primary shadow-glow-sm">
 <span class="material-symbols-outlined text-2xl">rocket_launch</span>
@@ -88,6 +88,10 @@ BACK
 <div class="text-right">
 <p class="text-[10px] text-slate-400 uppercase tracking-widest">Uplink Status</p>
 <p class="text-sm font-mono text-primary">SECURE</p>
+</div>
+<div id="stagefour-hub-team-badge" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-symbols-outlined !text-xs">group</span>
+    <span id="display-team-name">—</span>
 </div>
 <div id="stage4-timer" class="hidden items-center gap-2 px-3 py-1.5 border border-primary/40 bg-black/50 text-primary font-mono text-xs rounded">
 <span class="material-symbols-outlined text-sm">timer</span>
@@ -210,4 +214,16 @@ BACK
 <script src="../js/timer-config.js"></script>
 <script src="../js/timer-utils.js"></script>
 <script src="../js/stage4.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('stagefour-hub-team-badge');
+        var displayEl = badge ? badge.querySelector('#display-team-name') : null;
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
 </body></html>

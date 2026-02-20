@@ -106,7 +106,8 @@ async def api_new_submission(
         submission.contest_id,
         submission.problem_id,
         submission.code,
-        submission.status
+        submission.status,
+        submission.score
     )
 @app.get("/problem/{problem_id}")
 async def api_get_problem(

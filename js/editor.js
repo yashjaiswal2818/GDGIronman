@@ -647,17 +647,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 
-                // Final summary
+                // Final summary: 5 points per test case passed, Accepted only when ALL pass
                 displayTerminalOutput('');
+                const POINTS_PER_TEST = 5;
+                const score = passedTests * POINTS_PER_TEST;
                 const allTestsPassed = passedTests === totalTests;
-                const status = allTestsPassed ? 'PASSED' : 'failed';
+                const status = allTestsPassed ? 'Accepted' : 'Rejected';
                 
+                displayTerminalOutput(`Score: ${score} points (${passedTests}/${totalTests} test cases passed × ${POINTS_PER_TEST} pts each)`);
+                displayTerminalOutput(`Status: ${status}`);
                 if (allTestsPassed) {
-                    displayTerminalOutput(`[OK] All tests passed (${passedTests}/${totalTests})`);
-                    displayTerminalOutput('Solution accepted!');
+                    displayTerminalOutput(`[OK] All tests passed. Solution accepted!`);
                 } else {
-                    displayTerminalOutput(`[FAIL] Tests passed: ${passedTests}/${totalTests}`, true);
-                    displayTerminalOutput('Solution needs improvement.', true);
+                    displayTerminalOutput(`[FAIL] Need all ${totalTests} test cases to pass for acceptance.`, true);
                 }
                 
                 // Submit to backend
@@ -681,7 +683,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         contest_id: contestId,
                         problem_id: problemId,
                         code: code,
-                        status: status
+                        status: status,
+                        score: score
                     };
                     
                     console.log('Submitting payload:', {
@@ -707,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     const submitResult = await submitResponse.json();
-                    displayTerminalOutput(`[OK] Submission successful. Status: ${status}`);
+                    displayTerminalOutput(`[OK] Submission recorded. Score: ${score} pts | Status: ${status}`);
                     if (submitResult.submission_id) {
                         displayTerminalOutput(`Submission ID: ${submitResult.submission_id}`);
                     }

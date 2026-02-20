@@ -4,6 +4,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Stark Industries Filtering Leaderboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/back-button.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
@@ -82,12 +83,15 @@
 <div class="relative z-10 flex flex-col h-screen p-8 md:p-12 lg:px-16 lg:py-10 max-w-[1600px] mx-auto w-full">
 <!-- Header Section -->
 <header class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-<div class="flex items-center gap-6">
-<a id="leaderboard-back-link" href="../index.html" class="group flex items-center gap-2 text-primary/70 hover:text-primary transition-colors duration-300">
-<span class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
-<span class="text-sm tracking-widest font-medium">BACK</span>
+<div class="flex items-center gap-6 flex-wrap">
+<a id="leaderboard-back-link" href="../index.html" class="back-btn back-btn-leaderboard">
+    <p class="text">BACK</p>
 </a>
-<div class="h-6 w-px bg-white/10 mx-2"></div>
+<div id="leaderboard-team-badge" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-symbols-outlined !text-xs">group</span>
+    <span id="display-team-name">—</span>
+</div>
+<div class="h-6 w-px bg-white/10 mx-2 hidden sm:block"></div>
 <div>
 <h1 class="text-3xl font-bold tracking-tight text-white glow-text leading-none">FILTERING RANKINGS</h1>
 <p class="text-xs text-primary/60 tracking-[0.2em] mt-1 font-mono">STARK INDUSTRIES // SECTOR 7 // BOOTCAMP</p>
@@ -141,4 +145,16 @@
 </div>
 <script src="../js/api-config.js"></script>
 <script src="../js/leaderboard.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var teamName = sessionStorage.getItem('teamName');
+        var badge = document.getElementById('leaderboard-team-badge');
+        var displayEl = badge ? badge.querySelector('#display-team-name') : null;
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+        }
+    });
+</script>
 </body></html>

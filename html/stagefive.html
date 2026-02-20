@@ -84,6 +84,10 @@
 </div>
 </div>
 <div class="flex items-center gap-2 md:gap-4">
+<div id="stagefive-team-badge" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded border border-primary/40 bg-primary/10 text-primary font-mono text-[10px]">
+    <span class="material-symbols-outlined !text-xs">group</span>
+    <span id="display-team-name">—</span>
+</div>
 <div class="hidden sm:flex gap-2">
 
 </div>
@@ -193,12 +197,14 @@
 <img class="w-full h-full object-contain" data-alt="Futuristic rotating gear and circuit pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuCNMi-EKBQg2CiTPG1YEiftnhZJUBKXXlin6FOrASfJIXC3fPEVL_ZQL65RjQ1FqReba8AohvtsJibLCHuKaWvoLTd8j9TrbKE7SNZ09BdPGZ5ys4NXnvNZrbxTS96RmHvG2a8geDkCbhB_sBVAmquwl-miQxmhXxFhPgm02ILwSJbeaTyPHey-tCMR1hPmFWWUpqLNKUWx3zrK8mfpjan6qTJRKrjNjFja9iyCV7HRVZZWI7YoHUG_9nTRf8E_IIT46RI_rcU7uj"/>
 </div>
 <script>
-    // Display logged-in team name (if registered)
     document.addEventListener('DOMContentLoaded', function () {
         var teamName = sessionStorage.getItem('teamName');
-        // You can add a team badge display here if needed
-        if (teamName) {
-            console.log('Team:', teamName);
+        var badge = document.getElementById('stagefive-team-badge');
+        var displayEl = badge ? badge.querySelector('#display-team-name') : null;
+        if (teamName && badge && displayEl) {
+            displayEl.textContent = teamName;
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
         }
     });
 </script>

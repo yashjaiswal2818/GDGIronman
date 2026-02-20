@@ -9,18 +9,17 @@ async def submission_service(
     contest_id: str,
     problem_id: int,
     code: str,
-    status: str
+    status: str,
+    score: int = 0
 ):
-    # Optional: check if contest exists
-    # (recommended if foreign key exists)
-
-    # Create problem object
+    # Create submission object
     new_submission = Submission(
         Team_Name=Team_Name,
         contest_id=contest_id,
         problem_id=problem_id,
         code=code,
-        status=status
+        status=status,
+        score=score
     )
 
     # Save to DB

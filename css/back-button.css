@@ -1,0 +1,152 @@
+/* Back Button - Page-specific variants matching each page theme */
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.back-btn .text {
+  margin: 0;
+}
+
+/* Stage 1 - Stark Smelter Lab: Gold/Amber */
+.back-btn-stage1 {
+  background: rgba(244, 209, 37, 0.15);
+  border-color: rgba(244, 209, 37, 0.5);
+  color: #f4d125;
+}
+.back-btn-stage1:hover {
+  background: #f4d125;
+  border-color: #f4d125;
+  color: #0a0a08;
+  box-shadow: 0 0 20px rgba(244, 209, 37, 0.4);
+}
+
+/* Stage 2 - Jarvis Command Room: Cyan */
+.back-btn-stage2 {
+  background: rgba(19, 236, 236, 0.1);
+  border-color: rgba(19, 236, 236, 0.5);
+  color: #13ecec;
+}
+.back-btn-stage2:hover {
+  background: #13ecec;
+  border-color: #13ecec;
+  color: #050505;
+  box-shadow: 0 0 20px rgba(19, 236, 236, 0.4);
+}
+
+/* Stage 3 - Mark UI Design Bay: Red */
+.back-btn-stage3 {
+  background: rgba(236, 19, 30, 0.15);
+  border-color: rgba(236, 19, 30, 0.5);
+  color: #ec131e;
+}
+.back-btn-stage3:hover {
+  background: #ec131e;
+  border-color: #ec131e;
+  color: white;
+  box-shadow: 0 0 20px rgba(236, 19, 30, 0.4);
+}
+
+/* Stage 3 Hub - Design Bay: Blue */
+.back-btn-stage3hub {
+  background: rgba(71, 180, 235, 0.1);
+  border-color: rgba(71, 180, 235, 0.5);
+  color: #47b4eb;
+}
+.back-btn-stage3hub:hover {
+  background: #47b4eb;
+  border-color: #47b4eb;
+  color: #0d1418;
+  box-shadow: 0 0 20px rgba(71, 180, 235, 0.4);
+}
+
+/* Stage 4 - Friday Logic Core: Cyan/Gold */
+.back-btn-stage4 {
+  background: rgba(31, 249, 249, 0.1);
+  border-color: rgba(31, 249, 249, 0.5);
+  color: #1ff9f9;
+}
+.back-btn-stage4:hover {
+  background: #1ff9f9;
+  border-color: #1ff9f9;
+  color: #050505;
+  box-shadow: 0 0 20px rgba(31, 249, 249, 0.4);
+}
+
+/* Stage 4 Logic Hub: Gold */
+.back-btn-stage4hub {
+  background: rgba(242, 185, 13, 0.15);
+  border-color: rgba(242, 185, 13, 0.5);
+  color: #f2b90d;
+}
+.back-btn-stage4hub:hover {
+  background: #f2b90d;
+  border-color: #f2b90d;
+  color: #0a0a0a;
+  box-shadow: 0 0 20px rgba(242, 185, 13, 0.4);
+}
+
+/* Editor - JARVIS: Stark Cyan */
+.back-btn-editor {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: rgba(0, 217, 255, 0.4);
+  color: #00d9ff;
+}
+.back-btn-editor:hover {
+  background: #00d9ff;
+  border-color: #00d9ff;
+  color: #020408;
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.4);
+}
+
+/* Leaderboard: Blue */
+.back-btn-leaderboard {
+  background: rgba(19, 164, 236, 0.15);
+  border-color: rgba(19, 164, 236, 0.5);
+  color: #13a4ec;
+}
+.back-btn-leaderboard:hover {
+  background: #13a4ec;
+  border-color: #13a4ec;
+  color: white;
+  box-shadow: 0 0 20px rgba(19, 164, 236, 0.4);
+}
+
+/* Register: Sky Blue */
+.back-btn-register {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #38bdf8;
+}
+.back-btn-register:hover {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  color: #020617;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+/* Website / Ingestion Core: Hologram Cyan */
+.back-btn-website {
+  background: rgba(0, 242, 255, 0.1);
+  border-color: rgba(0, 242, 255, 0.4);
+  color: #00f2ff;
+}
+.back-btn-website:hover {
+  background: #00f2ff;
+  border-color: #00f2ff;
+  color: #0a0a0a;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+}
