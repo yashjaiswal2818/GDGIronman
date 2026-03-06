@@ -164,9 +164,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        if (window.TimerUtils) {
-            initTimer();
-        }
+        // Timers disabled for Round 4 preview; do not start countdown
+        // if (window.TimerUtils) {
+        //     initTimer();
+        // }
         init();
     });
 })();

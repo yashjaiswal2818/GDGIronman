@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let isTerminalOpen = false;
     let hasSubmitted = false; // User can only submit once per problem
+    const STAGE1_SUBMISSIONS_OPEN = false; // lock Stage 1 submissions
 
     // Timer configuration - uses timer-config.js
     const TIMER_DURATION = (window.TIMER_CONFIG && window.TIMER_CONFIG.STAGE_1_DURATION) || 60; // Default 1 minute for testing
@@ -222,6 +223,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSubmitButtonState() {
         if (!submitBtn) return;
+        if (!STAGE1_SUBMISSIONS_OPEN) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            submitBtn.innerHTML = '<span class="material-icons-round text-[12px]">lock</span><span class="hidden sm:inline">SUBMISSIONS CLOSED</span>';
+            return;
+        }
         if (hasAlreadySubmitted()) {
             hasSubmitted = true;
             submitBtn.disabled = true;
@@ -726,6 +733,11 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.addEventListener('click', async () => {
             console.log('Submit Solution clicked');
             
+            if (!STAGE1_SUBMISSIONS_OPEN) {
+                displayTerminalOutput('Submissions are closed for Stage 1.', true);
+                return;
+            }
+
             // Check if already submitted (one submission only)
             if (hasSubmitted || hasAlreadySubmitted()) {
                 displayTerminalOutput('You have already submitted. Only one submission is allowed per problem.', true);

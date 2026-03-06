@@ -17,27 +17,52 @@
     'use strict';
 
     // ============================================
-    // TESTING FLAG - Set to false to disable access control
+    // STAGE LOCK CONFIG - controls which stages are accessible
     // ============================================
-    const ENABLE_ACCESS_CONTROL = false; // Set to true to enable access control
+    const MAX_STAGE_UNLOCKED = 2; // Only allow stages 1 and 2
+    const STAGE_MAP = {
+        'stageone.html': 1,
+        'editor.html': 1,
+        'stagetwo.html': 2,
+        'website.html': 2,
+        // Stage 3 briefing is allowed as a preview, but its hub and later stages remain locked
+        'stagethree_hub.html': 3,
+        'stagefour.html': 4,
+        'stagefour_logic_hub.html': 4,
+        'stagefive.html': 5,
+        'stagefive_presentation.html': 5
+    };
     // ============================================
 
-    // If access control is disabled, exit early
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+    // Enforce stage lock regardless of registration access control
+    (function enforceStageLock() {
+        const stage = STAGE_MAP[currentPage];
+        if (typeof stage === 'number' && stage > MAX_STAGE_UNLOCKED) {
+            window.location.replace('../index.html#stages');
+        }
+    })();
+
+    // ============================================
+    // TESTING FLAG - Set to false to disable registration-based access control
+    // ============================================
+    const ENABLE_ACCESS_CONTROL = false; // Set to true to enable registration access control
+    // ============================================
+
+    // If access control is disabled, export no-op helpers but keep stage lock active
     if (!ENABLE_ACCESS_CONTROL) {
         console.log('Access control disabled for testing');
-        // Export functions for use in other scripts if needed
         window.auth = {
             isRegistered: function() { return true; },
             checkAccess: function() { return true; },
             redirectToRegister: function() {}
         };
-        return; // Exit early, allow all access
+        return;
     }
 
-    // Get current page name
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    
     // Define public pages that don't require registration
+    
     const publicPages = ['index.html', 'register.html'];
     
     // Check if current page is public

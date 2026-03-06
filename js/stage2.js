@@ -9,6 +9,7 @@
 
     var ROUND_2_ENDPOINT = (window.API_CONFIG && window.API_CONFIG.getUrl('round_2')) || 'http://127.0.0.1:8000/round_2';
     var STAGE2_STORAGE_KEY = 'gdg_stage2_submission_state';
+    var STAGE2_SUBMISSIONS_OPEN = false;
 
     function loadStage2State() {
         try {
@@ -137,6 +138,22 @@
 
         applySavedState();
 
+        // If submissions are globally closed and there is no prior submission, lock the UI
+        if ((!savedState || !savedState.submitted) && !STAGE2_SUBMISSIONS_OPEN) {
+            if (btn) {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.innerHTML = '<span class="material-symbols-outlined text-base">lock</span><span class="tracking-wide">SUBMISSIONS CLOSED</span>';
+            }
+            if (proceedBtn) {
+                proceedBtn.disabled = true;
+                proceedBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            if (proceedWrap) {
+                proceedWrap.classList.add('hidden');
+            }
+        }
+
         function showUploadStatus() {
             var hasImage = imageInput && imageInput.files && imageInput.files.length > 0;
             var hasWebUrl = webUrl && webUrl.value && webUrl.value.trim().length > 0;
@@ -263,6 +280,16 @@
             if (savedState && savedState.submitted) {
                 if (window.UIUtils) {
                     window.UIUtils.showToast('Prototype already submitted for this team.', 'info', 3000);
+                }
+                return;
+            }
+            if (!STAGE2_SUBMISSIONS_OPEN) {
+                if (feedback) {
+                    feedback.classList.remove('hidden');
+                    feedback.innerHTML = '<span class="text-amber-500">Submissions are closed for Stage 2.</span>';
+                    feedback.className = 'mb-3 p-4 rounded-lg border border-amber-500/50 bg-amber-500/5 text-xs font-mono';
+                } else if (window.UIUtils) {
+                    window.UIUtils.showToast('Submissions are closed for Stage 2.', 'info', 3000);
                 }
                 return;
             }

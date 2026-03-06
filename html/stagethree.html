@@ -3,6 +3,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Mark UI Design Bay Elite Briefing</title>
+<!-- Access Control - Must load first -->
+<script src="../js/auth.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../css/back-button.css"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -216,6 +218,11 @@
             badge.classList.remove('hidden');
             badge.classList.add('flex');
         }
+
+        // Auto-redirect from Stage 3 briefing to Stage 3 hub
+        setTimeout(function () {
+            window.location.href = 'stagethree_hub.html';
+        }, 0);
     });
 </script>
 </body></html>
