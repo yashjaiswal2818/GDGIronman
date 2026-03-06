@@ -488,6 +488,72 @@
                 <div class="stamp"><span class="stamp-text">Join</span></div>
             </div>
         </section>
+
+        <!-- Login CTA Section -->
+        <section id="login" class="hud-section section-register reveal-on-scroll">
+            <div class="register-card" style="--primary: #06f9f9; --primary-hover: #b4ffff; --accent: #e0ffff;">
+                <div class="card-pattern-grid"></div>
+                <div class="card-overlay-dots"></div>
+                <div class="bold-pattern">
+                    <svg viewBox="0 0 100 100">
+                        <path stroke-dasharray="15 10" stroke-width="10" stroke="#000" fill="none"
+                            d="M0,0 L100,0 L100,100 L0,100 Z"></path>
+                    </svg>
+                </div>
+                <div class="card-title-area">
+                    <span>TEAM LOGIN</span>
+                    <span class="card-tag">ACCESS</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-description">
+                        Already registered? Authenticate your team credentials to access Stage 3.
+                    </div>
+                    
+                    <form id="login-form" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; position: relative; z-index: 10;">
+                        <div>
+                            <label for="login-team-name" style="display: block; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: #000; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.1em;">TEAM NAME</label>
+                            <input type="text" id="login-team-name" required placeholder="ENTER TEAM DESIGNATION"
+                                style="width: 100%; background: transparent; border: 2px solid #000; color: #000; padding: 0.75rem; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label for="login-leader-email" style="display: block; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: #000; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.1em;">LEADER EMAIL</label>
+                            <input type="email" id="login-leader-email" required placeholder="ENTER COMMANDER EMAIL"
+                                style="width: 100%; background: transparent; border: 2px solid #000; color: #000; padding: 0.75rem; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600; border-radius: 4px;">
+                        </div>
+                        <button type="submit" id="login-submit-btn" class="card-button register-cta-btn" style="border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; width: 100%; font-family: 'Orbitron', sans-serif; background-color: #06f9f9; translate: none;">
+                            <span>AUTHENTICATE</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </form>
+
+                    <div id="login-message" style="display: none; margin-top: 1rem; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: #e53e3e; font-weight: bold; text-align: center;"></div>
+
+                    <div class="register-footer" style="margin-top: 1.5rem;">
+                        <p class="register-note">
+                            RESTRICTED ACCESS • STARK EMPLOYEES ONLY
+                        </p>
+                    </div>
+                </div>
+                <div class="dots-pattern">
+                    <svg viewBox="0 0 80 40">
+                        <circle fill="#000" r="3" cy="10" cx="10"></circle>
+                        <circle fill="#000" r="3" cy="10" cx="30"></circle>
+                        <circle fill="#000" r="3" cy="10" cx="50"></circle>
+                        <circle fill="#000" r="3" cy="10" cx="70"></circle>
+                        <circle fill="#000" r="3" cy="20" cx="20"></circle>
+                        <circle fill="#000" r="3" cy="20" cx="40"></circle>
+                        <circle fill="#000" r="3" cy="20" cx="60"></circle>
+                        <circle fill="#000" r="3" cy="30" cx="10"></circle>
+                        <circle fill="#000" r="3" cy="30" cx="30"></circle>
+                        <circle fill="#000" r="3" cy="30" cx="50"></circle>
+                        <circle fill="#000" r="3" cy="30" cx="70"></circle>
+                    </svg>
+                </div>
+                <div class="accent-shape"></div>
+                <div class="corner-slice"></div>
+                <div class="stamp"><span class="stamp-text" style="font-size: 0.55rem;">Auth</span></div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -506,6 +572,7 @@
                 <h3 class="footer-title">QUICK LINKS</h3>
                 <div class="footer-links">
                     <a href="html/leaderboard.html" class="footer-link">Leaderboard</a>
+                    <a href="#login" class="footer-link">Login</a>
                     <a href="html/register.html" class="footer-link">Register</a>
                     <a href="https://www.instagram.com/gdgpce?igsh=cXZuenJtdTAwMmpn" target="_blank"
                         rel="noopener noreferrer" class="footer-link">Instagram</a>
@@ -604,16 +671,21 @@
             <span class="navbar-team-label">TEAM:</span>
             <span id="display-team-name"></span>
         </div>
-        <button class="navbar-menu-button" id="navbar-toggle" aria-label="Toggle navigation">
-            <span class="menu-label">Menu</span>
-            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-icon">
-                <path d="M12.0005 5.49894V6.99894H8.50047V5.49894H12.0005Z" fill="currentcolor"></path>
-                <path d="M3.5 5.49756V6.99756L0 6.99756L6.55637e-08 5.49756L3.5 5.49756Z" fill="currentcolor"></path>
-                <path d="M6.50106 11.9982H5.00106V8.49824H6.50106V11.9982Z" fill="currentcolor"></path>
-                <path d="M6.49968 3.49777L4.99968 3.49777L4.99968 -0.00222778L6.49968 -0.00222759L6.49968 3.49777Z"
-                    fill="currentcolor"></path>
-            </svg>
-        </button>
+        <div class="navbar-actions" style="display: flex; align-items: center; gap: 1.5rem; pointer-events: auto;">
+            <a href="#login" class="navbar-login-btn" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.25s linear; display: flex; align-items: center;" onmouseover="this.style.color='#00ffff'" onmouseout="this.style.color='rgba(255, 255, 255, 0.9)'">
+                LOGIN
+            </a>
+            <button class="navbar-menu-button" id="navbar-toggle" aria-label="Toggle navigation">
+                <span class="menu-label">Menu</span>
+                <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="menu-icon">
+                    <path d="M12.0005 5.49894V6.99894H8.50047V5.49894H12.0005Z" fill="currentcolor"></path>
+                    <path d="M3.5 5.49756V6.99756L0 6.99756L6.55637e-08 5.49756L3.5 5.49756Z" fill="currentcolor"></path>
+                    <path d="M6.50106 11.9982H5.00106V8.49824H6.50106V11.9982Z" fill="currentcolor"></path>
+                    <path d="M6.49968 3.49777L4.99968 3.49777L4.99968 -0.00222778L6.49968 -0.00222759L6.49968 3.49777Z"
+                        fill="currentcolor"></path>
+                </svg>
+            </button>
+        </div>
 
         <div class="navbar-menu" id="navbar-menu">
             <button class="menu-close-button" id="menu-close" aria-label="Close menu">
@@ -641,6 +713,9 @@
                     <a href="html/leaderboard.html" class="menu-link">LEADERBOARD</a>
                 </li>
                 <li class="menu-item">
+                    <a href="#login" class="menu-link">LOGIN</a>
+                </li>
+                <li class="menu-item">
                     <a href="#register" class="menu-link">REGISTER</a>
                 </li>
             </ul>
@@ -649,6 +724,7 @@
 
 
     <script src="js/script.js"></script>
+    <script src="js/login.js"></script>
     <script>
         // Display logged-in team name
         document.addEventListener('DOMContentLoaded', function () {
