@@ -19,7 +19,7 @@
     // ============================================
     // STAGE LOCK CONFIG - controls which stages are accessible
     // ============================================
-    const MAX_STAGE_UNLOCKED = 4; // Allow stages 1, 2, 3, and 4 (stage 5 remains locked)
+    const MAX_STAGE_UNLOCKED = 2; // Only stages 1 and 2; 3, 4, 5 and leaderboard blocked
     const STAGE_MAP = {
         'stageone.html': 1,
         'editor.html': 1,

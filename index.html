@@ -127,7 +127,7 @@
                 <h1 class="stages-title">THE 5 STAGES</h1>
             </div>
             <div class="stages-grid">
-                <a href="#register" class="stage-card" data-stage="1">
+                <div class="stage-card" data-stage="1" style="pointer-events: none; opacity: 0.8; cursor: default;">
                     <div class="card-pattern-grid"></div>
                     <div class="card-overlay-dots"></div>
                     <div class="bold-pattern">
@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <span class="card-button">Begin</span>
+                            <span class="card-button">Round completed</span>
                         </div>
                     </div>
                     <div class="dots-pattern">
@@ -187,9 +187,9 @@
                     <div class="accent-shape"></div>
                     <div class="corner-slice"></div>
                     <div class="stamp"><span class="stamp-text">Stage</span></div>
-                </a>
+                </div>
 
-                <a href="#register" class="stage-card" data-stage="2">
+                <div class="stage-card" data-stage="2" style="pointer-events: none; opacity: 0.8; cursor: default;">
                     <div class="card-pattern-grid"></div>
                     <div class="card-overlay-dots"></div>
                     <div class="bold-pattern">
@@ -228,7 +228,7 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <span class="card-button">Begin</span>
+                            <span class="card-button">Round completed</span>
                         </div>
                     </div>
                     <div class="dots-pattern">
@@ -249,9 +249,9 @@
                     <div class="accent-shape"></div>
                     <div class="corner-slice"></div>
                     <div class="stamp"><span class="stamp-text">Stage</span></div>
-                </a>
+                </div>
 
-                <a class="stage-card" data-stage="3" aria-disabled="true" style="pointer-events: none; opacity: 0.5; cursor: default;">
+                <div class="stage-card" data-stage="3" style="pointer-events: none; opacity: 0.8; cursor: default;">
                     <div class="card-pattern-grid"></div>
                     <div class="card-overlay-dots"></div>
                     <div class="bold-pattern">
@@ -290,7 +290,7 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <span class="card-button">Begin</span>
+                            <span class="card-button">Round starts in 5 hours</span>
                         </div>
                     </div>
                     <div class="dots-pattern">
@@ -311,9 +311,9 @@
                     <div class="accent-shape"></div>
                     <div class="corner-slice"></div>
                     <div class="stamp"><span class="stamp-text">Stage</span></div>
-                </a>
+                </div>
 
-                <a class="stage-card" data-stage="4" aria-disabled="true" style="pointer-events: none; opacity: 0.5; cursor: default;">
+                <div class="stage-card" data-stage="4" style="pointer-events: none; opacity: 0.8; cursor: default;">
                     <div class="card-pattern-grid"></div>
                     <div class="card-overlay-dots"></div>
                     <div class="bold-pattern">
@@ -352,7 +352,7 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <span class="card-button">Begin</span>
+                            <span class="card-button">Round starts in 5 hours</span>
                         </div>
                     </div>
                     <div class="dots-pattern">
@@ -373,7 +373,7 @@
                     <div class="accent-shape"></div>
                     <div class="corner-slice"></div>
                     <div class="stamp"><span class="stamp-text">Stage</span></div>
-                </a>
+                </div>
 
                 <a class="stage-card" data-stage="5" aria-disabled="true" style="pointer-events: none; opacity: 0.5; cursor: default;">
                     <div class="card-pattern-grid"></div>
@@ -780,7 +780,7 @@
 
             // Close button functionality
             if (menuClose) {
-                menuClose.FPREVIEWaddEventListener('click', function () {
+                menuClose.addEventListener('click', function () {
                     closeMenu();
                 });
             }
