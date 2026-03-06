@@ -36,12 +36,26 @@
 
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    // Enforce stage lock regardless of registration access control
+    // ONLY stagethree.html is enabled for logged-in users. All other stage 3+ pages stay locked.
+    const LOGIN_UNLOCKED_PAGE = 'stagethree.html';
+
     (function enforceStageLock() {
         const stage = STAGE_MAP[currentPage];
-        if (typeof stage === 'number' && stage > MAX_STAGE_UNLOCKED) {
-            window.location.replace('../index.html#stages');
+        if (typeof stage !== 'number') return;
+        if (stage <= MAX_STAGE_UNLOCKED) return; // Stages 1-2 always allowed
+
+        // Stage 3+ pages: only stagethree.html allowed when logged in
+        const teamName = (function() {
+            try { return sessionStorage.getItem('teamName') || ''; } catch (e) { return ''; }
+        })();
+        const isLoggedIn = teamName && teamName.trim() !== '';
+        const isUnlockedPage = currentPage === LOGIN_UNLOCKED_PAGE;
+
+        if (isLoggedIn && isUnlockedPage) {
+            return; // Logged in + on stagethree.html - allow
         }
+        // Block: stagethree_hub, stagefour, stagefive, or stagethree when not logged in
+        window.location.replace('../index.html#login');
     })();
 
     // ============================================

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!teamName || !leaderEmail) return;
 
+        let loginSuccess = false;
         try {
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>AUTHENTICATING...</span><span class="btn-arrow">→</span>';
@@ -36,28 +37,40 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.flag === "Success") {
+                loginSuccess = true;
                 sessionStorage.setItem('teamName', data.Team_Name);
                 if (leaderEmail) {
                     sessionStorage.setItem('teamEmail', leaderEmail);
                 }
-                window.location.href = 'html/stagethree.html';
-            } else {
-                alert("name or email is wrong please try again.");
                 if (loginMessageEl) {
-                    loginMessageEl.textContent = "name or email is wrong please try again.";
+                    loginMessageEl.textContent = "Login successful! Redirecting to Stage 3...";
+                    loginMessageEl.style.color = '#14b25f';
+                    loginMessageEl.style.display = 'block';
+                }
+                setTimeout(() => {
+                    window.location.href = 'html/stagethree.html';
+                }, 1500);
+            } else {
+                if (loginMessageEl) {
+                    loginMessageEl.textContent = "Login failed. Name or email is wrong, please try again.";
+                    loginMessageEl.style.color = '#e53e3e';
                     loginMessageEl.style.display = 'block';
                 }
             }
         } catch (error) {
             console.error("Login Error:", error);
-            alert("name or email is wrong please try again.");
             if (loginMessageEl) {
-                loginMessageEl.textContent = "name or email is wrong please try again.";
+                loginMessageEl.textContent = "Login failed. Name or email is wrong, please try again.";
+                loginMessageEl.style.color = '#e53e3e';
                 loginMessageEl.style.display = 'block';
             }
         } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>AUTHENTICATE</span><span class="btn-arrow">→</span>';
+            if (!loginSuccess) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>AUTHENTICATE</span><span class="btn-arrow">→</span>';
+            } else {
+                submitBtn.innerHTML = '<span>REDIRECTING...</span><span class="btn-arrow">→</span>';
+            }
         }
     });
 });
